@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src = "node_modules/fullcalendar/index.global.min.js"></script>
+    <link rel="stylesheet" href="node_modules/toastify-js/src/toastify.css">
+    <script src = "node_modules/toastify-js/src/toastify.js"></script>
+    <script src="script.js"></script>
+    <script src="css/dist/jquery.min.js"></script>
+    <link rel="icon" href="securities and exchange.png" type="image/x-icon">
+    <title>Dashboard</title>
+  </head>
+  <body>
+      <div id="dashboard-panel-container"></div>
+      <div class=" text-gray-800">
+        <main class="p-6 sm:p-10 space-y-6">
+          <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+            <div class="mr-6">
+              <h1 class="text-4xl font-semibold mb-2 font-kanit">Interns Dashboard</h1>
+              <h2 class="text-gray-600 ml-0.5 font-rubik">SEC Internship Program</h2>
+            </div>
+            <div class="flex flex-wrap items-start justify-end -mb-3">
+            </div>
+          </div>
+              <div id="carousel-container"></div>
+          <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div class="flex items-center p-8 bg-white shadow rounded-lg">
+              <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
+                <a href="attendance/attendance form.php">
+                  <img src="icons/attendance.png" class="h-16 w-16 rounded-full" alt="Image 1">
+                </a>
+              </div>
+              <div>
+                <span class="block text-gray-900 text-xl font-bold font-rubik">Attendance</span>
+              </div>
+            </div>
+            <div class="flex items-center p-8 bg-white shadow rounded-lg">
+              <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
+                <a href="monthly reports/acomplishment_tab.php">
+                  <img src="icons/monthly reports.png" class="h-16 w-16 rounded-full" alt="Image 1">
+                </a>
+              </div>
+              <div>
+                <span class="block text-gray-900 text-xl font-bold font-rubik">Monthly reports</span>
+              </div>
+            </div>
+            <div class="flex items-center p-8 bg-white shadow rounded-lg">
+              <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+                <a href="certificate/interns_certificate.php">
+                  <img src="icons/certification.png" class="h-16 w-16 rounded-full" alt="Image 1">
+                </a>
+              </div>
+              <div>
+                <span class="block text-gray-900 text-xl font-bold font-rubik">Certifications</span>
+              </div>
+            </div>
+          </section>
+          <section class="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-3 xl:grid-flow-col gap-6">
+            <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg w-full">
+              <div class="px-6 py-5 font-semibold border-b border-gray-100 text-3xl font-rubik">Calendar</div>
+              <div class="p-4 flex-grow">
+                <div class="container mx-auto">
+                 <div class="p-4 flex-grow">
+              <div class="container xl:mx-auto">
+                <div class="flex justify-center">
+                  <div class="w-full">
+                    <div class="bg-white rounded-lgshadow-lg">
+                      <div class="p-4">
+                        <div id="calendar"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+                </div>
+              </div>
+            </div>
+            <div id="eventModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition duration-300 ease-in-out transform scale-100 origin-center">
+              <div class="modal-content bg-white p-6 rounded shadow-lg w-full max-w-md transition-transform duration-300 ease-in-out transform scale-100 relative">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 hover:text-blue-600 text-center">Events</h2>
+                  <button id="closeModalBtn" class="absolute top-0 right-0 p-2 text-blue-500 hover:text-blue-600 cursor-pointer" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0   0   24   24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6   18L18   6M6   6l12   12" />
+                    </svg>
+                  </button>
+                </div>
+                <hr class="border-t border-gray-200 my-4">
+                <dl class="space-y-4">
+                  <dt class="text-md font-semibold text-gray-900">Event Title:</dt>
+                  <dd id="eventTitle" class="text-base text-gray-700 hover:text-blue-500 py-1">Your Event Title Here</dd>
+                  <dt class="text-md font-semibold text-gray-900">Event Start:</dt>
+                  <dd id="eventStart" class="text-base font-semibold text-blue-500 hover:text-blue-600 py-1">Date and Time Here</dd>
+                </dl>
+              </div>
+            </div>
+              <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg w-full">
+                <div class="px-6 py-5 font-semibold border-b border-gray-100 text-3xl font-kanit">Upcoming Schedules</div>
+                <div class="p-4 flex-grow">
+                  <div class="container mx-auto">
+                    <div class="p-4 flex-grow">
+                      <div class="container xl:mx-auto">
+                        <div class="flex justify-center">
+                          <div class="w-full">
+                            <div class="bg-white rounded-lgshadow-lg">
+                              <div class="p-4">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+          </section>
+        </main>
+      </div>
+      <script>
+         $(document).ready(function() {
+        $("#dashboard-panel-container").load("/header/interns_panel.html");
+    });
+       $(document).ready(function() {
+        $("#carousel-container").load("/carousel/carousel.html");
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: 'calendar/fetch_events.php',
+            eventTimeFormat: {
+              hour: '2-digit',
+              minute: '2-digit',
+              meridiem: 'short'
+            },
+            eventClick: function(info) {
+              openModal(info.event.title, info.event.start);
+            }
+          });
+          calendar.render();
+          function openModal(title, start) {
+            var modal = document.getElementById('eventModal');
+            modal.classList.remove('hidden');
+            document.getElementById('eventTitle').textContent = title;
+            document.getElementById('eventStart').textContent = `Start: ${moment(start).format('YYYY-MM-DD HH:mm')}`;
+            document.getElementById('closeModalBtn').addEventListener('click', function() {
+              modal.classList.add('hidden');
+            });
+          }
+        });
+      </script>
+    </body>
+</html>

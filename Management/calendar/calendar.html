@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    </head>
+    <body>
+            <div id="AddEvent" class="fixed inset-0 items-center justify-center z-50 bg-black bg-opacity-50 hidden">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="transition duration-500 w-max ease-in-out border border-gray-300 rounded bg-blue-200  p-6 shadow-lg max-w-lg mx-auto">
+                    <div class="flex items-center justify-between px-6 py-5 font-semibold border-b border-gray-100">
+                      <div class="card">
+                        <span class = "text-3xl font-bold text-green-700 p-4 m-4" style = "font-family: 'Karma';">Add Event</span>
+                        <div class="cursor-pointer z-50" onclick="modalClose('myModal')">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                          </svg>
+                        </div>
+                        <div class="card-body">
+                          <form id="eventForm" action="calendar/admin_addevents.php" method="POST" class="flex flex-col space-y-4">
+                            <div class="form-group">
+                              <label for="event_name" class="block mb-2 text-sm font-medium text-white uppercase">Event Name:</label>
+                              <input type="text" class="form-control block w-full text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none py-2 px-3" id="event_name" name="event_name" placeholder="Enter event name" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="event_time" class="block mb-2 text-sm font-medium text-white uppercase">Event Time:</label>
+                              <input type="datetime-local" class="form-control block w-full text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none py-2 px-3" id="event_time" name="event_time" required>
+                            </div>
+                            <button type="submit" class="w-full bg-green-900 font-bold text-white py-2 px-4 rounded">Add Event</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/dist/output.css" rel="stylesheet">
+    <script src="../css/dist/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="md:ml-48 xl:ml-48 lg:ml-48">
+        <div id="header"></div>
+        <div class="mx-auto md:max-w-7xl xl:bg-white xl:shadow-md p-6 mt-8 rounded-md">
+            <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+                <h3 class="text-2xl font-bold mb-6 font-rubik md:mb-0 md:text-3xl sm:text-2xl">Add Username</h3>
+            </div>
+            <form action="submit.php" method="POST" class="mb-8">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">User ID</label>
+                 <input type="text" name="username" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">First Name</label>
+                    <input type="text" name="fname" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">Middle Name</label>
+                    <input type="text" name="mname" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">Last Name</label>
+                    <input type="text" name="lname" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+            </div>
+            <div class="mt-6">
+                <button type="submit" class="font-rubik bg-green-900 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Submit
+                </button>
+            </div>
+            </form>
+
+            <table id="userTable" class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr class="bg-green-700 text-white">
+                        <th
+                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Username</th>
+                        <th
+                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">First
+                            Name</th>
+                        <th
+                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">Middle
+                            Name</th>
+                        <th
+                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Last
+                            Name</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody" class="text-gray-700">
+                    <!-- Table rows will be populated dynamically using AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#header').load('../header/admin_navs.html');
+
+            // Load table data dynamically
+            function loadTableData(page) {
+                console.log('Loading data for page:', page);
+
+                $.ajax({
+                    url: 'fetch.php',
+                    type: 'GET',
+                    data: { page: page },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log('Data received:', data);
+
+                        // Log the actual response text
+                        console.log('Response Text:', JSON.stringify(data));
+
+                        var tableRows = '';
+
+                        $.each(data, function (index, item) {
+                            tableRows += '<tr>';
+                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.interns_username + '</td>';
+                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.fname + '</td>';
+                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.mname + '</td>';
+                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.lname + '</td>';
+                            tableRows += '</tr>';
+                        });
+
+                        $('#tbody').html(tableRows);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error in AJAX request:', status, error);
+                        console.log('XHR status:', xhr.status);
+                        console.log('XHR response text:', xhr.responseText);
+                        $('#tbody').html('<tr><td colspan="4">Error loading data</td></tr>');
+                    }
+                });
+            }
+
+            loadTableData(1);
+
+            // Handle pagination click
+            $(document).on('click', '#pagination a', function (e) {
+                e.preventDefault();
+                var page = $(this).attr('href').split('=')[1];
+                console.log('Pagination clicked for page:', page);
+                loadTableData(page);
+            });
+        });
+    </script>
+</body>
+
+</html>

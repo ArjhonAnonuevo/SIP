@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <!-- Include Tailwind CSS -->
+    <link href="css/dist/output.css" rel="stylesheet">
+</head>
+<body class="xl:overflow-hidden" style="background-image: url(../images/sec_bg.png); background-size: cover;">
+    <div class="flex flex-col sm:flex-row items-center justify-between bg-transparent text-white px-10 py-6">
+        <div class="flex-1">
+            <a href="#" class="inline-flex items-center text-xl">
+                <img src="../images/sec.png" alt="" class="h-10 w-auto">
+                <span class="ml-2 font-semibold text-white hover:text-gray-200 sm:text-lg xl:text-2xl font-open-sans">SEC Internship program</span>
+            </a>
+        </div>
+    </div>
+    
+    
+    <div class="flex flex-col sm:flex-row items-center justify-center h-screen bg-cover bg-center relative">
+        <div class="bg-black bg-opacity-50 mx-auto flex flex-col sm:flex-row justify-center items-center w-auto xl:h-full h-screen xl:rounded-md">
+            <div class="bg-white p-8 rounded-lg shadow-xl w-full mx-auto xl:max-w-md max-sm mr-3 xl:ml-28">
+                <h2 class="text-2xl font-bold text-green-900 text-center mb-6 font-open-sans">Check Application Status</h2>
+                <form method="POST" action="php_scripts/check status.php">
+                    <div class="mb-4">
+                        <label for="control_num" class="block text-gray-700 text-sm font-medium mb-2">Control Number:</label>
+                        <input type="text" id="control_num" name="control_num" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter your control Number">
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-16 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out" type="submit">
+                            Check
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="text-center lg:px-12 lg:text-left text-white">
+                <h1 class="text-5xl mt-4 font-bold mb-4 font-open-sans">Apply now!</h1>
+                <p class="py-6 font-trirong">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+                <a href="application forms/forms.html" class="inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out mt-1 ">
+                    Apply Now
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

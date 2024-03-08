@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  },
+  "scripts": {
+    "dev": "npx tailwindcss -i ./css/dist/input.css -o ./css/dist/output.css --watch"
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.11",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "fullcalendar": "^6.1.11",
+    "html5-qrcode": "^2.3.8",
+    "moment": "^2.30.1",
+    "qrcode-generator": "^1.4.4",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "toastify-js": "^1.12.0"
+  }
+}

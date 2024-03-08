@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body><!-- Modal and overlay -->
+    <div id="myModal" class="fixed inset-0 overflow-y-auto hidden bg-black bg-opacity-50 z-50">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="relative bg-white p-8 mx-4 rounded-lg shadow-md max-w-md w-full">
+          <!-- Title for the modal -->
+          <h2 class="text-2xl font-bold text-gray-800 mb-4">Upload Image</h2>
+          
+          <!-- X icon button in the top right corner with ARIA label -->
+          <button onclick="closeModal()" class="absolute top-2 right-2 p-2 bg-gray-700 text-white rounded-full hover:bg-gray-800" aria-label="Close modal">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0  0  24  24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6  18L18  6M6  6l12  12"></path>
+            </svg>
+          </button>
+    
+          <form action="upload_image.php" method="post" enctype="multipart/form-data" id="imageForm">
+            <!-- File input for image, placed inside the container -->
+            <div class="mb-6">
+              <div id="imageContainer" class="w-full h-40 border-dashed border-2 border-gray-300 flex items-center justify-center bg-gray-100 cursor-pointer rounded-md p-4">
+                <label for="image" class="block text-sm font-medium text-gray-700 cursor-pointer">Choose Image</label>
+                <input type="file" name="image" id="image" accept="image/*" required class="hidden" onchange="displayChosenImage()">
+              </div>
+            </div>
+    
+            <!-- Submit button -->
+            <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-700">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Overlay to cover the entire page when the modal is open -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden"></div>
+    
+</body>
+</html>

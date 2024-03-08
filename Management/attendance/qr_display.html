@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interns QR</title>
+    <link href='../css/dist/tailwind.min.css' rel='stylesheet'>
+</head>
+<body>
+<div id="admin-nav"></div>
+<div class='container mx-auto p-4 mt-20 bg-white xl:ml-48'>
+<div class="mx-auto md:max-w-7xl md:max-h-min xl:bg-white md:bg-white shadow-md p-6 mt-3 rounded-md max-w-screen-sm">
+            <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+                <h2 class="text-2xl font-bold mb-6 font-sans md:mb-0 md:text-3xl font-kanit">Interns QR Log</h2>
+            </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                <div class="relative">
+                    <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md"
+                        id="searchInput" placeholder="Search...." oninput="filterTable()">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="flex gap-4 justify-end">
+                    <select id="filterBy1" name="filterBy"
+                        class="mt-1 block w-full md:w-sm border border-solid border-gray-300 rounded-md p-2 text-gray-700 font-semibold">
+                        <option value="name">Filter By</option>
+                        <option value="category">Category</option>
+                        <option value="date">Date</option>
+                    </select>
+                    <select id="filterBy2" name="filterBy"
+                        class="mt-1 block w-full md:w-sm border border-solid border-gray-300 rounded-md p-2 text-gray-700 font-semibold">
+                        <option value="" data-order="asc">Sort By</option>
+                        <option value="category" data-order="asc">Category</option>
+                        <option value="date" data-order="asc">Date</option>
+                    </select>
+                </div>
+            </div>
+    <div id='qrcodes-container' class='flex flex-wrap h-64 overflow-auto'></div>
+</div>
+
+<script src='../node_modules/qrcode-generator/qrcode.js'></script>
+<script src="../css/dist/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#admin-nav').load('../header/admin_navs.html');
+        $.ajax({
+            url: 'qr generate.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.error) {
+                    alert(response.error);
+                } else {
+                    updateQRCodes(response.qrcodes);
+                }
+            },
+            error: function () {
+                alert('Error fetching data from the server.');
+            }
+        });
+
+        function updateQRCodes(qrcodes) {
+            var qrcodesContainer = $('#qrcodes-container');
+            qrcodesContainer.empty();
+
+            qrcodes.forEach(function (item) {
+                var qr = qrcode(0, 'H');
+                qr.addData(item.qrData);
+                qr.make();
+
+                var qrCodeImage = $('<img>').attr('src', qr.createDataURL()).css({
+                    width: '100%',
+                    height: 'auto'
+                });
+
+                var usernameContainer = $('<div>').addClass('flex flex-col items-center mt-2');
+                var usernameElement = $('<div>').text(item.username).addClass('text-center');
+                var downloadLink = $('<a>').attr({
+                    href: qr.createDataURL(),
+                    download: 'qrcode_' + item.username + '.png'
+                }).text('Download QR Code').css('color', 'blue');
+
+                usernameContainer.append(usernameElement, downloadLink);
+                qrCodeImage.appendTo(usernameContainer);
+                $('<div>').addClass('qrcode-container w-full sm:w-1/2 sm:full md:w-1/3 lg:w-1/4 xl:w-1/6 p-4')
+                    .append(usernameContainer)
+                    .appendTo(qrcodesContainer);
+            });
+        }
+
+        $('#searchInput').on('input', function () {
+            var filter = $(this).val().toLowerCase();
+            var qrcodes = $('.qrcode-container');
+
+            qrcodes.each(function () {
+                var username = $(this).find('div:eq(1)').text().toLowerCase();
+
+                if (username.indexOf(filter) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Securities and Exchange Commission (SEC)</title>
+  <link href="../css/dist/output.css" rel="stylesheet">
+</head>
+<body>
+<nav class="flex items-center justify-between flex-wrap shadow-sm bg-green-800 p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <a href="/index.html">
+      <img src="../images/sec.png" alt="" class="h-16 w-auto">
+    </a>
+  </div>
+  <div class="blocK">
+   <span class="text-white font-semibold font-lora">APPLICATION PROCESS</span>
+  </div>
+</nav>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navToggle = document.querySelector('button');
+    const navContent = document.getElementById('nav-content');
+    navToggle.addEventListener('click', function () {
+      navContent.classList.toggle('hidden');
+    });
+  });
+</script>
+</body>
+</html>

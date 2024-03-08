@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href=" css/dist/output.css" rel="stylesheet">
+    <script src = "css/dist/jquery.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src = "node_modules/fullcalendar/index.global.min.js"></script>
+    <link rel="stylesheet" href="node_modules/toastify-js/src/toastify.css">
+    <script src = "node_modules/toastify-js/src/toastify.js"></script>
+    <title>Dashboard</title>
+  </head>
+  <body class="bg-gray-100 h-auto">
+    <div class="flex-grow text-gray-800">
+    <div id="dashboard-panel-container"></div>
+    <div id="image-container"></div>
+      <main class="p-10 sm:p-10 space-y-6">
+        <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+          <div class="mr-6">
+            <h1 class="text-4xl font-semibold mb-2 font-kanit">Admin Dashboard</h1>
+            <h2 class="text-gray-600 ml-0.5 font-rubik">SEC Internship Program</h2>
+          </div>
+          <div class="flex flex-wrap items-start justify-end -mb-3">
+          </div>
+        </div>
+        <div id="carousel-container"></div>
+        <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-6 sm:grid-cols-1 sm:overflow-x-auto sm:scrollbar-hide">
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
+              <a href="attendance/display attendance.html">
+                <img src="icons/attendance.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Attendance</span>
+            </div>
+          </div>
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
+              <a href="monthly reports/reports_table.html">
+                <img src="icons/monthly reports.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Monthly reports</span>
+            </div>
+          </div>
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <a href="certificate/certifications.php">
+                <img src="icons/certification.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Certifications</span>
+            </div>
+          </div>
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <a href="application/applicants_table.html">
+                <img src="icons/application.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Application</span>
+            </div>
+          </div>
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <a href="request/request history.php">
+                <img src="icons/request.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Request History </span>
+            </div>
+          </div>
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <a href="attendance/qr_display.html">
+                <img src="icons/qr.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">QR</span>
+            </div>
+          </div>
+           <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <a href="attendance/qr generate.php">
+                <img src="icons/qr.png" class="h-16 w-16 rounded-full" alt="Image 1">
+              </a>
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Interns Account</span>
+            </div>
+          </div>
+        </section>
+        <section class="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-flow-col-2 gap-6">
+          <div class="flex flex-col md:col-span-2 bg-white xl:shadow rounded-lg">
+            <section class="grid grid-cols-2 gap-4 items-center">
+              <div class="px-6 py-5 font-semibold border-b text-left border-gray-100 text-3xl font-kanit">Calendar</div>
+              <div class="flex justify-end mr-6 mt-4">
+                <button onclick="modalOpen('')" type="button" class="md:w-21 text-white uppercase bg-green-600 hover:bg-green-800 focus:ring-4 font-bold focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 [dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring]-blue-800 md:mb-12 relative">
+                  <span class="mr-2">Add Event</span>
+                </button>
+              </div>
+            </section>
+            <div class="p-4 flex-grow">
+              <div class="container xl:mx-auto">
+                <div class="flex justify-center">
+                  <div class="w-full">
+                    <div class="bg-white rounded-lgshadow-lg">
+                      <div class="p-4">
+                        <div id="calendar"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="calendar-container"></div>
+          </div>
+          <div class="flex flex-col md:col-span-2 md:h-auto w-auto lg:h-50 xl:bg-white xl:shadow-md rounded-lg justify-start">
+            <div class="px-6 py-5 font-semibold border-b border-gray-100 text-3xl justify-start font-kanit">Interns Data</div>
+            <div class="grid md:grid-cols-1 gap-y-5 item-center justify-center mx-auto">
+              <div class="xl:w-full xl:mx-auto  bg-white rounded-xl shadow-md overflow-hidden">
+                <img class="w-full h-32 object-cover" src="icons/applicant.png" alt="applcants_data">
+                <div class="p-4">
+                  <h2 class="text-lg font-semibold text-gray-800 font-rubik">Applicants Data</h2>
+                  <p class="text-gray-600 mt-2 prose sm:prose-p">Check the Total numbers of Applicant here by checking the visual charts representation</p>
+                  <div class="flex items-center mt-2">
+                    <button class="ml-auto px-3 py-1 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">Check</button>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <img class="w-full h-32 object-cover" src="icons/interns.jpg" alt="interns data">
+                <div class="p-4">
+                  <h2 class="text-lg font-semibold text-gray-800 font-rubik">Interns Data</h2>
+                  <p class="text-gray-600 mt-2 prose sm:prose-p">Check the Total numbers of Active Interns here by checking the visual charts representation</p>
+                  <div class="flex items-center mt-2">
+                  <a href="charts/interns_data.html" class="ml-auto px-3 py-1 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">Check</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div id="eventModal" class="hidden fixed inset-0 overflow-y-auto bg-black bg-opacity-50 z-50 flex items-center justify-center transition duration-300 ease-in-out transform scale-100 origin-center">
+  <div class="modal-content bg-white p-6 rounded shadow-lg w-full max-w-md transition-transform duration-300 ease-in-out transform scale-100 relative">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 hover:text-blue-600 text-center">Events</h2>
+      <button id="closeModalBtn" class="absolute top-0 right-0 p-2 text-blue-500 hover:text-blue-600 cursor-pointer" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <hr class="border-t border-gray-200 my-4">
+    <dl class="space-y-4">
+      <dt class="text-md font-semibold text-gray-900">Event Title:</dt>
+      <dd id="eventTitle" class="text-base text-gray-700 hover:text-blue-500 py-1">Your Event Title Here</dd>
+      <dt class="text-md font-semibold text-gray-900">Event Start:</dt>
+      <dd id="eventStart" class="text-base font-semibold text-blue-500 hover:text-blue-600 py-1">Date and Time Here</dd>
+    </dl>
+  </div>
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden"></div>
+</div>
+    </div>
+    </section>
+    </main>
+    </div>
+    <script>
+      $(document).ready(function() {
+        $("#dashboard-panel-container").load("/header/dashboar_panel.html");
+    });
+    $(document).ready(function() {
+        $("#image-container").load("add_image.html");
+    });
+    $(document).ready(function() {
+        $("#carousel-container").load("/carousel/carousel.html");
+    });
+      $(document).ready(function() {
+        $("#calendar-container").load("/calendar/calendar.html");
+    });
+    
+      function modalOpen() {
+    document.getElementById('AddEvent').style.display = 'flex';
+  }
+
+  function modalClose() {
+    document.getElementById('AddEvent').style.display = 'none';
+  }
+
+      function displayModal() {
+      $('#myModal').fadeIn(); 
+      $('#overlay').fadeIn();
+    document.getElementById('myModal').classList.remove('hidden');
+    document.getElementById('overlay').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100%';
+  }
+
+  function closeModal() {
+    $('#myModal').fadeOut(); 
+    $('#overlay').fadeOut();
+    document.getElementById('myModal').classList.add('hidden');
+    document.getElementById('overlay').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    // Reset the form when closing the modal
+    document.getElementById('imageForm').reset();
+    document.getElementById('imageContainer').style.backgroundImage = 'none'; // Clear background image
+    
+  }
+
+  function displayChosenImage() {
+    // Display the chosen image in the input container
+    const input = document.getElementById('image');
+    const container = document.getElementById('imageContainer');
+
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        container.style.backgroundImage = `url(${e.target.result})`;
+        container.style.backgroundSize = 'cover';
+        container.style.backgroundPosition = 'center';
+        container.style.backgroundRepeat = 'no-repeat';
+        container.innerHTML = ''; // Clear the inner content
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          events: '/calendar/fetch_events.php',
+          eventTimeFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            meridiem: 'short'
+          },
+          eventClick: function(info) {
+            openModal(info.event.title, info.event.start);
+          }
+        });
+        calendar.render();
+        function openModal(title, start) {
+          var modal = document.getElementById('eventModal');
+          modal.classList.remove('hidden');
+          document.getElementById('eventTitle').textContent = title;
+          document.getElementById('eventStart').textContent = `Start: ${moment(start).format('YYYY-MM-DD HH:mm')}`;
+          document.getElementById('closeModalBtn').addEventListener('click', function() {
+            modal.classList.add('hidden');
+          });
+        }
+    $(document).ready(function () {
+        // Function to display Toast notification
+        function showToast(message, success) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: success ? '#4CAF50' : '#ff6347',
+            }).showToast();
+        }
+
+        $("eventForm").submit(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: "/calendar/admin_addevents.php", 
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function (response) {
+                    if (response.success) {
+                        showToast('Event added successfully!', true);
+                    } else {
+                        showToast('Error: ' + response.error, false);
+                    }
+                },
+                error: function () {
+                    showToast('An error occurred while processing the request.', false);
+                }
+            });
+        });
+    });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dist/output.css">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+       $(function() {
+         $("#include-header").load("../header/navs.html");
+      });
+    </script>
+  </head>
+  <body class="bg-gray-200 overflow-auto">
+    <div id = "include-header"></div>
+    <div class="p-6 rounded-xl shadow min-h-screen overflow-y-auto flex items-center justify-center" id="page1">
+
+      <div class="flex flex-col h-screen">
+        <div class="flex justify-start mb-6 ml-6 mt-6">
+          <button class="px-3 bg-green-600 uppercase text-white font-bold py-2 rounded-2xl transition duration-200 ease-in-out prev-page" data-prev="page1" onclick="goToPreviousPage()" type="button">Previous</button>
+        </div>
+        <div class="flex flex-row space-x-11 items-start justify-between">
+          <div class="bg-white border-8 border-gray-400 w-full max-w-3xl p-6 rounded-xl shadow-md scrollbar-hide text-center prose">
+            <p class="text-2xl font-bold text-center text-gray-900 font-open-sans mb-4">Dear Applicants ,</p>
+            <p class="text-gray-700 mb-4 font-light">Greetings from the Securities and Exchange Commission!</p>
+            <p class="text-gray-700 mb-4 font-light">We are pleased to know that you are considering applying to the SEC Internship Program. The SEC Internship Program is a unique learning opportunity that brings together highly qualified and motivated students with diverse backgrounds into the Securities and Exchange Commission to gain direct practical experience designed to transform them into prospective professionals capable of applying theoretical knowledge in the workplace. At the same time, the internship program ensures, where possible, optimal use of the student-intern's aptitude with a view to contributing to the improved management of the workload of the SEC.</p>
+            <p class="text-gray-700 mb-4 font-light">The SEC evaluates applications based on: eligibility requirements, relevance of academic study, and the level of interest and motivation to contribute to the work of the agency. The SEC also considers institutional representation and gender in the overall intern selection process.</p>
+            <p class="text-gray-700 mb-4 font-light">Only shortlisted candidates will be contacted.</p>
+            <p class="text-gray-700 mb-4 font-light">Thank you and good luck!</p>
+          </div>
+          <div class="bg-gradient-to-r from-green-600 via-success to-emerald-600 w-auto rounded-xl h-4/6 ml-4">
+            <div class="block text-sm mt-4">
+              <div class="flex justify-center text-center space-x-2">
+                <img src="../images/info.svg" class="w-auto h-4 mt-2" alt="">
+                <span class="text-white font-lora uppercase block font-semibold mb-10">Reminders</span>
+              </div>
+              <div class="ml-2 mb-4">
+                <span class="text-white font-lora block prose">1. Prepare all the attachment</span>
+                <span class="text-white font-lora block prose">files needed before clicking the next button</span>
+              </div>
+              <div class="ml-2 mb-4">
+                <span class="text-white font-lora prose block">2. Input the necessary information </span>
+                <spa class="text-white font-lora prose">required in all the fields.</span>
+              </div>
+           
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end mb-28 right-3/4">
+          <button class="px-3 bg-green-600 uppercase  text-white font-bold py-2 rounded-2xl transition duration-200 ease-in-out next-page" data-next="page2" onclick="goToSecondPage()" type="button">Next</button>
+        </div>
+      </div>
+      
+  </div>
+  
+
+
+
+    <!-- <div id="myModal" class="fixed top-0 mx-auto left-0 w-full h-full bg-black bg-opacity-50 hidden" style="display: none;">
+      <div class="flex justify-center items-center w-full h-full">
+          <div class="bg-gradient-to-t from-green-600 via-success to-emerald-600 p-4 rounded-xl shadow mx-auto h-4/6 mb-44 w-auto" style="max-width: 900px;">
+              <div class="flex flex-row justify-between mb-3">
+                <img src="../images/sec.png" alt="" class="h-16 w-auto ml-5">
+                
+                  <img src="../images/bell.svg" alt="Logo" class=" bg-formcolors bg-opacity-60 rounded-3xl w-auto h-14 absolute top-4 right-1/4  xl:mr-20">
+              </div>
+              <div class="rounded-xl bg-transparent shadow-md h-80 max-w-xl flex flex-col justify-between prose">
+                  <div>
+                      <div class="text-center text-white">
+                          <h2 class="text-2xl font-bold mb-4 text-center font-lora text-white">Terms and Privacy</h2>
+                          <p class="mb-7 text-md leading-6 font-trirong">The Securities and Exchange Commission (SEC)...</p>
+                          <p class="mb-4 text-md leading-6 font-trirong">By filling out this form and providing us with your personal and other essential details, you are freely giving your informed consent to our capture, recording, processing, and use of personal information that we will gather from you. Rest assured that we will safeguard your sensitive personal information, uphold your privacy, and ensure at all times the confidentiality of such that comes to its knowledge and possession in accordance with the Data Privacy Act of 2012.</p>
+                      </div>
+                  </div>                  
+              </div>
+              <div class="flex justify-center mt-3">
+                <button id="accept" class="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-8 rounded-2xl">I Understand</button>
+            </div>
+          </div>
+      </div>
+  </div> -->
+  
+  
+  
+  
+
+
+    <div class="form-page hidden p-8" id="page2">
+      <div class="flex justify-center card flex-row flex-wrap gap-4 p-8 sm:p-12 md:p-10 lg:p-10 xl:p-10 2xl:p-20 bg-white rounded-xl text-gray-900 shadow-lg  w-4/6 mx-auto md:max-h-5xl mt-8">
+        <form id = "form-submission" action="../php_scripts/submit.php" method="POST" enctype="multipart/form-data">
+          <div class="bg-green-600 text-white inline-flex items-center rounded-xl mb-3">
+            <h1 class="flex uppercase text-2xl font-bold">Personal Details</h1>
+          </div>
+          
+          
+          <div class="container mx-auto scrollbar-hide">
+            <div class="flex flex-wrap gap-4">
+               <div class="flex-auto">
+                 <label for="given_name" class="block text-sm font-medium text-gray-700 mb-1">Given Name</label>
+                 <input type="text" name="given_name" id="given_name" placeholder="Your answer" required class="bg-gray-200 mt-1 p-2 w-10 rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+               </div>
+               <div class="flex-auto">
+                 <label for="middle_name" class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                 <input type="text" name="middle_name" id="middle_name" placeholder="Your answer" class="bg-gray-200 mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+               </div>
+               <div class="flex-auto">
+                 <label for="family_name" class="block text-sm font-medium text-gray-700 mb-1">Family Name</label>
+                 <input type="text" name="family_name" id="family_name" placeholder="Your answer" class="bg-gray-200 mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+               </div>
+               <div class="flex-auto">
+                 <label for="suffix" class="block text-sm font-medium text-gray-700 mb-1">Suffix</label>
+                 <input type="text" name="suffix" id="suffix" placeholder="Your answer" class="bg-gray-200 mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+               </div>
+               <div class="flex-auto">
+                <label for="place_birth" class="block text-sm font-medium text-gray-700 mb-1">Place of Birth</label>
+                <input type="text" name="place_birth" id="place_birth" placeholder="Your answer" required class="bg-gray-200 mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+              </div>
+              <div class="flex-auto">
+                <label for="birthday" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                <div class="flex items-center">
+                   <input type="date" name="birthday" id="birthday" required class="bg-gray-200 mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+                   <div class="ml-2">
+                     <p class="font-lora text-gray-900 italic">22 years old</p>
+                   </div>
+                </div>
+               </div>               
+            </div>
+            <div class="col-span-1">
+                 <div class="flex-auto">
+                   <label class="inline-flex items-center mt-3">
+                    <label for="gender" class="mr-3 mt-2 text-md font-medium text-gray-700">Sex</label>
+                     <input type="radio" class="form-radio text-gray-600" name="gender" value="male" required>
+                     <span class="ml-2">Male</span>
+                   </label>
+                   <label class="inline-flex items-center mt-3 ml-4">
+                     <input type="radio" class="form-radio text-gray-600" name="gender" value="female">
+                     <span class="ml-2">Female</span>
+                   </label>
+                   <label class="inline-flex items-center mt-3 ml-4">
+                     <input type="radio" class="form-radio text-gray-600" name="gender" value="other">
+                     <span class="ml-2">Other</span>
+                   </label>
+              </div>
+             </div>
+           </div>
+           <h1 class="flex uppercase text-2xl font-bold text-white items-center px-6 rounded-xl mb-3 mt-6">
+            <span class="bg-green-600 w-36">Contact information</span>
+           </h1>
+            <div class="flex flex-col space-y-4">
+              <div class="flex items-center space-x-5">
+                <label class=" mr-3 text-lg font-bold">Present Adress</label>
+                <input id="input1" name="input1" type="text" class="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <label for="input1" class="ml-5 text-sm font-light font-trirong text-gray-700 prose">Number, Unit, Street,<br>Building</label>
+              </div>
+              
+              <div class="flex items-center space-x-5 ml-80">
+                <input id="input2" name="input2" type="text" class="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <label for="input2" class="ml-5 text-sm font-light font-trirong text-gray-700 prose text-center">Barangay, Barrio, Village,<br>Subdivision, District</label>
+              </div>
+              <div class="flex items-center space-x-5">
+                <input id="input3" name="input3" type="text" class="mt-1 block w-64 rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <label for="input3" class="ml-5 text-sm font-light font-trirong text-gray-700 prose text-center">Municipality </label>
+              </div>
+            </div>
+           
+                      
+          
+            <!-- <div class="col-span-2">
+              <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Complete Home Address</label>
+              <input type="text" name="address" id="address" placeholder="Your answer" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+            <div class="col-span-2">
+              <label for="place_birth" class="block text-sm font-medium text-gray-700 mb-1">Place of Birth</label>
+              <input type="text" name="place_birth" id="place_birth" placeholder="Your answer" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+            <div class="col-span-2">
+              <label for="birthday" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+              <input type="date" name="birthday" id="birthday" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+          
+            <div class="col-span-1">
+              <label for="age" class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+              <input type="text" name="age" id="age" placeholder="Your answer" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+            <div class="col-span-1">
+              <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">Sex</label>
+              <select name="gender" id="gender" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-span-2">
+              <label for="contact" class="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+              <input type="text" name="contact" id="contact" placeholder="Your answer" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+            <div class="col-span-2">
+              <label for="landline" class="block text-sm font-medium text-gray-700 mb-1">Contact Number (Landline)</label>
+              <input type="text" name="landline" id="landline" placeholder="Your answer" class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+            <div class="col-span-2">
+              <label for="primary_email" class="block text-sm font-medium text-gray-800 mb-1">Primary Email Address</label>
+              <input type="email" name="primary_email" id="primary_email" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+            <div class="col-span-2">
+              <label for="secondary_email" class="block text-sm font-medium text-gray-700 mb-1">Secondary Email Address</label>
+              <input type="email" name="secondary_email" id="secondary_email" required class="mt-1 p-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring focus:border-blue-300">
+            </div>
+          </div>
+          
+
+          <div class="flex justify-center items-center mt-7 w-full">
+            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l shadow-md transition duration-200 ease-in-out" data-prev="page1" onclick="goToFirstPage()" type="button">
+              <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
+            </button>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r shadow-md transition duration-200 ease-in-out" data-next="page3" onclick="goToThirdpage()" type="button">
+              Next <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </button>
+          </div>
+      </div>
+    </div> -->
+
+
+
+    <div class="hidden form-page p-8" id="page3">
+      <div class="flex justify-center">
+        <div class="card bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
+          <h1 class="text-3xl font-bold mb-6 text-center">Required Forms</h1>
+          <p class="text-gray-600 font-semibold text-sm leading-snug tracking-wide mb-3">
+            Note: Please submit the required documents in <span class="text-red-600">PDF</span> format only.
+          </p>
+          <div class = "overflow-y-auto max-h-60">
+          <label for="school_id" class="text-gray-700 text-sm">Upload your School ID</label>
+          <label for="school_id" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">Upload School ID</h4>
+              <span id="idfileName" class="text-sm text-gray-500"></span>
+            </div>
+            <input type="file" id="school_id" name="school_id" accept=".pdf" hidden required onchange="showFileName(this.files, 'idfileName')">
+          </label>
+          <label for="regi" class="text-gray-700 text-sm">Upload your Certificate of Registration</label>
+          <label for="regi" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">Registration form</h4>
+              <span id="registrationfileName" class="text-sm text-gray-500"></span>
+            </div>
+            <input accept=".pdf" type="file" name="regi" id="regi" hidden required onchange="showFileName(this.files, 'registrationfileName')"><br>
+          </label>
+
+          <label for="schedule" class="text-gray-700 text-sm">Upload your Schedule</label>
+          <label for="schedule" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">School Schedule</h4>
+              <span id="schoolfileName" class="text-sm text-gray-500"></span>
+            </div>
+            <input accept=".pdf" type="file" name="schedule" id="schedule" hidden required onchange="showFileName(this.files, 'schoolfileName')"><br>
+          </label>
+
+          <label for="form1" class="text-gray-700 text-sm">SIP Form 101 – Internship Application Form</label>
+          <label for="form1" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">Form 1</h4>
+              <span id="filename1" class="text-sm text-gray-500"></span>
+            </div>
+            <input accept=".pdf" type="file" name="form1" id="form1" style="display: none;" required onchange="showFileName(this.files, 'filename1')">
+          </label>
+
+          <label for="form2" class="text-gray-700 text-sm">SIP Form 102 – Essay Questionnaire</label><label for="form1" class="text-gray-700 text-sm">SIP Form 101 – Internship Application Form</label>
+          <label for="form2" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">Form 2</h4>
+              <span id="filename2" class="text-sm text-gray-500"></span>
+            </div>
+            <input accept=".pdf" type="file" name="form2" id="form2" required hidden required onchange="showFileName(this.files, 'filename2')"><br>
+          </label>
+          <label for="form3" class="text-gray-700 text-sm">SIP Form 103 – Essay Questionnaire</label>
+          <label for="form3" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">Form 3</h4>
+              <span id="filename3" class="text-sm text-gray-500"></span>
+            </div>
+            <input accept=".pdf" type="file" name="form3" id="form3" hidden required onchange="showFileName(this.files, 'filename3')"><br>
+          </label>
+          <label for="form4" class="text-gray-700 text-sm">SIP Form 104 – Personal Data Sheet (CSC Form No. 212, Rev 2017)</label>
+          <label for="form4" class="flex items-center p-4 gap-3 rounded-3xl border border-gray-300 border-dashed bg-gray-50 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0  0  24  24" stroke="currentColor" class="h-16 w-auto text-gray-500">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12  6v6m0  0v6m0-6h6m-6  0H6" />
+            </svg>
+            <div class="space-y-2">
+              <h4 class="text-base font-semibold text-gray-700">Form 4</h4>
+              <span id="filename4" class="text-sm text-gray-500"></span>
+            </div>
+            <input accept=".pdf" type="file" name="form4" id="form4" hidden require onchange="showFileName(this.files, 'filename4')">
+            <label><br>
+         </div>
+              <div class="flex justify-center items-center mt-6 space-x-4">
+                <button class="prev-page bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 active:bg-gray-700 transition duration-150 ease-in-out" data-prev="page2" onclick="goToPrevPage()" type="button">
+                  <i class="fa fa-angle-double-left" aria-hidden="true"></i> Previous
+                </button>
+                <button onclick="submitForm()"  class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r shadow-md transition duration-200 ease-in-out" type="submit" value="<?php echo $_SESSION['form_token']; ?>">
+                  Submit
+                </button>
+              </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    </div>
+    <div id="customModal" class="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75" style="display: none;">
+    <div class="bg-white p-6 rounded shadow-md">
+        <div id="modalContent"></div>
+        <button id = "closeModal"onclick="closeModal()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Close</button>
+    </div>
+</div>
+
+    <script>
+       $(document).ready(function () {
+            $("#navs").load(".");
+        });
+
+      var modal = document.getElementById("myModal");
+      var acceptBtn = document.getElementById("accept");
+      // Check if modal and acceptBtn exist
+      if (modal && acceptBtn) {
+        // Show the modal on load
+        window.onload = function() {
+          modal.style.display = "block";
+        };
+        // Hide the modal when the accept button is clicked
+        acceptBtn.onclick = function(event) {
+          event.preventDefault(); // Prevent any default action
+          modal.style.display = "none";
+        };
+        // Hide the modal when clicking outside of it
+        modal.addEventListener('click', function(event) {
+          if (event.target === this) {
+            modal.style.display = "none";
+          }
+        }, false);
+      };
+      // Function to handle showing the next page
+      function goToSecondPage() {
+        document.getElementById('page1').classList.add('hidden');
+        document.getElementById('page2').classList.remove('hidden');
+      }
+      function goToFirstPage() {
+        // Correctly capitalized 'classList'
+        document.getElementById('page2').classList.add('hidden');
+        document.getElementById('page1').classList.remove('hidden');
+      }
+      function goToThirdpage() {
+        document.getElementById('page2').classList.add('hidden');
+        document.getElementById('page3').classList.remove('hidden');
+      }
+      function goToPrevPage() {
+        document.getElementById('page3').classList.add('hidden');
+        document.getElementById('page2').classList.remove('hidden');
+      }
+      function goToPreviousPage(){
+        window.location.href = "../index.html";
+      }
+      function showFileName(files, spanId) {
+      var fileNameSpan = document.getElementById(spanId);
+      if (files && files.length >  0) {
+        fileNameSpan.textContent = files[0].name;
+      } else {
+        fileNameSpan.textContent = '';
+      }
+    }
+ function submitForm() {
+        $.ajax({
+            url: '../php_scripts/submit.php', 
+            type: 'POST',
+            data: new FormData($('#form-submission')[0]),
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                // Handle the JSON response
+                handleResponse(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('An error occurred while submitting the form.');
+            }
+        });
+    }
+    function handleResponse(response) {
+        // Parse the JSON response
+        try {
+            var data = JSON.parse(response);
+            if (data.status === 'success') {
+                displaySuccessModal(data.message);
+               closeModal(true); 
+
+            } else {
+                displayErrorModal(data.message);
+            }
+        } catch (e) {
+            console.error('Error parsing JSON response:', e);
+            alert('An unexpected error occurred.');
+        }
+    }
+    // Function to display a success modal
+    function displaySuccessModal(message) {
+    var modalContent = $('#modalContent');
+    modalContent.html('<p class="text-green-600">' + message + '</p>');
+    $('#customModal').show();
+}
+
+function displayErrorModal(message) {
+    var modalContent = $('#modalContent');
+    modalContent.html('<p class="text-red-600">Error: ' + message + '</p>');
+    $('#customModal').show();
+}
+    // Function to close the modal
+      function closeModal(shouldRedirect) {
+        $('#customModal').hide();
+
+        if (shouldRedirect) {
+          window.location.href = "confirmation.html";
+        }
+      }
+    </script>
+  </body>
+</html>

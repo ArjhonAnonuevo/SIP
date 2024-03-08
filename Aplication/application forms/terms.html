@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dist/output.css">
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <title>Terms and Privacy</title>
+    <script>
+        $(function() {
+            $("#include-header").load("../header/navs.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="include-header"></div>
+    <h1 class="text-center text-gray-900 mx-auto text-xl font-lora">Terms And Privacy</h1>
+    <button class="rounded-2xl bg-green-800 text-white mx-auto">Prev</button>
+    <div class="border-8 border-solid rounded-xl border-gray-400 mx-auto flex flex-col items-center w-3/5 mt-16 bg-white shadow-md">        
+        <div class="mx-auto p-9">
+            <!-- Image on the left -->
+            <img src="../images/sec.png" alt="" class="h-16 w-auto xl:ml-[-7rem]">
+
+            <div class="bg-formcolors max-w-md md:max-w-2xl rounded-xl p-4">
+                <span class="block text-center font-lora font-semibold">Terms And Privacy</span>
+                <span class="mb-4 block text-center font-trirong">The Securities and Exchange Commission (SEC)...</span>
+                <span class="text-justify font-trirong">By filling out this form and providing us with your personal and other essential details, you are freely giving your informed consent to our capture, recording, processing, and use of personal information that we will gather from you. Rest assured that we will safeguard your sensitive personal information, uphold your privacy, and ensure at all times the confidentiality of such that comes to its knowledge and possession in accordance with the Data Privacy Act of 2012.</span>
+            </div>
+        </div>
+        <div class="flex justify-center mt-4">
+            <button class="bg-green-700 text-white px-7 py-2 rounded-2xl">I Understand</button>
+        </div>
+    </div>
+</body>
+
+</html>
