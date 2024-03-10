@@ -38,7 +38,6 @@ if (isset($_SESSION['username'])) {
             
             $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
             
-            // Check the connection
             if ($mysqli->connect_error) {
                 die("Connection failed: " . $mysqli->connect_error);
             }
