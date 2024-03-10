@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Daily Activities</title>
+    <link href="../css/dist/output.css" rel="stylesheet">
+    <script src="../css/dist/jquery.min.js"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div id="headerContainer"></div>
+    <div class="md:ml-48 xl:ml-48 lg:ml-48">
+        <div class="mx-auto md:max-w-7xl p-6 mt-8 rounded-md xl:bg-white xl:shadow-md">
+            <div class="flex flex-col items-center mb-5">
+                <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Monthly Daily Activities</h2>
+                <div class="relative w-64">
+                    <select class="block appearance-none w-full bg-gray-100 border border-gray-300 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <!-- Add your months as options -->
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <!-- Add more months as needed -->
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                        <svg class="h-4 w-4 fill-current text-gray-500" viewBox="0 0 20 20">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                            <path fill-rule="evenodd"
+                                d="M10 0a1 1 0 00-.707.293l-7 7a1 1 0 101.414 1.414L10 2.414l6.293 6.293a1 1 0 101.414-1.414l-7-7A1 1 0 0010 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div id="resultsContainer" class="mx-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-green-700 text-white">
+                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">Date</th>
+                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Task</th>
+                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Time</th>
+                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="text-gray-700 font-light">
+                        <!-- Table rows will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#headerContainer').load('../header/admin_navs.html');
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('username');
+
+
+            // Fetch data using AJAX
+            $.ajax({
+                url: 'fetch-act.php',
+                type: 'GET',
+                dataType: 'json',
+                data: { username}, 
+                success: function (data) {
+                    console.log('Data received from server:', data);
+                    displayResults(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                    console.log('Status:', status);
+                    console.log('XHR:', xhr);
+                }
+            });
+            function displayResults(data) {
+            var tableBody = $('#tableBody');
+            tableBody.empty();
+
+    if (data.length > 0) {
+        for (var i = 0; i < data.length; i++) {
+            var row = $('<tr></tr>');
+            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].date + '</td>');
+            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].type + '</td>');
+            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].time + '</td>');
+            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].status + '</td>');
+
+            if (i % 2 === 0) {
+                row.addClass('bg-gray-100'); // Change to your preferred background color
+            }
+
+            tableBody.append(row);
+        }
+    } else {
+        console.log('No results found.');
+        var noResultsRow = $('<tr><td class="text-center" colspan="4">No results found.</td></tr>');
+        tableBody.append(noResultsRow);
+    }
+}
+        });
+    </script>
+    
+</body>
+
+</html>

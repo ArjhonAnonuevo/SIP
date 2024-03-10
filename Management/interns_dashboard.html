@@ -11,6 +11,7 @@
     <script src="script.js"></script>
     <script src="css/dist/jquery.min.js"></script>
     <link rel="icon" href="securities and exchange.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/dist/output.css">
     <title>Dashboard</title>
   </head>
   <body>
@@ -58,18 +59,17 @@
               </div>
             </div>
           </section>
-          <section class="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-3 xl:grid-flow-col gap-6">
+          <section class="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-flow-col-2 gap-6">
             <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg w-full">
               <div class="px-6 py-5 font-semibold border-b border-gray-100 text-3xl font-rubik">Calendar</div>
               <div class="p-4 flex-grow">
-                <div class="container mx-auto">
-                 <div class="p-4 flex-grow">
-              <div class="container xl:mx-auto">
-                <div class="flex justify-center">
-                  <div class="w-full">
-                    <div class="bg-white rounded-lgshadow-lg">
-                      <div class="p-4">
-                        <div id="calendar"></div>
+                <div class="container xl:mx-auto">
+                  <div class="flex justify-center">
+                    <div class="w-full">
+                      <div class="bg-white rounded-lgshadow-lg">
+                        <div class="p-4">
+                          <div id="calendar"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -91,29 +91,13 @@
                 </div>
                 <hr class="border-t border-gray-200 my-4">
                 <dl class="space-y-4">
-                  <dt class="text-md font-semibold text-gray-900">Event Title:</dt>
+                  <dt class="text-md font-semibold text-gray-900 h-m">Event Title:</dt>
                   <dd id="eventTitle" class="text-base text-gray-700 hover:text-blue-500 py-1">Your Event Title Here</dd>
                   <dt class="text-md font-semibold text-gray-900">Event Start:</dt>
                   <dd id="eventStart" class="text-base font-semibold text-blue-500 hover:text-blue-600 py-1">Date and Time Here</dd>
                 </dl>
               </div>
             </div>
-              <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg w-full">
-                <div class="px-6 py-5 font-semibold border-b border-gray-100 text-3xl font-kanit">Upcoming Schedules</div>
-                <div class="p-4 flex-grow">
-                  <div class="container mx-auto">
-                    <div class="p-4 flex-grow">
-                      <div class="container xl:mx-auto">
-                        <div class="flex justify-center">
-                          <div class="w-full">
-                            <div class="bg-white rounded-lgshadow-lg">
-                              <div class="p-4">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
           </section>
         </main>
       </div>

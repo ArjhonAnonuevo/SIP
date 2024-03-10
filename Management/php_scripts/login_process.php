@@ -15,7 +15,6 @@ $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $input_username = $_POST["username"]; 
     $stmt = $conn->prepare("SELECT username, password FROM interns_account WHERE username = ?");
@@ -55,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
             if ($_POST["password"] == $password) { 
                 $_SESSION["username"] = $admin_username; 
-                header("Location:/admin_dashboard.html"); 
+                header("Location:../admin_dashboard.html"); 
                 exit();
             } else {
                 echo '<script>alert("Incorrect password for username: ' . $admin_username . '"); window.location.href = "/internslogin.php";</script>';
