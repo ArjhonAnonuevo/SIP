@@ -14,6 +14,6 @@
     "moment": "^2.30.1",
     "qrcode-generator": "^1.4.4",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "toastify-js": "^1.12.0"
+    "toastr": "^2.1.4"
   }
 }

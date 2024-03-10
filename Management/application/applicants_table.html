@@ -9,8 +9,8 @@
     <link href="../css/dist/output.css" rel="stylesheet">
     <script src = "../css/dist/jquery.min.js"></script>
     <!-- Include Toastr CSS and JS files -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
+    <script src="../node_modules/toastr/build/toastr.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -149,6 +149,10 @@
             processData: false,
             contentType: false,
             success: function(response) {
+                toastr.options = {
+            positionClass: 'toast-bottom-right', 
+            closeButton: true,
+        };
                 if (response.success) {
                     toastr.success(response.message);
                     currentForm.closest('tr').remove();
@@ -157,6 +161,10 @@
                 }
             },
             error: function() {
+                toastr.options = {
+                positionClass: 'toast-bottom-right', 
+                closeButton: true,
+            };
                 toastr.error('An error occurred during the request.');
             }
         });
