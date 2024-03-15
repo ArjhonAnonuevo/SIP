@@ -10,7 +10,7 @@ module.exports = {
     './header/**/*.{html,js}',
     './monthly reports/**/*.{html,js}',
     './php scripts/**/*.{html,js}',
-     './fetch-api/**/*.js',
+     './fetch-api/**/*.{html,js}',
 
 
     './index.html',

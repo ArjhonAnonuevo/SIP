@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/dist/tailwind.min.css" rel="stylesheet">
+    <script src="../css/dist/jquery.min.js"></script>
     <title>Document</title>
 </head>
 <body>
-    <header class="flex items-center h-20 px-6 sm:px-10 bg-green-800">
+    <header class="pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
         <a href="/admin_dashboard.php" class="p-2 mr-auto inline-flex items-center">
           <img src="../icons/sec.png" alt="New Logo" class="xl:h-3vh xl:w-20 xl:mr-2 mx-auto">
         </a>
@@ -28,7 +29,7 @@
               </span>
           </button>
           <div class="border-l pl-3 ml-3 space-x-1">
-            <button class="relative p-2 text-white  hover:bg-gray-700 hover:text-gray-700 focus:bg-gray-800 focus:text-gray-600 rounded-full">
+            <button id = "showNotification" class="relative p-2 text-white  hover:bg-gray-700 hover:text-gray-700 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Notifications</span>
               <img src="icons/notifications.svg" alt="Description of image" class="w-6 h-6">
             </button>
@@ -40,25 +41,51 @@
               <span class="sr-only">Add Image</span>
               <img src="icons/image.svg" alt="Description of image" class="w-6 h-6">
             </button>
-            <button onclick="window.location.href='../header/logout.php'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
+            <button onclick="window.location.href='/logout.php'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Log out</span>
               <img src="icons/logout.svg" alt="Description of image" class="w-6 h-6">
             </button>
           </div>
         </div>
       </header>
-      <script>
-             $.ajax({
-            url: 'header/header.php',
-            type: 'GET',
-            success: function(data) {
-                // Update the content of the header-container with the retrieved data
-                $("#header").html(data);
-            },
-            error: function() {
-                console.log('Error loading header.php');
-            }
-        });
-      </script>
+      <div id="notificationPanel" class="fixed top-24 right-5 bg-blue-500 shadow-lg rounded-lg p-4 flex items-center hidden">
+        <div class="flex-grow">
+            <p class="text-xl text-white font-semibold">Notifications</p>
+            <p class="text-md text-white">This is a notification message.</p>       
+        </div>
+        <button class="ml-4 bg-gray-500 text-white rounded-md px-2 py-1 text-xs font-medium">Clear History</button>
+    </div>
+    <script>
+      $(document).ready(function() {
+          $.ajax({
+              url: 'header/header.php',
+              type: 'GET',
+              success: function(data) {
+                  $("#header").html(data);
+              },
+              error: function() {
+                  console.log('Error loading header.php');
+              }
+          });
+  
+          // Attach a click event handler to the showNotification button
+          $("#showNotification").click(function() {
+              // Animate the notification panel to fade in
+              $("#notificationPanel").removeClass('hidden').animate({
+                  opacity: 1
+              }, 500);
+          });
+  
+          $("#notificationPanel button").click(function() {
+              // Animate the notification panel to fade out
+              $("#notificationPanel").animate({
+                  opacity: 0
+              }, 500, function() {
+                  // After the animation completes, hide the notification panel
+                  $("#notificationPanel").addClass('hidden');
+              });
+          });
+      });
+  </script>  
 </body>
 </html>

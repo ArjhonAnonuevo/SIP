@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/dist/output.css">
     <script src="../css/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <title>Document</title>
 </head>
 <body>
@@ -21,12 +22,12 @@
         </div>
         <div id="file-container" class="sm:bg-white sm:shadow-md w-full overflow-x-auto scrollbar-hide">
         </div>
+        <div id = "modal-container"></div>
     </div>
 <script>
  $(document).ready(function() {
         $("#admin-navs").load("../header/admin_navs.html");
     });
-    
 </script>
 <script src = "../fetch-api/fetch-applicant.js"></script>
 <script src = "../fetch-api/download.js"></script>

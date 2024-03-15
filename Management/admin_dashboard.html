@@ -8,8 +8,8 @@
     <script src = "css/dist/jquery.min.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src = "node_modules/fullcalendar/index.global.min.js"></script>
-    <link rel="stylesheet" href="node_modules/toastify-js/src/toastify.css">
-    <script src = "node_modules/toastify-js/src/toastify.js"></script>
+    <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
+    <script src="node_modules/toastr/build/toastr.min.js"></script>
     <title>Dashboard</title>
   </head>
   <body class="bg-gray-100 h-auto">
@@ -69,7 +69,7 @@
           </div>
           <div class="flex items-center p-8 bg-white shadow rounded-lg">
             <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
-              <a href="request/request history.php">
+              <a href="request/request-history.html">
                 <img src="icons/request.png" class="h-16 w-16 rounded-full" alt="Image 1">
               </a>
             </div>
@@ -218,29 +218,29 @@
   }
 
   function displayChosenImage() {
-    // Display the chosen image in the input container
-    const input = document.getElementById('image');
-    const container = document.getElementById('imageContainer');
+            // Display the chosen image in the input container
+            const input = document.getElementById('image');
+            const container = document.getElementById('imageContainer');
 
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
 
-      reader.onload = function (e) {
-        container.style.backgroundImage = `url(${e.target.result})`;
-        container.style.backgroundSize = 'cover';
-        container.style.backgroundPosition = 'center';
-        container.style.backgroundRepeat = 'no-repeat';
-        container.innerHTML = ''; // Clear the inner content
-      };
+                reader.onload = function (e) {
+                    container.style.backgroundImage = `url(${e.target.result})`;
+                    container.style.backgroundSize = 'cover';
+                    container.style.backgroundPosition = 'center';
+                    container.style.backgroundRepeat = 'no-repeat';
+                    // No need to clear inner content
+                };
 
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          events: '/calendar/fetch_events.php',
+          events: 'calendar/fetch_events.php',
           eventTimeFormat: {
             hour: '2-digit',
             minute: '2-digit',
@@ -263,21 +263,22 @@
     $(document).ready(function () {
         // Function to display Toast notification
         function showToast(message, success) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: 'top',
-                position: 'right',
-                backgroundColor: success ? '#4CAF50' : '#ff6347',
-            }).showToast();
-        }
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            showMethod: 'slideDown',
+            timeOut: 3000,
+        };
 
+        toastr[success ? 'success' : 'error'](message);
+    }
         $("eventForm").submit(function (event) {
             event.preventDefault();
 
             $.ajax({
                 type: "POST",
-                url: "/calendar/admin_addevents.php", 
+                url: "calendar/admin_addevents.php", 
                 data: $(this).serialize(),
                 dataType: "json",
                 success: function (response) {

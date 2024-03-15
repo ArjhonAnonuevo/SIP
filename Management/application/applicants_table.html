@@ -150,8 +150,9 @@
             contentType: false,
             success: function(response) {
                 toastr.options = {
-            positionClass: 'toast-bottom-right', 
-            closeButton: true,
+                positionClass: 'toast-bottom-right', 
+                closeButton: false,
+                hideDuration: 2000,
         };
                 if (response.success) {
                     toastr.success(response.message);
@@ -163,7 +164,9 @@
             error: function() {
                 toastr.options = {
                 positionClass: 'toast-bottom-right', 
-                closeButton: true,
+                closeButton: false,
+                hideDuration: 2000,
+
             };
                 toastr.error('An error occurred during the request.');
             }

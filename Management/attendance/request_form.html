@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="myModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center h-full">
+            <div class="bg-white p-8 rounded-md shadow-md transform transition-transform duration-300 relative">
+                <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <h2 class="text-2xl font-semibold text-blueGray-700 font-kanit">Request Form</h2>
+
+                <!-- Text field for message -->
+                <div class="mb-4">
+                    <label for="message" class="block text-sm font-medium text-gray-700">Message:</label>
+                    <textarea id="message" name="message" rows="3" class="mt-1 p-2 border border-gray-300 rounded-md w-full" placeholder="Enter your message here"></textarea>
+                </div>
+
+                <!-- File attachment input -->
+                <div class="mb-4">
+                    <label for="fileAttachment" class="block text-sm font-medium text-gray-700">File Attachment:</label>
+                    <input type="file" id="fileAttachment" name="fileAttachment" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
+                </div>
+
+                <button class="mt-4 px-4 py-2 bg-green-800 text-white rounded-md font-bold font-rubik" onclick="submitForm()">Submit</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

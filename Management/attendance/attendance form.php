@@ -8,7 +8,6 @@
     <link href="../css/dist/tailwind.min.css" rel="stylesheet">
     <script src="../css/dist/jquery.min.js"></script>
     <script src="../node_modules/html5-qrcode/html5-qrcode.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Istok+Web">
     <style>
         #reader video {
             transform: scaleX(-1);
@@ -24,6 +23,7 @@
             <div class="container mx-auto flex justify-center">
                 <div id="reader" class="w-full sm:w-1/2 md:w-5/6 h-auto lg:w-2/4 xl:w-2/4 relative">
                     <video class="absolute inset-0 object-cover w-full h-full" id="reader video"></video>
+                    <audio id="scanSuccessSound" src="scan.mp3" preload="auto"></audio>
                 </div>
             </div>
             <div id="responseModal" class="fixed inset-0 z-50 hidden items-center justify-center overflow-x-hidden overflow-y-auto">
@@ -38,6 +38,7 @@
                     </div>
                 </div>
             </div>
+
             <div id="attendance-table"></div>
             <script>
     $(document).ready(function () {
@@ -51,6 +52,7 @@
     function onScanSuccess(qrCodeMessage) {
         console.log("QR Code decoded. Message =", qrCodeMessage);
         displayScannedData(qrCodeMessage);
+        document.getElementById('scanSuccessSound').play();
     }
 
     function onScanError(error) {
@@ -70,7 +72,6 @@
         })
         .then(responseText => {
             try {
-                // Try parsing the response as JSON
                 const jsonResponse = JSON.parse(responseText);
                 // Display the response in the console
                 console.log('Server Response:', jsonResponse);
@@ -79,12 +80,10 @@
             } catch (jsonError) {
                 // Handle the case where the response is not valid JSON
                 console.error('Error parsing JSON:', jsonError);
-                // Optionally, display an error message to the user or take appropriate action
             }
         })
         .catch(fetchError => {
             console.error('Error fetching data:', fetchError);
-            // Optionally, handle the error in your application (e.g., display an error message to the user).
         });
     }
 
@@ -94,14 +93,15 @@
     }
 
     function closeModal() {
-        $('#responseModal').fadeOut(300, function () {
-            // Redirect or perform additional actions if needed after fade out
-            window.location.href = "attendance form.php";
-        });
-    }
+    $('#responseModal').fadeOut(300, function () {
+        console.log('Modal faded out');
+        window.location.href = "attendance form.php";
+    });
+}
+
 
     $(document).ready(function () {
-        $("#attendance-table").load("attendance_table.php");
+        $("#attendance-table").load("interns_attendance.html");
     });
 </script>
 

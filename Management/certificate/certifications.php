@@ -38,12 +38,12 @@
                 </div>
             </div>
                     <div class="overflow-x-auto mt-4">
-                        <table class="min-w-full divide-y divide-gray-200" id="dataTable">
+                        <table class="min-w-full divide-y border-collapse divide-gray-200" id="dataTable">
                             <thead>
                                 <tr class = "bg-green-700 text-white">
-                                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Name</th>
-                                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Department</th>
-                                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Username</th>
+                                    <th class="px-4 py-2 md:w-1/6 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Name</th>
+                                    <th class="px-4 py-2 md:w-1/6  text-left text-xs font-semibold uppercase tracking-wider font-rubik">Department</th>
+                                    <th class="px-4 py-2 md:w-1/6   text-left text-xs font-semibold uppercase tracking-wider font-rubik">Username</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -55,7 +55,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $("#interns-nav").load("../header/interns_nav.html");
+            $("#interns-nav").load("../header/admin_navs.html");
         });
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -76,9 +76,9 @@
                 if (data.length > 0) {
                     data.forEach(function (row) {
                         tbody += "<tr>";
-                        tbody += "<td class='border px-8 py-4 font-poppins'><a href='upload.php?username=" + encodeURIComponent(row['username']) + "' class='text-blue-500'>" + row['name'] + "</a></td>";
-                        tbody += "<td class='uppercase border px-8 py-4 font-poppins'>" + row['department'] + "</td>";
-                        tbody += "<td class='border px-8 py-4 font-poppins'>" + row['username'] + "</td>";
+                        tbody += "<td class=' px-8 py-4 font-poppins'><a href='upload.php?username=" + encodeURIComponent(row['username']) + "' class='text-blue-500'>" + row['name'] + "</a></td>";
+                        tbody += "<td class='uppercase px-8 py-4 font-poppins'>" + row['department'] + "</td>";
+                        tbody += "<td class='px-8 py-4 font-poppins'>" + row['username'] + "</td>";
                         tbody += "</tr>";
                     });
                 } else {

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dist/output.css">
+    <script src="../css/dist/jquery.min.js"></script>
+    <title>Request History</title>
+</head>
+<body>
+    <div id = "admin-navs"></div>
+    <div class="xl:ml-48">
+        <div class="mx-auto md:max-w-7xl md:max-h-min xl:bg-white md:bg-white shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Request History</h2>
+            <div class="space-y-4">
+                <!-- Example request item -->
+                <div class="bg-white p-4 rounded shadow-md">
+                    <p class="font-bold">Requesting Overtime</p>
+                    <p class="text-sm text-gray-500  prose font-poppins">SIP-2023-0001</p>
+                    <div class="mt-2">
+                        <p class="text-sm font-medium text-gray-700">Attachments:</p>
+                        <ul class="list-disc list-inside text-sm text-gray-600">
+                            <li>overtime_request.pdf</li>
+                            <li>employee_details.docx</li>
+                            <!-- Add more file names as needed -->
+                        </ul>
+                    </div>
+                    <div class="mt-4">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            View
+                        </button>
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">
+                            Accept
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
+                            Reject
+                        </button>
+                    </div>
+                </div>
+                </div>
+                
+            </div>
+            </div>
+        </div>
+    </div>
+    <script>
+          $(document).ready(function() {
+        $("#admin-navs").load("../header/admin_navs.html");
+    });
+    </script>
+</body>
+</html>

@@ -27,30 +27,57 @@
               <img width="50" height="50" src="icons/user.svg" alt="pdf" class="" />
               </span>
           </button>
-          <div class="border-l pl-3 ml-3 space-x-1">
+          <div id = "showNotification" class="border-l pl-3 ml-3 space-x-1">
             <button class="relative p-2 text-white  hover:bg-gray-700 hover:text-gray-700 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Notifications</span>
               <img src="icons/notifications.svg" alt="Description of image" class="w-6 h-6">
             </button>
-            <button onclick="window.location.href='../header/logout.php'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
+            <button onclick="window.location.href='/logout.php'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Log out</span>
               <img src="icons/logout.svg" alt="Description of image" class="w-6 h-6">
             </button>
           </div>
         </div>
       </header>
+      <div id="notificationPanel" class="fixed top-24 right-5 bg-blue-500 shadow-lg rounded-lg p-4 flex items-center hidden">
+        <div class="flex-grow">
+            <p class="text-xl text-white font-semibold">Notifications</p>
+            <p class="text-md text-white">This is a notification message.</p>       
+        </div>
+        <button class="ml-4 bg-gray-500 text-white rounded-md px-2 py-1 text-xs font-medium">Clear History</button>
+    </div>
       <script>
-             $.ajax({
-            url: 'header/header.php',
-            type: 'GET',
-            success: function(data) {
-                // Update the content of the header-container with the retrieved data
-                $("#header").html(data);
-            },
-            error: function() {
-                console.log('Error loading header.php');
-            }
-        });
+          $(document).ready(function() {
+          $.ajax({
+              url: 'header/header.php',
+              type: 'GET',
+              success: function(data) {
+                  $("#header").html(data);
+              },
+              error: function() {
+                  console.log('Error loading header.php');
+              }
+          });
+  
+          // Attach a click event handler to the showNotification button
+          $("#showNotification").click(function() {
+              // Animate the notification panel to fade in
+              $("#notificationPanel").removeClass('hidden').animate({
+                  opacity: 1
+              }, 500); // Adjust the duration as needed
+          });
+  
+          // Attach a click event handler to the close button within the notification panel
+          $("#notificationPanel button").click(function() {
+              // Animate the notification panel to fade out
+              $("#notificationPanel").animate({
+                  opacity: 0
+              }, 500, function() {
+                  // After the animation completes, hide the notification panel
+                  $("#notificationPanel").addClass('hidden');
+              });
+          });
+      });
       </script>
 </body>
 </html>

@@ -10,14 +10,14 @@ $dbname = $config['dbname'];
 
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
-if (isset($_POST['caption'], $_FILES['image']['tmp_name'])) {
-    $caption = $_POST['caption'];
+if (isset($_FILES['image']['tmp_name'])) {
+    $file_name = $_FILES['image']['name'];
     $imageData = file_get_contents($_FILES['image']['tmp_name']); 
 
-    $query = "INSERT INTO carousel (image_data, caption) VALUES (?, ?)";
+    $query = "INSERT INTO carousel (image_data, file_name) VALUES (?, ?)";
 
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('ss', $imageData, $caption); 
+    $stmt->bind_param('ss', $imageData, $file_name); 
 
     $response = array();
 

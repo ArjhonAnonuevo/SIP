@@ -31,8 +31,8 @@ if ($stmt) {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        echo "<div class='w-full overflow-x-auto'>";
-        echo "<table class='w-full table-auto shadow-lg bg-white border-collapse md:max-w-sm'>";
+        echo "<div class='w-full overflow-x-auto justify-center'>";
+        echo "<table class='w-full table-auto shadow-lg bg-white border-collapse max-w-sm'>";
         echo "<thead class='bg-green-700 text-white'>";
         echo "    <tr>";
         echo "        <th class='px-6 py-3 border border-solid border-blueGray-100 whitespace-nowrap font-bold text-left tracking-wider md:break-normal lg:break-normal xl:break-normal' style='font-family: \"Caudex\", serif;'>Date</th>";

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../configuration/interns_config.php';
 
 // Call the getDatabaseConfig function
