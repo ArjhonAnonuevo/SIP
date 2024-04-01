@@ -30,7 +30,7 @@ $totalRows = mysqli_fetch_assoc($totalRowsResult)['total'];
 $totalPages = ceil($totalRows / $rowsPerPage);
 
 // Execute SQL query with LIMIT and OFFSET
-$sql = "SELECT id, given_name, middle_name, family_name, primary_email, application_date, control_number
+$sql = "SELECT  given_name, middle_name, family_name, primary_email, application_date, control_number
         FROM application
         LIMIT $offset, $rowsPerPage";
 

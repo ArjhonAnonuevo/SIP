@@ -11,7 +11,7 @@ class PDF extends TCPDF
     public function Header()
     {
         // Logo
-        $image_file = '../tailwind/securities and exchange.png'; // Update with the actual path to your logo image
+        $image_file = '../images/sec_logo.png'; // Update with the actual path to your logo image
         $this->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font for the header
         $this->SetFont('helvetica', 'B', 10);
@@ -79,7 +79,7 @@ function generatePDF($name, $department, $selectedMonth, $conn, $username)
     $pdf->SetFont('helvetica', 'B', 10);
     $pdf->Cell(0, 15, strtoupper('Accomplishment report'), 0, 1, 'C');
     $pdf->Cell(0, 10, 'Name: ' . str_pad($name, 20, " "));
-    $pdf->SetX($pdf->GetPageWidth() - 30); // Set the x-coordinate for the next element
+    $pdf->SetX($pdf->GetPageWidth() - 30);
     $pdf->Cell(0, 10, 'Month: ' . strtoupper(date('F', mktime(0, 0, 0, $selectedMonth, 1))), 0, 1, 'R');
     $pdf->Cell(0, 10, 'Department: ' . strtoupper($department), 0, 1, 'L');
 
@@ -117,7 +117,7 @@ function generatePDF($name, $department, $selectedMonth, $conn, $username)
         $pdf->SetFillColor(224, 235, 255);
         $pdf->SetTextColor(0);
         $pdf->SetFont('');
-        $fill = false; // Initialize fill color
+        $fill = false;
 
         // Iterate over the rows and add to the table
         while ($row2 = $result2->fetch_assoc()) {

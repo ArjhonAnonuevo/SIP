@@ -13,56 +13,91 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 </head>
-
-<body class="bg-gray-100">
-<div id = "adminNav"></div>
+<body class = "bg-gray-100">
+<div id="adminNav"></div>
     <div class="md:ml-48 xl:ml-48 lg:48">
-        <div class="container mx-auto px-4 sm:px-8">
-            <div class="mx-auto md:max-w-7xl md:max-h-min bg-white shadow-md p-6 mt-8 rounded-md">
-                <h1 class="text-2xl font-bold text-center mb-4">Attendance Table</h1>
-                <div class="mb-4 flex">
-                <div class="relative">
-                    <input name="start" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date start">
-                </div>
-                <span class="mx-4 text-gray-500">to</span>
-                <div class="relative">
-                    <input name="end" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Select date end">
-                </div>
-            </div>
-            </div>
-            </div>
-                <div class="overflow-x-auto">
-                    <div class="bg-white shadow-md overflow-x-auto">
-                        <table class="min-w-full w-full divide-y divide-gray-200">
-                            <thead>
-                                <tr class="bg-green-700 text-white">
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Morning Time In
-                                    </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Lunch Time Out
-                                    </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        After lunch Time In
-                                    </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        End of the day Time Out
-                                    </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Attendance Date
-                                    </th>
-                                    <th class="px-5 py-2 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Rendered Hours
-                                    </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Overtime
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody">
-                            </tbody>
-                        </table>
+        <div class="container mx-auto px-4 sm:px-8 mt-8">
+            <div class="overflow-x-auto">
+                <div class="bg-white shadow-md rounded-md">
+                    <div class="px-6 py-4">
+                        <h1 class="text-2xl font-bold text-center mb-4">Attendance Table</h1>
+                        <div class="mb-4 flex">
+                            <div class="relative">
+                                <input name="start" type="text"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                                    placeholder="Select date start">
+                            </div>
+                            <span class="mx-4 text-gray-500">to</span>
+                            <div class="relative">
+                                <input name="end" type="text"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                                    placeholder="Select date end">
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full w-full divide-y divide-gray-200">
+                                <thead>
+                                    <tr class="bg-green-700 text-white">
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            Morning Time In
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            Lunch Time Out
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            After lunch Time In
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            End of the day Time Out
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            Attendance Date
+                                        </th>
+                                        <th
+                                            class="px-5 py-2 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            Rendered Hours
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider">
+                                            Overtime
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    <!-- Table Body Content Goes Here -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 sm:px-8 mt-8">
+            <div class="bg-white shadow-md p-6 rounded-md">
+                <h1 class="text-2xl font-bold text-center mb-4">Uploaded Attendance</h1>
+                <div id="uploadedFiles">
+                    <!-- Uploaded files template -->
+                    <div class="flex items-center space-x-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <div>
+                            <p class="font-bold">File Name</p>
+                            <p class="text-sm text-gray-500">File size: 1 MB</p>
+                            <div class="flex items-center space-x-4 mt-2">
+                                <button class="text-blue-500">View</button>
+                                <button class="text-green-500">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of uploaded files template -->
                 </div>
             </div>
         </div>
@@ -118,8 +153,9 @@
                     <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins">${row.lunch_timeout || ''}</td>
                     <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins">${row.after_lunch_timein || ''}</td>
                     <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins">${row.end_of_day_timeout || ''}</td>
-                    <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins>${row.attendance_date || ''}</td>
+                    <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins">${row.attendance_date || ''}</td>
                     <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins">${row.rendered_hours || ''}</td>
+                    <td class="px-5 py-3 sm:py-5 md:py-3 lg:py-5 xl:py-3 border-b border-gray-200 bg-white text-sm font-poppins">${row.overtime_hours || ''}</td>
                 </tr>
             `;
         }

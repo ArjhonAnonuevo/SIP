@@ -14,11 +14,10 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Assuming you pass the username as a parameter
 if (isset($_GET['username']) && !empty($_GET['username'])) {
     $username = $_GET['username'];
 
-    $stmt = $conn->prepare("SELECT id, morning_timein, lunch_timeout, after_lunch_timein, end_of_day_timeout, attendance_date, rendered_hours FROM attendance WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, morning_timein, lunch_timeout, after_lunch_timein, end_of_day_timeout, attendance_date, rendered_hours, overtime_hours FROM attendance WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -28,6 +27,16 @@ if (isset($_GET['username']) && !empty($_GET['username'])) {
         
         // Fetch each row individually
         while ($row = $result->fetch_assoc()) {
+            // Convert time to 12-hour format with AM or PM
+            $row['morning_timein'] = date("h:i A", strtotime($row['morning_timein']));
+            $row['lunch_timeout'] = date("h:i A", strtotime($row['lunch_timeout']));
+            $row['after_lunch_timein'] = date("h:i A", strtotime($row['after_lunch_timein']));
+            $row['end_of_day_timeout'] = date("h:i A", strtotime($row['end_of_day_timeout']));
+
+            // Format rendered_hours and overtime_hours
+            $row['rendered_hours'] = ($row['rendered_hours'] == '00:00:00') ? '0' : date("g", strtotime($row['rendered_hours']));
+            $row['overtime_hours'] = ($row['overtime_hours'] == '00:00:00') ? '0' : date("g", strtotime($row['overtime_hours']));
+
             $data[] = $row;
         }
 

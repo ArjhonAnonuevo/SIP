@@ -1,10 +1,8 @@
 <?php
-if (isset($_POST['id'])) {
-    $idToDelete = $_POST['id'];
+if (isset($_POST['control_number'])) {
+    // Sanitize the input
+    $controlNumberToDelete = filter_var($_POST['control_number'], FILTER_SANITIZE_STRING);
     
-    // Assuming 'control_number' is a separate field in your form
-    $controlNumberToDelete = $_POST['control_number'];
-
     include '../configuration/application_config.php';
 
     // Call the getDatabaseConfig function
@@ -27,33 +25,26 @@ if (isset($_POST['id'])) {
     $conn->begin_transaction();
 
     try {
-        // 1. Delete from status table where control_number is equal to the provided value
+        // Step 1: Delete from interns_files table
+        $queryDeleteFiles = "DELETE FROM interns_files WHERE control_number = ?";
+        $stmtDeleteFiles = $conn->prepare($queryDeleteFiles);
+        $stmtDeleteFiles->bind_param('s', $controlNumberToDelete);
+        $stmtDeleteFiles->execute();
+        $stmtDeleteFiles->close();
+
+        // Step 2: Delete from application table
+        $queryDeleteApplication = "DELETE FROM application WHERE control_number = ?";
+        $stmtDeleteApplication = $conn->prepare($queryDeleteApplication);
+        $stmtDeleteApplication->bind_param('s', $controlNumberToDelete);
+        $stmtDeleteApplication->execute();
+        $stmtDeleteApplication->close();
+
+        // Step 3: Delete from status table
         $queryDeleteStatus = "DELETE FROM status WHERE control_number = ?";
         $stmtDeleteStatus = $conn->prepare($queryDeleteStatus);
-        $stmtDeleteStatus->bind_param('s', $controlNumberToDelete);  // Use the separate variable here
+        $stmtDeleteStatus->bind_param('s', $controlNumberToDelete);
         $stmtDeleteStatus->execute();
         $stmtDeleteStatus->close();
-
-        // 2. Delete from file_names table
-        $queryFileNames = "DELETE FROM file_names WHERE file_id IN (SELECT file_id FROM files WHERE id = ?)";
-        $stmtFileNames = $conn->prepare($queryFileNames);
-        $stmtFileNames->bind_param('i', $idToDelete);
-        $stmtFileNames->execute();
-        $stmtFileNames->close();
-
-        // 3. Delete from files table
-        $queryFiles = "DELETE FROM files WHERE id = ?";
-        $stmtFiles = $conn->prepare($queryFiles);
-        $stmtFiles->bind_param('i', $idToDelete);
-        $stmtFiles->execute();
-        $stmtFiles->close();
-
-        // 4. Delete from application table
-        $queryApplication = "DELETE FROM application WHERE id = ?";
-        $stmtApplication = $conn->prepare($queryApplication);
-        $stmtApplication->bind_param('i', $idToDelete);
-        $stmtApplication->execute();
-        $stmtApplication->close();
 
         // Commit the transaction
         $conn->commit();
@@ -63,12 +54,20 @@ if (isset($_POST['id'])) {
             'message' => 'Data deleted successfully!'
         );
     } catch (Exception $e) {
-        // Rollback the transaction on error
         $conn->rollback();
+
+        // Check if the error message indicates a foreign key constraint failure
+        if (strpos($e->getMessage(), 'foreign key constraint fails') !== false) {
+            // Construct a generic error message
+            $errorMessage = "Cannot delete record due to a foreign key constraint.";
+        } else {
+            // Use the original error message
+            $errorMessage = $e->getMessage();
+        }
 
         $response = array(
             'success' => false,
-            'message' => 'Failed to delete data from the database. Error: ' . $e->getMessage()
+            'message' => 'Failed to delete data from the database. Error: ' . $errorMessage
         );
     }
 
@@ -81,7 +80,7 @@ if (isset($_POST['id'])) {
 } else {
     $response = array(
         'success' => false,
-        'message' => 'Invalid request. ID parameter is missing.'
+        'message' => 'Invalid request. Control number parameter is missing.'
     );
 
     // Send the response as JSON

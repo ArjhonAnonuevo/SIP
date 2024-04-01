@@ -10,34 +10,54 @@ $dbname = $config['dbname'];
 
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
-if (isset($_FILES['image']['tmp_name'])) {
-    $file_name = $_FILES['image']['name'];
-    $imageData = file_get_contents($_FILES['image']['tmp_name']); 
+// Initialize response array
+$response = array();
 
-    $query = "INSERT INTO carousel (image_data, file_name) VALUES (?, ?)";
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
+    // Directory where uploaded files will be stored
+    $uploadDir = 'image-upload/';
 
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('ss', $imageData, $file_name); 
+    // Get the file name
+    $fileName = $_FILES["image"]["name"];
+    
+    // Get the path to store the uploaded file
+    $targetFilePath = $uploadDir . $fileName;
 
-    $response = array();
-
-    if ($stmt->execute()) {
-        $response['status'] = 'success';
-        $response['message'] = 'Image Inserted successfully.';
+    // Check if file already exists
+    if (file_exists($targetFilePath)) {
+        $response['success'] = false;
+        $response['message'] = "Sorry, file already exists.";
     } else {
-        $response['status'] = 'error';
-        $response['message'] = 'Error: ' . $stmt->error;
-    }
+        // Upload file
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
 
-    $stmt->close();
+            $fileName = $mysqli->real_escape_string($fileName);
+            $targetFilePath = $mysqli->real_escape_string($targetFilePath);
+
+            $sql = "INSERT INTO images (file_name, file_path) VALUES ('$fileName', '$targetFilePath')";
+
+            if ($mysqli->query($sql) === TRUE) {
+                $response['success'] = 'success';
+                $response['message'] = 'Image Inserted successfully';
+            } else {
+                $response['success'] = false;
+                $response['message'] = "Error: " . $sql . "<br>" . $mysqli->error;
+            }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Sorry, there was an error uploading your file.";
+        }
+    }
 } else {
-    $response['status'] = 'error';
-    $response['message'] = 'Missing required data.';
+    $response['success'] = false;
+    $response['message'] = "Invalid request.";
 }
 
 $mysqli->close();
 
-// Send JSON response
+// Set response headers
 header('Content-Type: application/json');
+
+// Output response as JSON
 echo json_encode($response);
 ?>

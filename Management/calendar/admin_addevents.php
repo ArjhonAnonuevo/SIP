@@ -1,12 +1,13 @@
 <?php
- include '../configuration/interns_config.php';
+include '../configuration/interns_config.php';
+
 // Call the getDatabaseConfig function
 $config = getDatabaseConfig();
             
- $dbhost = $config['dbhost'];
- $dbuser = $config['dbuser'];
- $dbpass = $config['dbpass'];
- $dbname = $config['dbname'];
+$dbhost = $config['dbhost'];
+$dbuser = $config['dbuser'];
+$dbpass = $config['dbpass'];
+$dbname = $config['dbname'];
 $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
 if ($conn->connect_error) {
@@ -30,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bind_param("ss", $title, $start);
         try {
             $stmt->execute();
-            $response = array("success" => true);
+            $response = array("success" => true, "event_id" => $stmt->insert_id); // Include the inserted event ID
         } catch(Exception $e) {
             $response = array("success" => false, "error" => $e->getMessage());
         }
@@ -39,5 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header("Content-Type: application/json");
     echo json_encode($response);
 }
+
 // Close the connection
 $conn->close();
+?>

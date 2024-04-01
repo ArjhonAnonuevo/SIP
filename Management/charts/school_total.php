@@ -1,36 +1,39 @@
-<?php
-require_once "../configuration/interns_config.php";
-  
- $config = getDatabaseConfig();
-            
-            $dbhost = $config['dbhost'];
-            $dbuser = $config['dbuser'];
-            $dbpass = $config['dbpass'];
-            $dbname = $config['dbname'];
+    <?php
+    require_once "../configuration/interns_config.php";
 
-$connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+    // Call the getDatabaseConfig function
+    $config = getDatabaseConfig();
 
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
-}
+    $dbhost = $config['dbhost'];
+    $dbuser = $config['dbuser'];
+    $dbpass = $config['dbpass'];
+    $dbname = $config['dbname'];
 
-$query = "SELECT school, COUNT(*) as total FROM interns_profile GROUP BY school";
+    $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
-$result = $connection->query($query);
+    if ($connection->connect_error) {
+        die("Connection failed: " . $connection->connect_error);
+    }
 
-// Check for query errors
-if (!$result) {
-    die("Query failed: " . $connection->error);
-}
+    $query = "SELECT schoolName, Total FROM schooldata";
 
-// Loop through the returned data
-$data = array();
-foreach ($result as $row) {
-    $data[] = $row;
-}
+    $result = $connection->query($query);
 
-$result->close();
+    // Check for query errors
+    if (!$result) {
+        die("Query failed: " . $connection->error);
+    }
 
-$connection->close();
-echo json_encode($data);
-?>
+    // Fetch data
+    $data = array();
+    while ($row = $result->fetch_assoc()) {
+        $schoolName = $row['schoolName'];
+        $total = $row['Total'];
+        $data[] = array('schoolName' => $schoolName, 'total' => $total);
+    }
+
+    $result->close();
+    $connection->close();
+
+    echo json_encode($data);
+    ?>

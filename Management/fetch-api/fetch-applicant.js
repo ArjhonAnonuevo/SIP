@@ -1,14 +1,11 @@
         // Retrieve URL parameters
         const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
-        const email = params.get('email');
-        const givenName = params.get('given_name');
-    
+        const id = params.get('control_number');
         $.ajax({
             url: '../application/fetch-applicant.php',
             method: 'GET',
             dataType: 'json',
-            data: { id, email, given_name: givenName }, // Pass parameters to the server
+            data: { id}, 
             success: function (data) {
                 // Map the data fields to labels
                 const fieldLabels = {

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dist/tailwind.min.css">
     <title>Document</title>
 </head>
 <body>
@@ -14,24 +15,73 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
-
                 <h2 class="text-2xl font-semibold text-blueGray-700 font-kanit">Request Form</h2>
 
-                <!-- Text field for message -->
-                <div class="mb-4">
-                    <label for="message" class="block text-sm font-medium text-gray-700">Message:</label>
-                    <textarea id="message" name="message" rows="3" class="mt-1 p-2 border border-gray-300 rounded-md w-full" placeholder="Enter your message here"></textarea>
-                </div>
+                <form id="requestForm" action="../request/submit_request.php" method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="message" class="block text-sm font-medium text-gray-700">Message:</label>
+                        <textarea id="message" name="message" rows="3" class="mt-1 p-2 border border-gray-300 rounded-md w-full" placeholder="Enter your message here"></textarea>
+                        <input type="hidden" id="username" name="username" value="">
+                    </div>
 
-                <!-- File attachment input -->
-                <div class="mb-4">
-                    <label for="fileAttachment" class="block text-sm font-medium text-gray-700">File Attachment:</label>
-                    <input type="file" id="fileAttachment" name="fileAttachment" class="mt-1 p-2 border border-gray-300 rounded-md w-full">
-                </div>
+                    <div class="mb-4">
+                        <label for="fileAttachment" class="block text-sm font-medium text-gray-700">File Attachment:</label>
+                        <input type="file" id="fileAttachment" name="fileAttachment" class="mt-1 p-2 border border-gray-300 rounded-md w-full" accept=".pdf">
+                    </div>
 
-                <button class="mt-4 px-4 py-2 bg-green-800 text-white rounded-md font-bold font-rubik" onclick="submitForm()">Submit</button>
+                    <button type="submit" class="mt-4 px-4 py-2 bg-green-800 text-white rounded-md font-bold font-rubik">Submit</button>
+                </form>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../header/header.php',
+                type: 'GET',
+                success: function(response) {
+                    $('#username').val(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+    
+            // Configure Toastr options
+            toastr.options = {
+                "positionClass": "toast-bottom-right", 
+            };
+    
+            // Handle form submission
+            $('#requestForm').submit(function(event) {
+                // Prevent default form submission
+                event.preventDefault();
+    
+                // Create FormData object to gather form data
+                var formData = new FormData(this);
+    
+                // Submit form data via AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "../request/submit_request.php",
+                    data: formData,
+                    dataType: "json",
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            toastr.success(response.message);
+                            closeModal();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error submitting request: " + error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

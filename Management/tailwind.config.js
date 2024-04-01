@@ -1,5 +1,6 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
+  darkMode: 'class',
   content: [
     './application/**/*.{html,js}',
     './attendance/**/*.{html,js}',
@@ -10,9 +11,9 @@ module.exports = {
     './header/**/*.{html,js}',
     './monthly reports/**/*.{html,js}',
     './php scripts/**/*.{html,js}',
-     './fetch-api/**/*.{html,js}',
-
-
+    './fetch-api/**/*.{html,js}',
+    './request/**/*.{html,js}',
+    './request/**/*.{html,js}',
     './index.html',
     './add_image.html',
     './interns_dashboard.html',
@@ -28,16 +29,17 @@ module.exports = {
       },
       colors: {
         primary: '#3490dc',
-        success: '#2E8B57',
         secondary: '#ffed4a',
         alert: '#6574cd',
+      },
+      width: {
+        '900px': '900px', 
       },
     },
   },
   plugins: [
     require('@tailwindcss/forms'), 
     require('@tailwindcss/typography'), 
-    require('tailwind-scrollbar-hide')
+    require('tailwind-scrollbar-hide'), 
   ],
 }
-

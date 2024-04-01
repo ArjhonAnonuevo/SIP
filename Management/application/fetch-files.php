@@ -18,12 +18,9 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
         die(json_encode(array("error" => "Connection failed: " . $mysqli->connect_error)));
     }
 
-    $query = "SELECT f.school_id, f.regi, f.schedule, f.form1, f.form2, f.form3, f.form4, 
-    fn.school_name, fn.regi_name, fn.schedule_name, fn.form1_name, fn.form2_name, 
-    fn.form3_name, fn.form4_name
-    FROM files AS f 
-    INNER JOIN file_names AS fn ON f.id = fn.file_id
-    WHERE f.id = ?";
+    $query = "SELECT school_name, regi_name, schedule_name, form1_name, form2_name, form3_name
+              FROM interns_files
+              WHERE control_number= ?";
 
     $stmt = $mysqli->prepare($query);
 
@@ -37,19 +34,24 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_assoc();
 
-                    // Convert blob fields to base64 for JSON
-                    $blobFields = ['school_id', 'regi', 'schedule', 'form1', 'form2', 'form3', 'form4'];
-                    $fileNames = ['school_name', 'regi_name', 'schedule_name', 'form1_name', 'form2_name', 'form3_name', 'form4_name'];
-
-                    $formattedData = array();
-                    for ($i = 0; $i < count($blobFields); $i++) {
-                        $formattedData[] = array(
-                            "file_name" => $data[$fileNames[$i]],
-                            "value" => base64_encode($data[$blobFields[$i]])
-                        );
+                    // Validate data before encoding into JSON
+                    foreach ($data as $key => $value) {
+                        if (empty($value)) {
+                            die(json_encode(array("error" => "Invalid data retrieved from the database.")));
+                        }
                     }
 
-                    echo json_encode($formattedData);
+                    // Prepare data for JSON response
+                    $urls = array(
+                        "school_name" => $data["school_name"],
+                        "regi_name" => $data["regi_name"],
+                        "schedule_name" => $data["schedule_name"],
+                        "form1_name" => $data["form1_name"],
+                        "form2_name" => $data["form2_name"],
+                        "form3_name" => $data["form3_name"]
+                    );
+
+                    echo json_encode($urls);
                 } else {
                     echo json_encode(array("error" => "Files not found for the applicant."));
                 }

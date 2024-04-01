@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="../css/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="composeEmailModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <!-- Modal Content -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden w-96 relative z-20 overflow-y-auto" style="height: 80vh;">
+
+          <!-- Close Button -->
+          <button id="closeModal" class="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+          <input type="hidden" name="" id="">
+
+          <!-- Header -->
+          <div class="bg-gray-100 px-6 py-4">
+            <h2 class="text-lg font-semibold text-gray-800">Compose Email</h2>
+          </div>
+
+          <!-- Form -->
+          <form id="submitEmail" class="px-6 py-4">
+            <!-- To -->
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden">
+              <label for="to" class="block text-sm font-medium text-gray-700">To</label>
+              <input type="email" id="primaryEmail" name="primaryEmail" class="w-full border mt-1 bg-gray-100 border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700" readonly>
+            </div>
+
+            <!-- Subject -->
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden">
+              <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+              <input type="text" id="subject" name="subject" class="w-full mt-1 border bg-gray-100 border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700" required>
+            </div>
+
+            <!--Interview 1-->
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden p-4 hidden" id="additionalFields">
+              <label for="date" class="block text-sm font-medium text-gray-700">Date:</label>
+              <input type="date" id="date" name="date" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="startTime" class="block mt-4 text-sm font-medium text-gray-700">Start Time:</label>
+              <input type="time" id="startTime" name="startTime" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="endTime" class="block mt-4 text-sm font-medium text-gray-700">End Time:</label>
+              <input type="time" id="endTime" name="endTime" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="url" class="block mt-4 text-sm font-medium text-gray-700">URL:</label>
+              <input type="text" id="url" name="url" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="m_id" class="block mt-4 text-sm font-medium text-gray-700">Meeting ID:</label>
+              <input type="text" id="m_id" name="m_id" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="passcode" class="block mt-4 text-sm font-medium text-gray-700">Passcode:</label>
+              <input type="text" id="passcode" name="passcode" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+            </div>
+
+            <!--Interview 2-->
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden p-4 hidden" id="interview2Fields">
+              <label for="int2Date" class="block text-sm font-medium text-gray-700">Date:</label>
+              <input type="date" id="int2Date" name="int2Date" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="int2Time" class="block mt-4 text-sm font-medium text-gray-700">Time:</label>
+              <input type="time" id="int2Time" name="int2Time" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+
+              <label for="department" class="block mt-4 text-sm font-medium text-gray-700">Assigned Department:</label>
+              <input type="text" id="department" name="department" class="mt-1 block w-full border-gray-300 py-2 px-3 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+            </div>
+
+            <!-- Message -->
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden">
+              <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+              <textarea id="message" name="message" rows="4" class="w-full mt-1 border bg-gray-100 border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700" required></textarea>
+            </div>        
+            <input type="hidden" name="selectedInterviewValue" id="selectedInterviewValue">
+            <input type="hidden" id="controlNumber" name="controlNumber">
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden">
+              <input hidden="file" id="html_file" class="w-full mt-1 border bg-gray-100 border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700" disabled>
+              <input type="hidden" id="html_file_hidden">
+              <div id="html_file_content" style="display: none;"></div>
+            </div>
+            <div class="mb-4 bg-gray-50 rounded-md overflow-hidden">
+              <label for="attachments" class="block text-sm font-medium text-gray-700">Attachments</label>
+              <div class="file-input mt-1 w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                <input type="file" id="attachments" name="attachments[]" multiple class="file-input__field">
+                <div class="file-name"></div>
+              </div>
+              <p class="mt-2 text-sm text-gray-500">Attach files here (optional)</p>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loader HTML -->
+    <div id="display-loader"></div>
+    <script src="../send-emails/compose-email.js"></script>
+  </body>
+</html>

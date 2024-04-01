@@ -5,7 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Table</title>
     <link href="../css/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="../css/dist/jquery.min.js"></script>
+</head>
+<body class="font-sans bg-gray-100">
+    <section class="py-8 bg-blueGray-50">
+        <div class="container mx-auto">
+            <div class="bg-white p-8 rounded-md shadow-md">
+                <div class="flex sm:flex-col items-center justify-between mb-6">
+                    <h3 class="text-2xl font-semibold text-blueGray-700 font-kanit">Attendance Record</h3>
+                    <div class="flex items-center mt-4 md:mt-0">
+                        <form action="generate_attendance.php">
+                            <button class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik">Generate PDF</button>
+                        </form>
+
+                        <form action="edit_attendance.php">
+                            <button class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik">Request</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="attendanceTable" class="w-full table-auto divide-y divide-gray-200">
+                        <!-- Table headers -->
+                        <thead>
+                            <tr class="bg-green-700 text-white">
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Morning Time In</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Lunch Time out</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">After lunch Time In</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">End of the day Time Out</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Attendance date</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Rendered Hours</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Overtime</th>
+                            </tr>
+                        </thead>
+                        <!-- Table body -->
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="mt-4 mr-44">
+                        <span class="text-xl font-semibold text-blueGray-700 flex justify-end font-kanit">Total Rendered Hours: <span id="totalRenderedHours">0</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <script>
         $(document).ready(function () {
             function fetchData() {
@@ -67,47 +109,5 @@
             fetchData();
         });
     </script>
-</head>
-<body class="font-sans bg-gray-100">
-    <section class="py-8 bg-blueGray-50">
-        <div class="container mx-auto">
-            <div class="bg-white p-8 rounded-md shadow-md">
-                <div class="flex sm:flex-col items-center justify-between mb-6">
-                    <h3 class="text-2xl font-semibold text-blueGray-700 font-kanit">Attendance Record</h3>
-                    <div class="flex items-center mt-4 md:mt-0">
-                        <form action="generate_attendance.php">
-                            <button class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik">Generate PDF</button>
-                        </form>
-
-                        <form action="edit_attendance.php">
-                            <button class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik">Request</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table id="attendanceTable" class="w-full table-auto divide-y divide-gray-200">
-                        <!-- Table headers -->
-                        <thead>
-                            <tr class="bg-green-700 text-white">
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Morning Time In</th>
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Lunch Time out</th>
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">After lunch Time In</th>
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">End of the day Time Out</th>
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Attendance date</th>
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Rendered Hours</th>
-                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Overtime</th>
-                            </tr>
-                        </thead>
-                        <!-- Table body -->
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="mt-4 mr-44">
-                        <span class="text-xl font-semibold text-blueGray-700 flex justify-end font-kanit">Total Rendered Hours: <span id="totalRenderedHours">0</span></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 </body>
 </html>

@@ -14,6 +14,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Set the character set to UTF-8
+$conn->query("SET NAMES 'utf8'");
+
 $rowsPerPage = 10;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
@@ -33,7 +36,7 @@ $totalPages = ceil($totalRows / $rowsPerPage);
 $sql = "SELECT ip.name, ip.mname, ip.lname, ip.department, ia.username
         FROM interns_profile ip
         JOIN interns_account ia ON ia.profile_id = ip.id
-        LIMIT ?, ?"; // Use placeholders for prepared statement
+        LIMIT ?, ?";
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
@@ -56,9 +59,6 @@ $resultSet = $stmt->get_result();
 // Fetch all rows from the result set
 $rows = $resultSet->fetch_all(MYSQLI_ASSOC);
 
-// Convert data to valid UTF-8
-$rows = array_map('utf8ize', $rows);
-
 // Create an array with pagination data
 $response = array(
     "success" => true,
@@ -78,20 +78,6 @@ if ($jsonResponse === false) {
 
 echo $jsonResponse;
 
-// Close the statement and database connection
 $stmt->close();
 $conn->close();
-
-// Function to convert data to valid UTF-8
-function utf8ize($mixed)
-{
-    if (is_array($mixed)) {
-        foreach ($mixed as $key => $value) {
-            $mixed[$key] = utf8ize($value);
-        }
-    } elseif (is_string($mixed)) {
-        return utf8_encode($mixed);
-    }
-    return $mixed;
-}
 ?>

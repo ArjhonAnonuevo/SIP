@@ -7,15 +7,14 @@
     <meta name="author" content="Your Name">
     <title>Student Applications</title>
     <link href="../css/dist/output.css" rel="stylesheet">
-    <script src = "../css/dist/jquery.min.js"></script>
-    <!-- Include Toastr CSS and JS files -->
+    <script src="../css/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
     <script src="../node_modules/toastr/build/toastr.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
 <div id="adminNav"></div>
-    <div class="md:ml-48 xl:ml-48 lg:48">
+    <div class="md:ml-48 xl:ml-48 lg:48">       
         <div class="mx-auto md:max-w-7xl md:max-h-min xl:bg-white md:bg-white shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
             <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
                 <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Student Applications</h2>
@@ -52,6 +51,7 @@
                 </div>
             </div>
         <div id="emailModal"></div>
+        <div id="email-status"></div>
     <div class="bg-white shadow-md overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead>
@@ -60,13 +60,12 @@
                     <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Name</th>
                     <th class="px-4 w-52 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Email</th>
                     <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Application Date</th>
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Accept</th>
                     <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Reject</th>
                     <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Status</th>
                     <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Delete</th>
                 </tr>
             </thead>
-            <tbody id = "table-body" class="text-gray-700"></tbody>
+            <tbody id="table-body" class="text-gray-700"></tbody>
         </table>
     </div>
         <div class="flex items-center justify-end space-x-2 text-sm mt-4">
@@ -74,106 +73,158 @@
     </div>
 </div>
 </div>
+
+<div id="deleteModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="border rounded-lg shadow relative max-w-sm bg-white max-h-96">
+        <div class="p-6 pt-0 text-center mt-10">
+            <svg class="w-20 h-20 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete this Application?</h3>
+            <form id="confirmDeleteForm" action="delete.php" method="post">
+                <input type="hidden" id="deleteId" name="control_number" value="">
+                <button id="confirmDeleteBtn" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+                    Yes, I'm sure
+                </button>
+            </form>
+            <button id="cancelDeleteBtn" type="button" class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center">
+                No, cancel
+            </button>
+        </div>
+    </div>
+</div>
+<div id="email"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
-   $(document).ready(function() {
-    $('#adminNav').load('../header/admin_navs.html');
-    $('#emailModal').load('email_modals.html');
+    function openModal() {
+        $('#deleteModal').removeClass('hidden');
+    }    
+
+    function confirmDelete(controlNumber) {
+        $('#deleteId').val(controlNumber);
+        openModal();
+    }
+
+    function encryptEmail(email, key) {
+        const iv = CryptoJS.lib.WordArray.random(16); 
+        const encrypted = CryptoJS.AES.encrypt(email, key, { iv: iv }).toString();
+        const encodedEncrypted = iv.toString(CryptoJS.enc.Base64) + "::" + encrypted;
+        return encodeURIComponent(encodedEncrypted);
+    }
     
-    toastr.options = {
-        closeButton: true,
-        positionClass: 'toast-top-center', // Set the position to top-center
-        timeOut: 3000, // Set the time duration for the toast
-    };
-
-
-    function fetchData(page) {
-        $.ajax({
-            url: 'interns_query.php?page=' + page,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                updateTable(data);
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    }
-
-    function updateTable(data) {
-        $('#table-body').empty();
-
-        $.each(data.data, function(index, row) {
-            var fullName = row.given_name + ' ' + row.middle_name + ' ' + row.family_name;
-            var rowHtml = '<tr class = "bg-gray-100">';
-            rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left font-semibold font-poppins">' + row.control_number + '</td>';
-            rowHtml += '<td class=" p-3 px-4 py-4 md:w-1/6 text-left font-semibold underline text-blue-500 font-poppins">';
-            rowHtml += '<a href="display.html?id=' + row.id + '&email=' + row.primary_email + '&name=' + encodeURIComponent(fullName) + '">' + fullName + '</a>';
-            rowHtml += '</td>';
-            rowHtml += '<td class="px-4 py-8 md:w-1/6 text-left font-semibold font-poppins">' + row.primary_email + '</td>';
-            rowHtml += '<td class="xl:px-10 px-2 py-2 md:w-1/6 text-right font-semibold font-poppins">' + row.application_date + '</td>';
-            rowHtml += '<td class="px-4 py-2 md:w-1/6"><input type="checkbox" name="applicant_checkbox[]" value="' + row.primary_email + '" class="h-5 w-5 text-blue-600 rounded-md focus:outline-none" onclick="displaySelectedEmail(this)"></td>';
-            rowHtml += '<td class="px-4 py-2 md:w-1/6"><input type="checkbox" name="reject_checkbox[]" value="' + row.primary_email + '" class="h-5 w-5 text-blue-600 rounded-md focus:outline-none"></td>';
-            rowHtml += '<td><button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-auto">';
-            rowHtml += 'Status</button></td>';
-            rowHtml += '<td><form id="delete" action="delete.php" method="post">';
-            rowHtml += '<input type="hidden" name="id" value="' + row.id + '">';
-            rowHtml += '<input type="hidden" name="control_number" value="' + row.control_number + '">';
-            rowHtml += '<button class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded w-auto font-rubik">';
-            rowHtml += 'Delete</button></form></td></tr>';
-
-            $('#table-body').append(rowHtml);
-        });
-
-        $('#yourPageInfo').text('Page ' + data.currentPage + ' of ' + data.totalPages);
-    }
-
-    fetchData(1);
-
-    $(document).on('click', '.pagination-link', function(e) {
-        e.preventDefault();
-        var page = $(this).data('page');
-        fetchData(page);
-    });
-
- $(document).on('submit', '#delete', function(e) {
-        e.preventDefault();
-
-        var formData = new FormData($(this)[0]);
-        var currentForm = $(this);
-
-        $.ajax({
-            type: 'POST',
-            url: 'delete.php',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                toastr.options = {
-                positionClass: 'toast-bottom-right', 
-                closeButton: false,
-                hideDuration: 2000,
+    $(document).ready(function() {
+        $('#adminNav').load('../header/admin_navs.html');
+        $('#emailModal').load('email_modals.html');
+        $('#email').load('../send-emails/compose-email.html');
+    
+        toastr.options = {
+            closeButton: true,
+            positionClass: 'toast-top-center', 
+            timeOut: 3000, 
         };
-                if (response.success) {
-                    toastr.success(response.message);
-                    currentForm.closest('tr').remove();
-                } else {
-                    toastr.error(response.message);
+    
+        function fetchData(page) {
+            $.ajax({
+                url: 'interns_query.php?page=' + page,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    updateTable(data);
+                },
+                error: function(error) {
+                    console.log('Error:', error);
                 }
-            },
-            error: function() {
-                toastr.options = {
-                positionClass: 'toast-bottom-right', 
-                closeButton: false,
-                hideDuration: 2000,
-
-            };
-                toastr.error('An error occurred during the request.');
-            }
+            });
+        }
+    
+        function updateTable(data) {
+            $('#table-body').empty();
+    
+            $.each(data.data, function(index, row) {
+                var fullName = row.given_name + ' ' + row.middle_name + ' ' + row.family_name;
+                var rowHtml = '<tr class="bg-gray-100">';
+                rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left font-semibold font-poppins">' + row.control_number + '</td>';
+                rowHtml += '<td class="p-3 px-4 py-4 md:w-1/6 text-left font-semibold underline text-blue-500 font-poppins">';
+                rowHtml += '<a href="display.html?control_number=' + row.control_number + '">' + row.control_number + '</a>';
+                rowHtml += '</td>';
+                rowHtml += '<td class="px-4 py-8 md:w-1/6 text-left font-semibold font-poppins">' + row.primary_email + '</td>';
+                rowHtml += '<td class="xl:px-10 px-2 py-2 md:w-1/6 text-right font-semibold font-poppins">' + row.application_date + '</td>';
+                rowHtml += '<td class="px-4 py-2 md:w-1/6">';
+                    var token = encryptEmail(row.primary_email, 'your_encryption_key');
+                    rowHtml += '<a href="../send-emails/view_email.html?email=' + token + '" class="flex items-center gap-1">';
+                rowHtml += '<span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>';
+                rowHtml += '<img src="../icons/email.svg" class="h-5 w-5 mr-2" alt="Email Icon">';
+                rowHtml += '</a>';
+                rowHtml += '</td>';
+                rowHtml += `<td>
+                                <select class="composeEmailButton border rounded-md px-2 py-1 bg-gray-100" data-primary-email="${row.primary_email}" data-control-number="${row.control_number}">
+                                    <option disabled selected>Select</option>
+                                    <option value="interview1">Interview 1</option>
+                                    <option value="interview2">Interview 2</option>
+                                    <option value="interview3">Orientation</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </td>`;
+                rowHtml += '<td><button onclick="confirmDelete(\'' + row.control_number + '\')" class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded w-auto font-rubik">Delete</button></td></tr>';
+    
+                $('#table-body').append(rowHtml);
+            });
+    
+            $('#yourPageInfo').text('Page ' + data.currentPage + ' of ' + data.totalPages);
+        }
+    
+        fetchData(1);
+    
+        $(document).on('click', '.pagination-link', function(e) {
+            e.preventDefault();
+            var page = $(this).data('page');
+            fetchData(page);
+        });
+    
+        $('#cancelDeleteBtn').on('click', function() {
+            closeModal();
+        });
+    
+        function closeModal() {
+            $('#deleteModal').addClass('hidden');
+        }
+    
+        $(document).on('submit', '#confirmDeleteForm', function(e) {
+            e.preventDefault();
+    
+            var formData = new FormData($(this)[0]);
+    
+            $.ajax({
+                type: 'POST',
+                url: 'delete.php',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    toastr.options = {
+                        positionClass: 'toast-bottom-right',
+                        closeButton: false,
+                        hideDuration: 2000,
+                    };
+                    if (response.success) {
+                        toastr.success(response.message);
+                        closeModal();
+                        fetchData(1);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.options = {
+                        positionClass: 'toast-bottom-right',
+                        closeButton: false,
+                        hideDuration: 2000,
+                    };
+                    toastr.error('An error occurred during the request.');    
+                }
+            });
         });
     });
-});
-
-</script>
+</script>    
 </body>
 </html>

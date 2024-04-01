@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link href="../css/dist/output.css" rel="stylesheet">
+    <link href="../css/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" integrity="sha256-x8PYmLKD83R9T/sYmJn1j3is/chhJdySyhet/JuHnfY=" crossorigin="anonymous">
     <style>
       @media (min-width: 1024px) {
@@ -40,21 +40,21 @@
     </style>
   </head>
   <body class="bg-gray-100 font-rubik">
-    <nav class="flex items-center bg-green-800 p-2 flex-wrap">
+    <nav class="flex items-center bg-green-700 p-2 flex-wrap">
       <button id="sidebar-toggle" class="lg:hidden p-2 mr-2 text-white hover:bg-gray-100 hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
         <span class="sr-only">Menu</span>
         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
         </svg>
       </button>
-      <div id="sidebar" class="sidebar bg-green-800 lg:open">
+      <div id="sidebar" class="sidebar bg-green-700 lg:open">
         <ul class="flex flex-col py-4 space-y-1">
           <li class="px-5">
             <div class="flex flex-row items-center h-8">
               <div class="text-sm font-light tracking-wide text-white">Menu</div>
             </div>
           </li>
-          <li>
+          <li id="dashboard-link" class="sidebar-link">
             <a href="../admin_dashboard.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -65,14 +65,18 @@
               <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
             </a>
           </li>
-          <li>
+          <li id="application-link">
             <a href="../application/applicants_table.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center items-center ml-4">
-                        </span>
-              <span class="ml-2 text-sm tracking-wide truncate">Application</span>
+               <span class="inline-flex justify-center items-center ml-4">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle">
+                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                 </svg>
+               </span>
+               <span class="ml-2 text-sm tracking-wide truncate">Application</span>
             </a>
-          </li>
-          <li>
+           </li>           
+          <li id="attendance-link">
             <a href="../attendance/display attendance.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -85,7 +89,7 @@
               <span class="ml-2 text-sm tracking-wide truncate">Attendance</span>
             </a>
           </li>
-          <li>
+          <li id="reports-link">
             <a href="../monthly reports/reports_table.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white     hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -98,7 +102,7 @@
               <span class="ml-2 text-sm tracking-wide truncate">Monthly Reports</span>
             </a>
           </li>
-          <li>
+          <li id="certifications-link">
             <a href="../certificate/certifications.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white     hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -110,7 +114,7 @@
               <span class="ml-2 text-sm tracking-wide truncate">Certifications</span>
             </a>
           </li>
-          <li>
+          <li id="qr-link">
             <a href="../attendance/qr_display.html" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white     hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-qr-code" viewBox="0  0  16  16">
@@ -124,13 +128,17 @@
               <span class="ml-2 text-sm tracking-wide truncate">Interns QR</span>
             </a>
           </li>
-          <li>
-            <a href="../certifications/certifications.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white     hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
-              <span class="inline-flex justify-center items-center ml-4">
-                        </span>
-              <span class="ml-2 text-sm tracking-wide truncate">Interns Request</span>
+          <li id="request-link">
+            <a href="../certifications/certifications.php" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+               <span class="inline-flex justify-center items-center ml-4">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                   <path d="M22 2H2v20l4-4h14l4 4V2zm-5 9h-4v4h-2v-4H7V9h4V5h2v4h4v2z"/>
+                 </svg>
+               </span>
+               <span class="ml-2 text-sm tracking-wide truncate">Interns Request</span>
             </a>
-          </li>
+           </li>
+           
           <li class="px-5">
             <div class="flex flex-row items-center h-8">
               <div class="text-sm font-light tracking-wide text-white">Settings</div>

@@ -32,6 +32,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($_POST["password"], $hashedPassword)) {
             $_SESSION["user_id"] = $user_id;
             $_SESSION["username"] = $input_username;
+
+            // Update server status to "online" for the logged-in user
+            $update_sql = "UPDATE server_status SET status = 'online' WHERE username = ?";
+            $update_stmt = $conn->prepare($update_sql);
+            if ($update_stmt === false) {
+                die("Error preparing update statement: " . $conn->error);
+            }
+            $update_stmt->bind_param("s", $input_username);
+            if ($update_stmt->execute() === FALSE) {
+                echo "Error updating server status: " . $conn->error;
+            } else {
+                echo "Server status updated successfully";
+            }
+            $update_stmt->close();
+
             header("Location: ../interns_dashboard.html");
             exit();
         } else {
