@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/dist/output.css">
-    <script src="../css/dist/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
     <title>Document</title>
+    <link rel="stylesheet" href="../css/dist/output.css">
 </head>
-<body>
-<div id = "admin-navs"></div>
-    <div class="content-container shadow-md mx-auto mt-8 xl:w-auto xl:ml-48 h-auto p-8">
-        <div class="mb-11">
-            <h1 class="xl:text-xl xl:text-left text-gray-900 font-semibold font-kanit text-2xl text-center">Applicants Information</h1>
+<body class="bg-gray-100">
+    <div id="admin-navs"></div>
+    <div class="content-container mx-auto xl:w-auto xl:ml-48 h-auto p-8">
+        <div class="mx-auto md:max-w-6xl md:max-h-min xl:bg-white md:bg-white shadow-md p-6 mt-8 rounded-md max-w-6xl">
+            <div class="mb-11">
+                <h1 class="xl:text-xl xl:text-left text-gray-900 font-semibold font-kanit text-2xl text-center">Applicants Information</h1>
+            </div>
+            <div id="data-container" class="xl:grid grid-cols-3 xs:grid-cols-1 xs:w-auto gap-4"></div>
         </div>
-        <div id="data-container" class="xl:grid grid-cols-3 xs:grid-cols-1 xs:w-auto gap-4"></div>
-        <div class="mt-10">
-            <h1 class="xl:text-xl xl:text-left text-gray-900 font-semibold font-kanit text-2xl text-center">Uploaded Files </h1>
+        <div class="max-w-6xl mx-auto rounded-md">
+            <div id="file-container" class="mx-auto overflow-y-auto scrollbar-hide mt-10"></div>
         </div>
-        <div id="file-container" class="sm:bg-white sm:shadow-md w-full overflow-x-auto scrollbar-hide">
-        </div>
-        <div id = "modal-container"></div>
+        <div id="modal-container"></div>
     </div>
-<script>
- $(document).ready(function() {
-        $("#admin-navs").load("../header/admin_navs.html");
-    });
-</script>
-<script src = "../fetch-api/fetch-applicant.js"></script>
-<script src = "../fetch-api/download.js"></script>
+
+    <script src="../css/dist/jquery.min.js"></script>
+    <script src="../node_modules/pdfjs-dist/build/pdf.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#admin-navs").load("../header/admin_navs.html");
+        });
+    </script>
+    <script src="../fetch-api/fetch-applicant.js"></script>
+    <script src="../fetch-api/download.js"></script>
 </body>
 </html>

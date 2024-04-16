@@ -34,6 +34,7 @@
                     </div>
                 </div>
                 <div id="attendance-table"></div>
+                <script src="../header/session_timeout_interns.js"></script>
                 <script>
                     $(document).ready(function () {
                         $("#interns-nav").load("../header/interns_nav.html");

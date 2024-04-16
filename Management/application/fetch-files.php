@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: application/json');
 
-if (isset($_GET["id"]) && !empty($_GET["id"])) {
-    $applicant_id = trim($_GET["id"]);
+if (isset($_GET["control_number"]) && !empty($_GET["control_number"])) {
+    $applicant_id = trim($_GET["control_number"]);
 
     include "../configuration/application_config.php";
     $config = getDatabaseConfig();
@@ -15,17 +15,18 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
     $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
     if ($mysqli->connect_error) {
-        die(json_encode(array("error" => "Connection failed: " . $mysqli->connect_error)));
+        error_log("Connection failed: " . $mysqli->connect_error);
+        die(json_encode(array("error" => "Internal Server Error")));
     }
 
-    $query = "SELECT school_name, regi_name, schedule_name, form1_name, form2_name, form3_name
-              FROM interns_files
-              WHERE control_number= ?";
-
+    $query = "SELECT school_name, regi_name, schedule_name, form1_name, form2_name, form3_name, form4_name 
+              FROM interns_files 
+              WHERE control_number = ?";
+    
     $stmt = $mysqli->prepare($query);
 
     if ($stmt) {
-        $stmt->bind_param("i", $applicant_id);
+        $stmt->bind_param("s", $applicant_id);
 
         if ($stmt->execute()) {
             $result = $stmt->get_result();
@@ -34,43 +35,57 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
                 if ($result->num_rows > 0) {
                     $data = $result->fetch_assoc();
 
-                    // Validate data before encoding into JSON
-                    foreach ($data as $key => $value) {
-                        if (empty($value)) {
-                            die(json_encode(array("error" => "Invalid data retrieved from the database.")));
+                    // Directory where files are stored
+                    $fileDirectory = "../applicants-files/";
+
+                    // Convert file URLs to base64 for JSON
+                    $fileFields = ['school_name', 'regi_name', 'schedule_name', 'form1_name', 'form2_name', 'form3_name', 'form4_name'];
+                    $formattedData = array();
+                    foreach ($fileFields as $fieldName) {
+                        if ($data[$fieldName] !== null) {
+                            $filePath = $fileDirectory . $data[$fieldName];
+                            if (file_exists($filePath)) {
+                                // Read file contents and encode to base64
+                                $fileContents = file_get_contents($filePath);
+                                if ($fileContents !== false) {
+                                    $formattedData[] = array(
+                                        "file_name" => $fieldName,
+                                        "value" => base64_encode($fileContents)
+                                    );
+                                } else {
+                                    error_log("Error reading file: " . $data[$fieldName]);
+                                    die(json_encode(array("error" => "Internal Server Error")));
+                                }
+                            } else {
+                                error_log("File not found: " . $data[$fieldName]);
+                                die(json_encode(array("error" => "Internal Server Error")));
+                            }
                         }
                     }
 
-                    // Prepare data for JSON response
-                    $urls = array(
-                        "school_name" => $data["school_name"],
-                        "regi_name" => $data["regi_name"],
-                        "schedule_name" => $data["schedule_name"],
-                        "form1_name" => $data["form1_name"],
-                        "form2_name" => $data["form2_name"],
-                        "form3_name" => $data["form3_name"]
-                    );
-
-                    echo json_encode($urls);
+                    echo json_encode($formattedData);
                 } else {
                     echo json_encode(array("error" => "Files not found for the applicant."));
                 }
             } else {
-                echo json_encode(array("error" => "Error fetching result: " . $stmt->error));
+                error_log("Error fetching result: " . $stmt->error);
+                die(json_encode(array("error" => "Internal Server Error")));
             }
 
             $result->close();
         } else {
-            echo json_encode(array("error" => "Error executing statement: " . $stmt->error));
+            error_log("Error executing statement: " . $stmt->error);
+            die(json_encode(array("error" => "Internal Server Error")));
         }
 
         $stmt->close();
     } else {
-        echo json_encode(array("error" => "Error preparing statement: " . $mysqli->error));
+        error_log("Error preparing statement: " . $mysqli->error);
+        die(json_encode(array("error" => "Internal Server Error")));
     }
 
     $mysqli->close();
 } else {
-    echo json_encode(array("error" => "Invalid request. 'id' parameter is missing or empty."));
+    echo json_encode(array("error" => "Invalid request. 'control_number' parameter is missing or empty."));
 }
 ?>

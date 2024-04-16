@@ -92,25 +92,23 @@ document.getElementById('school').addEventListener('input', function() {
 
 // Add event listener to form submission
 document.getElementById('registrationForm').addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent default form submission
+  event.preventDefault(); 
 
-  // Perform AJAX request
   $.ajax({
     url: 'php_scripts/register_process.php',
     type: 'POST',
-    data: $(this).serialize(), // Serialize form data
-    dataType: 'json', // Expect JSON response
+    data: $(this).serialize(), 
+    dataType: 'json',
     success: function(response) {
       if (response.success) {
-        alert(response.message); // Display success message
+        alert(response.message);
         window.location.href = "index.html"; // Redirect to index.html
       } else {
-        alert(response.error); // Display error message
+        alert(response.error); 
       }
     },
     error: function(xhr, status, error) {
-      console.error(xhr.responseText); // Log error to console
-      alert('An error occurred while processing your request.'); // Display generic error message
+      alert('An error occurred while processing your request.'); 
     }
   });
 });

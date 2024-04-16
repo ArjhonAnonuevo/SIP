@@ -2,18 +2,27 @@
 module.exports = {
   content: [
     './application forms/**/*.{html,js}',
+    './emails/**/*.{html,js}',
+    './header/**/*.{html,js}',
     './index.html',
+    './homepage.html',
     './template.html',
+    './sidebar.html',
+
+
   ],
   theme: {
     extend: {
       fontFamily: {
-        'open-sans': ['"Open Sans"', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
         'lora': ['Lora', 'serif'],
-        'trirong': ['Trirong', 'serif'],
-      },
+        'poppins': ['Poppins', 'sans-serif'],
+    },
+    
       colors: {
         primary: '#3490dc',
+        customgreen: '#047857',
+        customdarkgreen: '#097969',
         success: '#2E8B57',
         secondary: '#ffed4a',
         alert: '#6574cd',

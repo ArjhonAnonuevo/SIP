@@ -12,23 +12,21 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <title>Request History</title>
   </head>
-  <body class="bg-gray-100">
+  <body>
     <div id="admin-navs"></div>
     <div class="xl:ml-48 md:ml-48 lg:ml-48">
-      <div class="mx-auto md:max-w-7xl md:max-h-min xl:bg-white md:bg-white xl:shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
+        <div class="max-w-6xl mx-auto rounded-md">
+      <div class="mx-auto md:max-w-7xl md:max-h-min  xl:shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
         <div class="container mx-auto px-4 py-8">
-          <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit xl:text-left text-cente font-kanitr">Request History</h2>
+          <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit xl:text-left text-center">Request History</h2>
           <div id="requestHistory" class="space-y-4">
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Modal to display PDF content -->
     <div id="pdfModal" class="modal hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50">
         <div class="modal-content relative w-full sm:max-w-3xl mx-auto my-12">
             <div class="bg-white p-4 rounded shadow-md h-min">
-                <!-- Header with title and close button -->
                 <div class="flex justify-between items-center pb-4 border-b border-gray-200">
                     <h3 class="text-lg font-kanit font-semibold">PDF Viewer</h3>
                     <button id="closeModalBtn" class="text-gray-700 hover:text-gray-900 focus:outline-none">
@@ -37,7 +35,6 @@
                         </svg>
                     </button>
                 </div>
-                <!-- PDF Canvas -->
                 <div class="overflow-y-auto">
                     <canvas id="pdfCanvas" class="mx-auto h-auto"></canvas>
                 </div>
@@ -81,7 +78,7 @@
             </div>
         </div>
     </div>    
+    <script src = "../header/session_timeout.js"></script>
     <script src="request.js"> </script>
-    <script src="date-pick.js"> </script>
   </body>
 </html>

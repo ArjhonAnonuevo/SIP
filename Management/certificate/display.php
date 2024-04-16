@@ -4,23 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certifications Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
 
-<div id="certifications-container" class='grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+<div id="certifications-container" class="mx-auto grid gap-8 grid-cols-1">
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    // AJAX to fetch and display certifications
-    document.addEventListener("DOMContentLoaded", function () {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var certificationsContainer = document.getElementById("certifications-container");
-                certificationsContainer.innerHTML = this.responseText;
-            }
-        };
-        xmlhttp.open("GET", "fetch_certifications.php", true);
-        xmlhttp.send();
+    $(document).ready(function() {
+        // Make AJAX request to fetch file paths
+        
     });
 </script>
 

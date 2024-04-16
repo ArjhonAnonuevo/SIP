@@ -17,7 +17,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
-                <section class="grid xl:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 grid-cols-1">
                     <div>
                         <!-- <h2 class="text-2xl font-semibold text-blueGray-700 font-kanit">Submit Attendance Form</h2> -->
                         <!-- Styled File Input with SVG Icon -->
@@ -39,11 +38,6 @@
                             </div>
                         </form>
                     </div>
-                    <div id="attendance" class="mr-10 xl:mt-0 lg:mt-0 md:mt-0 mt-5">
-                        <h2 class="text-2xl font-semibold text-blueGray-700 font-kanit xl:text-left md:text-left text-center">Uploaded Records</h2>
-                        <!-- Uploaded records will be displayed here -->
-                    </div>
-                </section>                
             </div>
         </div>
     </div>    
@@ -72,45 +66,6 @@
             console.error(xhr.responseText);
         }
     });
-
-    // Function to fetch attendance records
-    // Function to fetch attendance records
-function fetchAttendance() {
-    $.ajax({
-        url: 'fetch-attendance.php',
-        type: 'GET',
-        data: { user: $('#user').val() }, // Pass the username as a query parameter
-        success: function(response) {
-            var records = JSON.parse(response);
-            var attendanceDiv = $('#attendance');
-            
-            if (records.length > 0) { // Check if records exist
-                $.each(records, function(index, record) {
-                    var filename = record.filename;
-                    var created_at = record.created_at;
-                    
-                    var recordElement = $('<div class="flex flex-col items-start py-2 ml-10 bg-gray-100 shadow-xl">');
-                    recordElement.append('<div class="flex items-center">' + getPDFIconSVG() + '<span class="ml-2 font-poppins">' + filename + '</span></div>');
-                    recordElement.append('<div class="text-sm text-gray-500 prose">' + created_at + '</div></div>');
-                    attendanceDiv.append(recordElement);
-                });
-            } else {
-                attendanceDiv.html('<p class="text-red-500">No attendance records found.</p>');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            $('#attendance').html('<p>Error fetching attendance records.</p>'); 
-        }
-    });
-}
-
-// Function to get SVG icon for PDF files
-function getPDFIconSVG() {
-    return '<img src="../icons/pdf.svg" alt="PDF Icon" class="h-7 w-8 fill-current text-red-500">';
-}
-
-
     $('#attendance-form').submit(function(event){
         event.preventDefault();
         

@@ -1,230 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Your description here">
-    <meta name="author" content="Your Name">
-    <title>Student Applications</title>
-    <link href="../css/dist/output.css" rel="stylesheet">
-    <script src="../css/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
-    <script src="../node_modules/toastr/build/toastr.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your description here">
+  <meta name="author" content="Your Name">
+  <title>Student Applications</title>
+  <link href="../css/dist/output.css" rel="stylesheet">
+  <script src="../css/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
+  <script src="../node_modules/toastr/build/toastr.min.js"></script>
 </head>
 
-<body class="bg-gray-100">
-<div id="adminNav"></div>
-    <div class="md:ml-48 xl:ml-48 lg:48">       
-        <div class="mx-auto md:max-w-7xl md:max-h-min xl:bg-white md:bg-white shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
-            <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
-                <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Student Applications</h2>
-                <button onclick="modalOpen('myModal')"
-                    class="bg-green-600 hover:bg-green-800 text-white font-sans font-bold py-2 px-4 rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
-                    Notify
-                </button>
+<body class="overflow-hidden">
+  <div id="adminNav"></div>
+  <div class="md:ml-48 xl:ml-48 lg:48">
+    <div class="max-w-6xl mx-auto rounded-md">
+      <div class="mx-auto md:max-w-7xl md:max-h-min shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
+        <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+          <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit ml-4">Student Applications</h2>
+          <button id="notifyButton" type="button" class="middle none center mr-4 rounded-lg bg-customGreen py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">Notify</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+          <div class="relative">
+            <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md" id="searchID" placeholder="Search...." oninput="filterTable()">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                <div class="relative">
-                    <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md"
-                        id="searchID" placeholder="Search...." oninput="filterTable()">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-                <div class="flex gap-4 justify-end">
-                    <select id="filterBy1" name="filterBy"
-                        class="mt-1 block w-full md:w-sm border border-solid border-gray-300 rounded-md p-2 text-gray-700 font-semibold">
-                        <option value="name">Filter By</option>
-                        <option value="category">Category</option>
-                        <option value="date">Date</option>
-                    </select>
-                    <select id="filterBy2" name="filterBy"
-                        class="mt-1 block w-full md:w-sm border border-solid border-gray-300 rounded-md p-2 text-gray-700 font-semibold">
-                        <option value="" data-order="asc">Sort By</option>
-                        <option value="category" data-order="asc">Category</option>
-                        <option value="date" data-order="asc">Date</option>
-                    </select>
-                </div>
-            </div>
-        <div id="emailModal"></div>
+          </div>
+        </div>
         <div id="email-status"></div>
-    <div class="bg-white shadow-md overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
+        <div class="bg-white shadow-lg overflow-x-auto xl:overflow-y-auto max-h-96">
+          <table class="min-w-full divide-y divide-gray-200">
             <thead>
-                <tr class="bg-green-700 text-white">
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Control Number</th>
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Name</th>
-                    <th class="px-4 w-52 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Email</th>
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Application Date</th>
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Reject</th>
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Status</th>
-                    <th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Delete</th>
-                </tr>
+              <tr class="bg-green-700 text-white absolute sticky top-0">
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Select</th>
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Control Number</th>
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Name</th>
+                <th
+                  class="px-4 w-52 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Email</th>
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Application Date</th>
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Interview Type</th>
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Status</th>
+                <th
+                  class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                  Delete</th>
+              </tr>
             </thead>
             <tbody id="table-body" class="text-gray-700"></tbody>
-        </table>
-    </div>
-        <div class="flex items-center justify-end space-x-2 text-sm mt-4">
-            <span id="yourPageInfo" class="text-gray-600">Page 1 of 1</span>
-    </div>
-</div>
-</div>
-
-<div id="deleteModal" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex justify-center items-center">
-    <div class="border rounded-lg shadow relative max-w-sm bg-white max-h-96">
-        <div class="p-6 pt-0 text-center mt-10">
-            <svg class="w-20 h-20 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete this Application?</h3>
-            <form id="confirmDeleteForm" action="delete.php" method="post">
-                <input type="hidden" id="deleteId" name="control_number" value="">
-                <button id="confirmDeleteBtn" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
-                    Yes, I'm sure
-                </button>
-            </form>
-            <button id="cancelDeleteBtn" type="button" class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center">
-                No, cancel
-            </button>
+          </table>
         </div>
+        <div class="flex items-center justify-end space-x-2 text-sm mt-4">
+          <div id="paginationButtons" class="flex items-center"></div>
+          <span id="yourPageInfo" class="text-gray-800 font-poppins text-md">Page 1 of 1</span>
+        </div>
+      </div>
     </div>
-</div>
-<div id="email"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-<script>
+  </div>
+  <div id="overlay" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50"></div>
+  <div id="popup"
+    class="hidden bg-white p-6 rounded-lg fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg z-50">
+    <h2 class="text-lg font-bold mb-4">Select Interview Type Status</h2>
+    <ul id="controlNumberList" hidden></ul>
+    <select id="statusSelect" class="w-full p-2 mb-4 border border-gray-300 rounded-md">
+        <option value="interview1">Level 1 Interview</option>
+        <option value="interview2">Level 2 Interview</option>
+        <option value="interview3">Orientation</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    <div id="selectedEmailsContainer" class="mb-4">
+      Selected Emails:
+      <ul id="selectedEmailsList" class="list-disc pl-6"></ul>
+    </div>
+    <br><br>
+    <button onclick="saveStatus()" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Save</button>
+    <button id="close" class="bg-red-500 text-white ml-4 px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:bg-gray-400 font-poppins">Close</button>
+  </div>
+  <div id="deleteModal"
+    class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="border rounded-lg shadow relative max-w-sm bg-white max-h-96">
+      <div class="p-6 pt-0 text-center mt-10">
+        <svg class="w-20 h-20 text-red-600 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete this
+          Application?</h3>
+        <form id="confirmDeleteForm" action="delete.php" method="post">
+          <input type="hidden" id="deleteId" name="control_number" value="">
+          <button id="confirmDeleteBtn" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
+              Yes, I'm sure
+            </button>
+        </form>
+        <button id="cancelDeleteBtn" type="button" class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center">
+            No, cancel
+          </button>
+      </div>
+    </div>
+  </div>
+  <div id="email"></div>
+  <script src="../header/session_timeout.js"></script>
+  <script>
     function openModal() {
         $('#deleteModal').removeClass('hidden');
-    }    
-
-    function confirmDelete(controlNumber) {
+      }
+      function confirmDelete(controlNumber) {
         $('#deleteId').val(controlNumber);
         openModal();
+      }
+      function hidePopup() {
+        $('#overlay').hide();
+        $('#popup').hide();
+      }
+      $('#close').on('click', hidePopup);
+      function generatePaginationButtons(totalPages, currentPage) {
+        var paginationButtons = "";
+        if (currentPage > 1) {
+          paginationButtons += '<button class="pagination-link px-3 py-2  text-gray-600 rounded-md" data-page="' + (currentPage - 1) + '">';
+          paginationButtons += '<img src="../icons/prev.svg" class = "w-4 h-4" alt="Previous Page">';
+          paginationButtons += '</button>';
+        }
+        if (currentPage < totalPages) {
+          paginationButtons += '<button class="pagination-link px-3 py-2  text-gray-600 rounded-md" data-page="' + (currentPage + 1) + '">';
+          paginationButtons += '<img src="../icons/next.svg" class = "w-4 h-4" alt="Next Page">';
+          paginationButtons += '</button>';
+        }
+        return paginationButtons;
+      }
+      function updatePaginationButtons(data) {
+        var totalPages = data.totalPages;
+        var currentPage = data.currentPage;
+        var paginationButtons = generatePaginationButtons(totalPages, currentPage);
+        $('#paginationButtons').html(paginationButtons);
+      }
+      function showPopup() {
+        $('#overlay').show();
+        $('#popup').show();
+        $('#selectedEmailsList').empty();
+        $('#controlNumberList').empty();
+        $('[name="checkbox"]').each(function() {
+          if ($(this).is(':checked')) {
+            var data = $(this).val().split(':');
+            var email = data[0];
+            var controlNumber = data[1];
+            $('#selectedEmailsList').append('<li>' + email + '</li>');
+            $('#controlNumberList').append('<li>' + controlNumber + '</li>');
+          }
+        });
+      }
+      function saveStatus() {
+        var selectedStatus = $('#statusSelect').val();
+        var selectedEmails = [];
+        var selectedControlNumbers = [];
+        
+        $('[name="checkbox"]').each(function() {
+            if ($(this).is(':checked')) {
+                var data = $(this).val().split(':');
+                selectedEmails.push(data[0]);
+                selectedControlNumbers.push(data[1]);
+            }
+        });
+        
+        var queryString = '?status=' + encodeURIComponent(selectedStatus);
+        queryString += '&emails=' + encodeURIComponent(selectedEmails.join(','));
+        queryString += '&controlNumbers=' + encodeURIComponent(selectedControlNumbers.join(','));
+
+        window.location.href = '../send-emails/bulks_emails.html' + queryString;
+
+        hidePopup();
     }
 
-    function encryptEmail(email, key) {
-        const iv = CryptoJS.lib.WordArray.random(16); 
-        const encrypted = CryptoJS.AES.encrypt(email, key, { iv: iv }).toString();
-        const encodedEncrypted = iv.toString(CryptoJS.enc.Base64) + "::" + encrypted;
-        return encodeURIComponent(encodedEncrypted);
-    }
-    
-    $(document).ready(function() {
+      $(document).ready(function() {
         $('#adminNav').load('../header/admin_navs.html');
-        $('#emailModal').load('email_modals.html');
         $('#email').load('../send-emails/compose-email.html');
-    
         toastr.options = {
-            closeButton: true,
-            positionClass: 'toast-top-center', 
-            timeOut: 3000, 
+          closeButton: true,
+          positionClass: 'toast-top-center',
+          timeOut: 3000,
         };
-    
+        $('#notifyButton').on('click', showPopup);
         function fetchData(page) {
-            $.ajax({
-                url: 'interns_query.php?page=' + page,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    updateTable(data);
-                },
-                error: function(error) {
-                    console.log('Error:', error);
-                }
-            });
+          $.ajax({
+            url: 'interns_query.php?page=' + page,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+              updateTable(data);
+              updatePaginationButtons(data);
+            },
+            error: function(error) {
+              console.log('Error:', error);
+            }
+          });
         }
-    
         function updateTable(data) {
-            $('#table-body').empty();
+    $('#table-body').empty();
     
-            $.each(data.data, function(index, row) {
+    if (data.data.length === 0) {
+        $('#table-body').append('<tr><td colspan="8" class="text-center py-3 font-poppins">No data found</td></tr>');
+        $('#yourPageInfo').text('');
+    } else {
+        $.each(data.data, function(index, row) {
+            if (row.status_name.toLowerCase() !== 'accepted' && row.status_name.toLowerCase() !== 'rejected') {
                 var fullName = row.given_name + ' ' + row.middle_name + ' ' + row.family_name;
                 var rowHtml = '<tr class="bg-gray-100">';
-                rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left font-semibold font-poppins">' + row.control_number + '</td>';
-                rowHtml += '<td class="p-3 px-4 py-4 md:w-1/6 text-left font-semibold underline text-blue-500 font-poppins">';
-                rowHtml += '<a href="display.html?control_number=' + row.control_number + '">' + row.control_number + '</a>';
+                rowHtml += '<td class="text-center"><input type="checkbox" name="checkbox" class="rounded-md" value="' + row.primary_email + ':' + row.control_number + '"></td>';
+                rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left text-md font-poppins font-medium">' + row.control_number + '</td>';
+                rowHtml += '<td class="p-3 px-1 py-4 md:w-1/6 text-left text-md underline text-blue-500 font-poppins">';
+                rowHtml += '<a href="display.html?control_number=' + row.control_number + '">' + fullName + '</a>';
                 rowHtml += '</td>';
-                rowHtml += '<td class="px-4 py-8 md:w-1/6 text-left font-semibold font-poppins">' + row.primary_email + '</td>';
-                rowHtml += '<td class="xl:px-10 px-2 py-2 md:w-1/6 text-right font-semibold font-poppins">' + row.application_date + '</td>';
-                rowHtml += '<td class="px-4 py-2 md:w-1/6">';
-                    var token = encryptEmail(row.primary_email, 'your_encryption_key');
-                    rowHtml += '<a href="../send-emails/view_email.html?email=' + token + '" class="flex items-center gap-1">';
-                rowHtml += '<span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>';
-                rowHtml += '<img src="../icons/email.svg" class="h-5 w-5 mr-2" alt="Email Icon">';
-                rowHtml += '</a>';
+                rowHtml += '<td class="px-4 py-8 md:w-1/6 text-left tex-md font-poppins">' + row.primary_email + '</td>';
+                rowHtml += '<td class="xl:px-4 px-2 py-2 md:w-1/6 text-center text-sm font-poppins">' + row.application_date +
+                    '</td>';
+                rowHtml += '<td>';
+                rowHtml += '<select class="composeEmailButton border rounded-md px-2 py-1 bg-gray-100" data-primary-email="' + row.primary_email + '" data-control-number="' + row.control_number + '">';
+                rowHtml += '<option disabled selected>Select</option>';
+                rowHtml += '<option value="interview1">Interview 1</option>';
+                rowHtml += '<option value="interview2">Interview 2</option>';
+                rowHtml += '<option value="interview3">Orientation</option>';
+                rowHtml += '<option value="rejected">Rejected</option>';
+                rowHtml += '</select>';
                 rowHtml += '</td>';
-                rowHtml += `<td>
-                                <select class="composeEmailButton border rounded-md px-2 py-1 bg-gray-100" data-primary-email="${row.primary_email}" data-control-number="${row.control_number}">
-                                    <option disabled selected>Select</option>
-                                    <option value="interview1">Interview 1</option>
-                                    <option value="interview2">Interview 2</option>
-                                    <option value="interview3">Orientation</option>
-                                    <option value="rejected">Rejected</option>
-                                </select>
-                            </td>`;
-                rowHtml += '<td><button onclick="confirmDelete(\'' + row.control_number + '\')" class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded w-auto font-rubik">Delete</button></td></tr>';
-    
+                rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left tex-md font-poppins">' + row.status_name + '</td>';
+                rowHtml += '<td>';
+                rowHtml += '<button onclick="confirmDelete(\'' + row.control_number + '\')" class="delete-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-2 rounded-xl w-auto shadow-lg">';
+                rowHtml += 'Delete';
+                rowHtml += '</button>';
+                rowHtml += '</td>';
+                rowHtml += '</tr>';
                 $('#table-body').append(rowHtml);
-            });
-    
-            $('#yourPageInfo').text('Page ' + data.currentPage + ' of ' + data.totalPages);
-        }
-    
+            }
+        });
+        $('#yourPageInfo').text('Page ' + data.currentPage + ' of ' + data.totalPages);
+    }
+}
+        $(document).on('click', '.composeEmailButton', function() {
+          var controlNumber = $(this).data('control-number');
+          console.log("Control number:", controlNumber);
+          var selectElement = $('[data-control-number="' + controlNumber + '"]');
+          $.ajax({
+            url: 'check_status.php',
+            method: 'GET',
+            dataType: "json",
+            data: {
+              control_number: controlNumber
+            },
+            success: function(response) {
+              console.log("Response:", response);
+              console.log("Success! Response:", response);
+              var status_name = response.status_name;
+              console.log("Status name:", status_name);
+              if (status_name === "Pending") {
+                console.log("Status is Pending");
+                selectElement.find('option[value="interview1"]').hide();
+                selectElement.find('option[value="interview2"]').show();
+                selectElement.find('option[value="interview3"]').show();
+                selectElement.find('option[value="rejected"]').show();
+              } else if (status_name === "Level 2 Interview" || status_name === "level 2 interview") {
+                selectElement.find('option[value="interview1"]').hide();
+                selectElement.find('option[value="interview2"]').hide();
+                selectElement.find('option[value="interview3"]').show();
+                selectElement.find('option[value="rejected"]').hide();
+              } else if (status_name === "accepted" || status_name === "Accepted") {
+                selectElement.find('option[value="interview1"]').hide();
+                selectElement.find('option[value="interview2"]').hide();
+                selectElement.find('option[value="interview3"]').hide();
+                selectElement.find('option[value="rejected"]').hide();
+              }
+            },
+            error: function(xhr, status, error) {
+              console.error("Error:", error);
+            }
+          });
+        });
         fetchData(1);
-    
         $(document).on('click', '.pagination-link', function(e) {
-            e.preventDefault();
-            var page = $(this).data('page');
-            fetchData(page);
+          e.preventDefault();
+          var page = $(this).data('page');
+          fetchData(page);
         });
-    
         $('#cancelDeleteBtn').on('click', function() {
-            closeModal();
+          closeModal();
         });
-    
         function closeModal() {
-            $('#deleteModal').addClass('hidden');
+          $('#deleteModal').addClass('hidden');
         }
-    
         $(document).on('submit', '#confirmDeleteForm', function(e) {
-            e.preventDefault();
-    
-            var formData = new FormData($(this)[0]);
-    
-            $.ajax({
-                type: 'POST',
-                url: 'delete.php',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    toastr.options = {
-                        positionClass: 'toast-bottom-right',
-                        closeButton: false,
-                        hideDuration: 2000,
-                    };
-                    if (response.success) {
-                        toastr.success(response.message);
-                        closeModal();
-                        fetchData(1);
-                    } else {
-                        toastr.error(response.message);
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    toastr.options = {
-                        positionClass: 'toast-bottom-right',
-                        closeButton: false,
-                        hideDuration: 2000,
-                    };
-                    toastr.error('An error occurred during the request.');    
-                }
-            });
+          e.preventDefault();
+          var formData = new FormData($(this)[0]);
+          $.ajax({
+            type: 'POST',
+            url: 'delete.php',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              toastr.options = {
+                positionClass: 'toast-bottom-right',
+                closeButton: false,
+                hideDuration: 2000,
+              };
+              if (response.success) {
+                toastr.success(response.message);
+                closeModal();
+                fetchData(1);
+              } else {
+                toastr.error(response.message);
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              toastr.options = {
+                positionClass: 'toast-bottom-right',
+                closeButton: false,
+                hideDuration: 2000,
+              };
+              toastr.error('An error occurred during the request.');
+            }
+          });
         });
-    });
-</script>    
+      });
+      function filterTable() {
+        var searchText = $('#searchID').val().toLowerCase();
+        $('#table-body tr').filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+        });
+      }
+  </script>
 </body>
+
 </html>

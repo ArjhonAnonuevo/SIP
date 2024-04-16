@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '284a3468193e0e4694f4b57d9ab80b5a26266558',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '0c0ccff846c747f4e4052046ef339bc187de721f',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '284a3468193e0e4694f4b57d9ab80b5a26266558',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '0c0ccff846c747f4e4052046ef339bc187de721f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -70,6 +70,15 @@
             'reference' => '1b01ba18ba31b29e88771e3e0979e5c91d4afe76',
             'type' => 'library',
             'install_path' => __DIR__ . '/../league/oauth2-google',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nicolab/php-ftp-client' => array(
+            'pretty_version' => 'v2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => 'a1d007c8b203895611f68b0da314281d4a5c3d49',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nicolab/php-ftp-client',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

@@ -1,4 +1,6 @@
 <?php
+$response = [];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $fname = $_POST["fname"];
@@ -18,23 +20,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    if (!empty($username) && !empty($fname) && !empty($mname) && !empty($lname)) {
-        $sql = "INSERT INTO interns (interns_username, fname, mname, lname) VALUES ('$username', '$fname', '$mname', '$lname')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Username and name inserted successfully');";
-            echo "window.location.href = 'add.php';</script>";
-            exit;
-        } else {
-            echo "<script>alert('Error inserting data: " . $conn->error . "');</script>";
-        }
+        $response["error"] = "Connection failed: " . $conn->connect_error;
     } else {
-        echo "<script>alert('Please fill in all the fields.');</script>";
-    }
+        if (!empty($username) && !empty($fname) && !empty($mname) && !empty($lname)) {
+            $sql = "INSERT INTO interns (interns_username, fname, mname, lname) VALUES ('$username', '$fname', '$mname', '$lname')";
 
-    $conn->close();
+            if ($conn->query($sql) === TRUE) {
+                $response["success"] = "Username and name inserted successfully";
+            } else {
+                $response["error"] = "Error inserting data: " . $conn->error;
+            }
+        } else {
+            $response["error"] = "Please fill in all the fields.";
+        }
+
+        $conn->close();
+    }
 }
+
+// Send JSON response
+header('Content-Type: application/json');
+echo json_encode($response);
 ?>

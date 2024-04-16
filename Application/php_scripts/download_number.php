@@ -47,7 +47,7 @@ if (isset($_GET['control_number'], $_GET['given_name'], $_GET['family_name'], $_
     $pdf->AddPage();
 
     // Display Name and Primary Email
-    $pdf->Cell(0, 10, 'Name: ' . $given_name . ' ' . $family_name, 0, 1, 'L'); // Concatenate given_name and family_name
+    $pdf->Cell(0, 10, 'Name: ' . $given_name . ' ' . $family_name, 0, 1, 'L');
     $pdf->Cell(0, 10, 'Primary Email: ' . $primary_email, 0, 1, 'L');
 
     // Set font
@@ -65,9 +65,8 @@ if (isset($_GET['control_number'], $_GET['given_name'], $_GET['family_name'], $_
     // Add space between header and name/primary email
     $pdf->Ln(10);
 
-    // Output PDF to the browser
-    header('Content-Type: application/pdf');
-    $pdf->Output('Control_Number_Slip.pdf', 'D');
+    // Generate and output PDF to the browser
+    $pdf->Output('Control_Number_Slip.pdf', 'I');
 } else {
     // Handle the case when parameters are not provided
     echo 'Invalid request.';

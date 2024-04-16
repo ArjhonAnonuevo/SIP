@@ -36,8 +36,8 @@ $offset = ($page - 1) * $rowsPerPage;
 $sql = "SELECT ip.name, ip.mname, ip.lname, ip.department, ia.username
         FROM interns_profile ip
         JOIN interns_account ia ON ia.profile_id = ip.id
-        LIMIT ?, ?"; // Use placeholders for prepared statement
-
+        LIMIT ?, ?"; 
+        
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
     die("Error preparing statement: " . $conn->error);

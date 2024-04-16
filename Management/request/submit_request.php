@@ -1,7 +1,6 @@
 <?php
 include '../configuration/interns_config.php';
 
-// Call the getDatabaseConfig function
 $config = getDatabaseConfig();
 
 $dbhost = $config['dbhost'];
@@ -16,7 +15,19 @@ $response = array();
 // Check database connection
 if ($mysqli->connect_error) {
     $response['status'] = 'error';
-    $response['message'] = "Connection failed: " . $mysqli->connect_error;
+    $response['message'] = "Database connection failed: " . $mysqli->connect_error;
+} else {
+    // Add an echo statement to confirm the successful database connection
+    // echo "Database connected successfully!";
+}
+
+// Initialize $username variable
+$username = "";
+
+// Check database connection
+if ($mysqli->connect_error) {
+    $response['status'] = 'error';
+    $response['message'] = "Database connection failed: " . $mysqli->connect_error;
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if username, message, and file are provided
     if (isset($_POST["username"]) && isset($_POST["message"]) && isset($_FILES["fileAttachment"])) {
@@ -25,6 +36,17 @@ if ($mysqli->connect_error) {
         $file_name = $_FILES["fileAttachment"]["name"];
         $file_tmp = $_FILES["fileAttachment"]["tmp_name"];
         $file_path = "../request-upload/" . $file_name;
+
+        // Generate and ensure UUID uniqueness
+        do {
+            $uuid = crc32(uniqid());
+            $stmt_check_uuid = $mysqli->prepare("SELECT id FROM attendance_request WHERE id = ?");
+            $stmt_check_uuid->bind_param("s", $uuid);
+            $stmt_check_uuid->execute();
+            $stmt_check_uuid->store_result();
+            $uuid_exists = $stmt_check_uuid->num_rows > 0;
+            $stmt_check_uuid->close();
+        } while ($uuid_exists);
 
         // Move uploaded file to destination folder
         if (move_uploaded_file($file_tmp, $file_path)) {
@@ -35,29 +57,41 @@ if ($mysqli->connect_error) {
             $current_timestamp = date('Y-m-d H:i:s');
 
             // Prepare and execute SQL statement to insert data into database
-            $stmt = $mysqli->prepare("INSERT INTO attendance_request (username, message, file_name, file_path, request_timestamp) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $username, $message, $file_name, $file_path, $current_timestamp);
+            $stmt = $mysqli->prepare("INSERT INTO attendance_request (id, username, message, file_name, file_path, request_timestamp) VALUES (?, ?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $stmt->bind_param("ssssss", $uuid, $username, $message, $file_name, $file_path, $current_timestamp);
 
-            if ($stmt->execute()) {
-                $response['status'] = 'success';
-                $response['message'] = 'Request submitted successfully!';
+                if ($stmt->execute()) {
+                    $response['status'] = 'success';
+                    $response['message'] = 'Request submitted successfully!';
+                } else {
+                    $response['status'] = 'error';
+                    $response['message'] = 'Error executing SQL statement: ' . $stmt->error . ' for username: ' . $username;
+                }
+                $stmt->close();
             } else {
                 $response['status'] = 'error';
-                $response['message'] = 'Error submitting request!';
+                $response['message'] = 'Error preparing SQL statement: ' . $mysqli->error . ' for username: ' . $username;
             }
-
-            $stmt->close();
         } else {
             $response['status'] = 'error';
-            $response['message'] = 'Failed to move uploaded file!';
+            $response['message'] = 'Failed to move uploaded file to destination folder! for username: ' . $username;
         }
     } else {
-        // Handle the case when the username, message, or file is missing
+        $missing_fields = [];
+        if (!isset($_POST["username"])) {
+            $missing_fields[] = "username";
+        }
+        if (!isset($_POST["message"])) {
+            $missing_fields[] = "message";
+        }
+        if (!isset($_FILES["fileAttachment"])) {
+            $missing_fields[] = "fileAttachment";
+        }
         $response['status'] = 'error';
-        $response['message'] = 'Username, message, or file is missing!';
+        $response['message'] = 'Required field(s) missing: ' . implode(", ", $missing_fields) . ' for username: ' . $username;
     }
 } else {
-    // Handle the case when the form is not submitted
     $response['status'] = 'error';
     $response['message'] = 'Form not submitted!';
 }

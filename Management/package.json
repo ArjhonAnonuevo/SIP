@@ -10,8 +10,6 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "apexcharts": "^3.47.0",
-    "flickity": "^2.2.2",
-    "flickity-responsive": "^2.0.6",
     "fullcalendar": "^6.1.11",
     "html5-qrcode": "^2.3.8",
     "moment": "^2.30.1",

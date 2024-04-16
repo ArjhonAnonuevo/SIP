@@ -14,6 +14,7 @@ $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
 }
+
 // Query to fetch image file names from the database
 $sql = "SELECT file_name FROM images";
 $result = $mysqli->query($sql);
@@ -25,7 +26,7 @@ if ($result->num_rows > 0) {
     // Fetch image file names and construct full URLs
     while($row = $result->fetch_assoc()) {
         $fileName = $row["file_name"];
-        $imageUrl = 'image-upload/' . $fileName; 
+        $imageUrl = 'image-upload/' . $fileName; // Adjust path as needed
         $imageUrls[] = $imageUrl;
     }
 }

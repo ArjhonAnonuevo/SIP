@@ -4,119 +4,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
     <link href="../css/dist/output.css" rel="stylesheet">
-    <script src="../css/dist/jquery.min.js"></script>
-    <title>Document</title>
-</head>
-
-<body>
-    <div class="md:ml-48 xl:ml-48 lg:ml-48">
-        <div id="header"></div>
-        <div class="mx-auto md:max-w-7xl xl:bg-white xl:shadow-md p-6 mt-8 rounded-md">
-            <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
-                <h3 class="text-2xl font-bold mb-6 font-rubik md:mb-0 md:text-3xl sm:text-2xl">Add Username</h3>
-            </div>
-            <form action="submit.php" method="POST" class="mb-8">
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">User ID</label>
-                 <input type="text" name="username" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">First Name</label>
-                    <input type="text" name="fname" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">Middle Name</label>
-                    <input type="text" name="mname" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik">Last Name</label>
-                    <input type="text" name="lname" class="w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                </div>
-            </div>
-            <div class="mt-6">
-                <button type="submit" class="font-rubik bg-green-900 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Submit
-                </button>
-            </div>
-            </form>
-
-            <table id="userTable" class="min-w-full divide-y divide-gray-200">
-                <thead>
-                    <tr class="bg-green-700 text-white">
-                        <th
-                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Username</th>
-                        <th
-                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">First
-                            Name</th>
-                        <th
-                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">Middle
-                            Name</th>
-                        <th
-                            class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Last
-                            Name</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody" class="text-gray-700">
-                    <!-- Table rows will be populated dynamically using AJAX -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            $('#header').load('../header/admin_navs.html');
-
-            // Load table data dynamically
-            function loadTableData(page) {
-                console.log('Loading data for page:', page);
-
-                $.ajax({
-                    url: 'fetch.php',
-                    type: 'GET',
-                    data: { page: page },
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log('Data received:', data);
-
-                        // Log the actual response text
-                        console.log('Response Text:', JSON.stringify(data));
-
-                        var tableRows = '';
-
-                        $.each(data, function (index, item) {
-                            tableRows += '<tr>';
-                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.interns_username + '</td>';
-                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.fname + '</td>';
-                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.mname + '</td>';
-                            tableRows += '<td class="px-4 py-5 md:w-1/6 font-poppins">' + item.lname + '</td>';
-                            tableRows += '</tr>';
-                        });
-
-                        $('#tbody').html(tableRows);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error in AJAX request:', status, error);
-                        console.log('XHR status:', xhr.status);
-                        console.log('XHR response text:', xhr.responseText);
-                        $('#tbody').html('<tr><td colspan="4">Error loading data</td></tr>');
-                    }
-                });
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
 
-            loadTableData(1);
+            to {
+                opacity: 1;
+            }
+        }
 
-            // Handle pagination click
-            $(document).on('click', '#pagination a', function (e) {
-                e.preventDefault();
-                var page = $(this).attr('href').split('=')[1];
-                console.log('Pagination clicked for page:', page);
-                loadTableData(page);
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.3s ease-in-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div id="adminNav"></div>
+    <div id="modal" class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white rounded-lg w-96">
+            <div class="p-4">
+                <h3 class="text-lg font-medium text-gray-900 mb-4 font-kanit">Add User</h3>
+                <form id="submit" action="submit.php" method="POST" class="mb-8">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="username">Username</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="username" name="username" type="text" placeholder="Enter username">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="firstname">First Name</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="firstname" type="text" name="fname" placeholder="Enter first name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="middlename">Middle Name</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="middlename" type="text" name="mname" placeholder="Enter middle name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="lastname">Last Name</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="lastname" type="text" name="lname" placeholder="Enter last name">
+                    </div>
+                    <div class="flex justify-between">
+                        <button id="cancel-btn" class="middle none center mr-4 rounded-lg bg-red-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true" type="button">
+                            Close
+                        </button>
+                        <button id="ok-btn" type="submit" class="middle none center mr-4 rounded-lg bg-blue-600 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-poppins" data-ripple-light="true" >
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="md:ml-48 xl:ml-48 lg:48">
+        <div class="max-w-7xl mx-auto rounded-md">
+            <div class="mx-auto md:max-w-7xl md:max-h-min p-6 mt-28 rounded-md max-w-screen-sm">
+                <div class="md:max-w-7xl bg-white md:max-h-min p-6 mt-8 max-w-screen-sm shadow-lg rounded-lg">
+                    <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+                        <h2 class="text-xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit ml-4">Users</h2>
+                        <button id="open-btn" class="middle none center mr-4 rounded-lg bg-blue-600 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">
+                        Add User
+                    </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table id="usersTable" class="table-auto min-w-full border border-gray-300 rounded-md">
+                            <thead class="bg-customGreen text-white font-rubik">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">
+                                        USERNAME</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">FIRST
+                                        NAME</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">
+                                        MIDDLE NAME</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">LAST
+                                        NAME</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-300 font-poppins" id="userTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="../node_modules/toastr/build/toastr.min.js"></script>
+        <script>
+            $(document).ready(function() {
+            $('#adminNav').load('../header/admin_navs.html');
+            let modal = $('#modal');
+            let btn = $('#open-btn');
+            let cancelBtn = $('#cancel-btn');
+
+            btn.click(function() {
+                modal.css('display', 'flex');
+                modal.removeClass('fadeOut').addClass('fadeIn');
+            });
+
+            cancelBtn.click(function() {
+                modal.removeClass('fadeIn').addClass('fadeOut');
+                setTimeout(function() {
+                    modal.css('display', 'none');
+                }, 300); 
+            });
+
+            $(window).click(function(event) {
+                if (event.target == modal[0]) {
+                    modal.removeClass('fadeIn').addClass('fadeOut');
+                    setTimeout(function() {
+                        modal.css('display', 'none');
+                    }, 300); 
+                }
+            });
+            toastr.options = {
+            positionClass: 'toast-bottom-right'
+        };
+
+            $('#submit').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: 'submit.php',
+                    method: 'POST',
+                    data: formData,
+                    dataType: 'json', 
+                    success: function(response) {
+                    if (response.success) {
+                        toastr.success(response.success);
+                        modal.removeClass('fadeIn').addClass('fadeOut');
+                        setTimeout(function() {
+                            modal.css('display', 'none');
+                        }, 300); 
+                    } else if (response.error) {
+                        alert(response.error);
+                    }
+                },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        toastr.error(response.error);
+                    }
+                });
+            });
+
+            $.ajax({
+                url: 'fetch.php',
+                method: 'GET',
+                success: function(response) {
+                    let users = response.users;
+                    let tableBody = $('#userTableBody');
+
+                    tableBody.empty();
+
+                    users.forEach(function(user) {
+                        let row = '<tr>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.username + '</td>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.firstName + '</td>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.middleName + '</td>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.lastName + '</td>' +
+                            '</tr>';
+                        tableBody.append(row);
+                    });
+
+                    $('#usersTable').DataTable({
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy', 'excel', 'pdf'
+                        ],
+                        "initComplete": function(settings, json) {
+                            $('#usersTable_wrapper').addClass('overflow-hidden shadow-md rounded-lg');
+                            $('#usersTable').addClass('w-full');
+                            $('#usersTable_info').addClass('font-poppins');
+                            $('.dataTables_filter').addClass('mt-4 font-poppins');
+                            $('.dataTables_filter input').addClass('border rounded-md px-3 py-2 placeholder-gray-400 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4');
+                            $('.dataTables_paginate').addClass('mt-4 font-poppins');
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
             });
         });
-    </script>
+        </script>
 </body>
 
 </html>

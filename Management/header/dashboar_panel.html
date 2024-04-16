@@ -8,9 +8,9 @@
     <title>Document</title>
 </head>
 <body>
-    <header class="pt-2 md:pt-1 pb-1 px-1 mt-0 h-auto fixed w-full z-20 top-0">
+    <header class="flex items-center h-20 px-6 sm:px-10 bg-customGreen">
         <a href="/admin_dashboard.php" class="p-2 mr-auto inline-flex items-center">
-          <img src="../icons/sec.png" alt="New Logo" class="xl:h-3vh xl:w-20 xl:mr-2 mx-auto">
+        <img src="../icons/sec.png" alt="New Logo" class="xl: w-auto h-12 sm:w-20 mx-auto md:w-full">
         </a>
         <div class="xl:relative xl:w-full xl:max-w-md sm:-ml-2 hidden">
           <svg aria-hidden="true" viewbox="0 0 20 20" fill="currentColor" class="absolute h-6 w-6 mt-2.5 ml-2 text-gray-400">
@@ -24,14 +24,14 @@
             <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
               <span class="font-semibold text-white uppercase" id = "header"></span>
             </div>
-            <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100 rounded-full overflow-hidden">
-              <img width="50" height="50" src="icons/user.svg" alt="pdf" class="" />
+            <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100 rounded-full overflow-hidden  sm:hidden">
+              <img width="50" height="50" src="icons/user.svg" alt="pdf" class=" xl:inline-block xl:w-auto xl:h-12" />
               </span>
           </button>
           <div class="border-l pl-3 ml-3 space-x-1">
             <button id = "showNotification" class="relative p-2 text-white  hover:bg-gray-700 hover:text-gray-700 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Notifications</span>
-              <img src="icons/notifications.svg" alt="Description of image" class="w-6 h-6">
+              <img src="icons/audit.svg" alt="Description of image" class="w-6 h-6">
             </button>
             <button onclick="window.location.href='php_scripts/add.html'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Add</span>
@@ -41,20 +41,13 @@
               <span class="sr-only">Add Image</span>
               <img src="icons/image.svg" alt="Description of image" class="w-6 h-6">
             </button>
-            <button onclick="window.location.href='/logout.php'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
+            <button onclick="window.location.href='header/logout.php?logout'" class="relative p-2 text-white hover:bg-gray-700 hover:text-gray-800 focus:bg-gray-800 focus:text-gray-600 rounded-full">
               <span class="sr-only">Log out</span>
               <img src="icons/logout.svg" alt="Description of image" class="w-6 h-6">
             </button>
           </div>
         </div>
       </header>
-      <div id="notificationPanel" class="fixed top-24 right-5 bg-blue-500 shadow-lg rounded-lg p-4 flex items-center hidden z-">
-        <div class="flex-grow">
-            <p class="text-xl text-white font-semibold">Notifications</p>
-            <p class="text-md text-white">This is a notification message.</p>       
-        </div>
-        <button class="ml-4 bg-gray-500 text-white rounded-md px-2 py-1 text-xs font-medium">Clear History</button>
-    </div>
     <script>
       $(document).ready(function() {
           $.ajax({
@@ -66,24 +59,6 @@
               error: function() {
                   console.log('Error loading header.php');
               }
-          });
-  
-          // Attach a click event handler to the showNotification button
-          $("#showNotification").click(function() {
-              // Animate the notification panel to fade in
-              $("#notificationPanel").removeClass('hidden').animate({
-                  opacity: 1
-              }, 500);
-          });
-  
-          $("#notificationPanel button").click(function() {
-              // Animate the notification panel to fade out
-              $("#notificationPanel").animate({
-                  opacity: 0
-              }, 500, function() {
-                  // After the animation completes, hide the notification panel
-                  $("#notificationPanel").addClass('hidden');
-              });
           });
       });
   </script>  

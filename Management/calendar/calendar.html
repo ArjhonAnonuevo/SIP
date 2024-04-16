@@ -69,6 +69,7 @@
                     } else {
                         // Display toast notification for error
                         showToast('Error: ' + response.error, false);
+                         closeModal();
                     }
                 },
                 error: function() {

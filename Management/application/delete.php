@@ -1,7 +1,6 @@
 <?php
 if (isset($_POST['control_number'])) {
-    // Sanitize the input
-    $controlNumberToDelete = filter_var($_POST['control_number'], FILTER_SANITIZE_STRING);
+    $controlNumberToDelete = $_POST['control_number'];
     
     include '../configuration/application_config.php';
 
@@ -21,30 +20,29 @@ if (isset($_POST['control_number'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Begin a transaction
     $conn->begin_transaction();
 
     try {
-        // Step 1: Delete from interns_files table
-        $queryDeleteFiles = "DELETE FROM interns_files WHERE control_number = ?";
-        $stmtDeleteFiles = $conn->prepare($queryDeleteFiles);
-        $stmtDeleteFiles->bind_param('s', $controlNumberToDelete);
-        $stmtDeleteFiles->execute();
-        $stmtDeleteFiles->close();
+        // 1. Delete from file_names table
+        $queryFileNames = "DELETE FROM interns_files WHERE control_number = ?";
+        $stmtFileNames = $conn->prepare($queryFileNames);
+        $stmtFileNames->bind_param('s', $controlNumberToDelete);
+        $stmtFileNames->execute();
+        $stmtFileNames->close();
 
-        // Step 2: Delete from application table
-        $queryDeleteApplication = "DELETE FROM application WHERE control_number = ?";
-        $stmtDeleteApplication = $conn->prepare($queryDeleteApplication);
-        $stmtDeleteApplication->bind_param('s', $controlNumberToDelete);
-        $stmtDeleteApplication->execute();
-        $stmtDeleteApplication->close();
-
-        // Step 3: Delete from status table
+        // 2. Delete from status table
         $queryDeleteStatus = "DELETE FROM status WHERE control_number = ?";
         $stmtDeleteStatus = $conn->prepare($queryDeleteStatus);
-        $stmtDeleteStatus->bind_param('s', $controlNumberToDelete);
+        $stmtDeleteStatus->bind_param('s', $controlNumberToDelete);  
         $stmtDeleteStatus->execute();
         $stmtDeleteStatus->close();
+
+        // 3. Delete from application table
+        $queryApplication = "DELETE FROM application WHERE control_number = ?";
+        $stmtApplication = $conn->prepare($queryApplication);
+        $stmtApplication->bind_param('s', $controlNumberToDelete);
+        $stmtApplication->execute();
+        $stmtApplication->close();
 
         // Commit the transaction
         $conn->commit();
@@ -56,18 +54,9 @@ if (isset($_POST['control_number'])) {
     } catch (Exception $e) {
         $conn->rollback();
 
-        // Check if the error message indicates a foreign key constraint failure
-        if (strpos($e->getMessage(), 'foreign key constraint fails') !== false) {
-            // Construct a generic error message
-            $errorMessage = "Cannot delete record due to a foreign key constraint.";
-        } else {
-            // Use the original error message
-            $errorMessage = $e->getMessage();
-        }
-
         $response = array(
             'success' => false,
-            'message' => 'Failed to delete data from the database. Error: ' . $errorMessage
+            'message' => 'Failed to delete data from the database. Error: ' . $e->getMessage()
         );
     }
 

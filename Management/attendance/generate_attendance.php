@@ -8,7 +8,7 @@ class PDF extends \TCPDF
     public function Header()
     {
         // Logo
-        $image_file = '../images/sec_logo.png'; // Update with the actual path to your logo image
+        $image_file = '../images/sec_logo.png'; 
         $this->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font for the header
         $this->SetFont('helvetica', 'B', 10);
@@ -18,9 +18,7 @@ class PDF extends \TCPDF
 // Your existing code for database connection and query
 if (isset($_POST['username'], $_POST['selectedMonth']) && !empty($_POST['selectedMonth'])) {
     $username = trim($_POST['username']);
-    $selectedMonth = trim($_POST['selectedMonth']);
-
-    // Convert the selected month number to the corresponding month name
+    $selectedMonth = intval($_POST['selectedMonth']); // Convert to integer
     $month = date('F', mktime(0, 0, 0, $selectedMonth, 1));
 } else {
     // Redirect to login or handle the case where 'username' or 'selectedMonth' is not in the POST parameters
@@ -58,7 +56,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 // Function to generate PDF
-function generatePDF($result, $name, $department)
+function generatePDF($result, $name, $department, $selectedMonth)
 {
     // Create an instance of the PDF class
     $pdf = new PDF();
@@ -152,7 +150,7 @@ function generatePDF($result, $name, $department)
 // Check if the button is clicked
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_pdf'])) {
     // Call the function to generate PDF
-    generatePDF($result, $name, $department, $month);
+    generatePDF($result, $name, $department, $selectedMonth);
 }
 
 

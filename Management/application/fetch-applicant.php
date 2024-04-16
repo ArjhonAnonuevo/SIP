@@ -25,7 +25,7 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
     $stmt = $mysqli->prepare($query);
 
     if ($stmt) {
-        $stmt->bind_param("i", $applicant_id);
+        $stmt->bind_param("s", $applicant_id);
 
         if ($stmt->execute()) {
             $result = $stmt->get_result();

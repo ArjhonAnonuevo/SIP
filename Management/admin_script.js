@@ -5,7 +5,7 @@ $(document).ready(function() {
     $("#image-container").load("add_image.html");
 });
 $(document).ready(function() {
-    $("#carousel-container").load("carousel/test.html");
+    $("#carousel-container").load("carousel/carousel.html");
 });
   $(document).ready(function() {
     $("#calendar-container").load("calendar/calendar.html");
@@ -36,7 +36,7 @@ document.body.style.overflow = 'auto';
 document.body.style.height = 'auto';
 // Reset the form when closing the modal
 document.getElementById('imageForm').reset();
-document.getElementById('imageContainer').style.backgroundImage = 'none'; 
+document.getElementById('imageContainer').style.backgroundImage = 'none'; // Clear background image
 
 }
 // Define variables
@@ -51,50 +51,44 @@ function fetchSchoolTotalAndRenderChart() {
         type: 'GET',
         dataType: 'json',
         success: function(chartData) {
-            if (chartData && chartData.length > 0) {
-                // Define alternating color scheme
-                var colors = ['#3490dc', '#2E8B57'];
-                // Initialize the chart using ApexCharts
-                var options = {
-                    series: [{
-                        name: 'Total',
-                        data: chartData.map((item, index) => ({
-                            x: item.schoolName,
-                            y: parseInt(item.total),
-                            color: colors[index % colors.length]
-                        }))
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: '400px',
-                        width: '100%',
-                        foreColor: '#333'
-                    },
-                    xaxis: {
-                        categories: chartData.map(item => item.schoolName),
-                        labels: {
-                            show: false
-                        }
+            // Define alternating color scheme
+            var colors = ['#3490dc', '#2E8B57'];
+            // Initialize the chart using ApexCharts
+            var options = {
+                series: [{
+                    name: 'Total',
+                    data: chartData.map((item, index) => ({
+                        x: item.schoolName,
+                        y: parseInt(item.total),
+                        color: colors[index % colors.length]
+                    }))
+                }],
+                chart: {
+                    type: 'bar',
+                    height: '400px',
+                    width: '100%',
+                    foreColor: '#333'
+                },
+                xaxis: {
+                    categories: chartData.map(item => item.schoolName),
+                    labels: {
+                        show: false
                     }
-                };
-
-                // Render the chart
-                if (chartSchoolTotal) {
-                    chartSchoolTotal.destroy();
                 }
-                chartSchoolTotal = new ApexCharts(document.getElementById('chart'), options);
-                chartSchoolTotal.render();
-            } else {
-                console.error('Empty or invalid data received from the server');
+            };
+
+            // Render the chart
+            if (chartSchoolTotal) {
+                chartSchoolTotal.destroy();
             }
+            chartSchoolTotal = new ApexCharts(document.getElementById('chart'), options);
+            chartSchoolTotal.render();
         },
         error: function(xhr, status, error) {
             console.error('AJAX request failed:', error);
-            // Handle the error gracefully, e.g., by displaying a message to the user
         }
     });
 }
-
 
 // Function to fetch status total data and render chart
 function fetchStatusTotalAndRenderChart() {

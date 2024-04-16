@@ -6,100 +6,267 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Daily Activities</title>
     <link href="../css/dist/output.css" rel="stylesheet">
-    <script src="../css/dist/jquery.min.js"></script>
+    <!-- Include pdf.js library CSS -->
 </head>
 
 <body class="bg-gray-100">
     <div id="headerContainer"></div>
     <div class="md:ml-48 xl:ml-48 lg:ml-48">
+        <div class="max-w-6xl mx-auto rounded-md">
         <div class="mx-auto md:max-w-7xl p-6 mt-8 rounded-md xl:bg-white xl:shadow-md">
-            <div class="flex flex-col items-center mb-5">
+            <div class="flex flex-col text-center xl:text-left mb-5">
                 <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Monthly Daily Activities</h2>
-                <div class="relative w-64">
-                    <select class="block appearance-none w-full bg-gray-100 border border-gray-300 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <!-- Add your months as options -->
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <!-- Add more months as needed -->
-                    </select>
-                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                        <svg class="h-4 w-4 fill-current text-gray-500" viewBox="0 0 20 20">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                            <path fill-rule="evenodd"
-                                d="M10 0a1 1 0 00-.707.293l-7 7a1 1 0 101.414 1.414L10 2.414l6.293 6.293a1 1 0 101.414-1.414l-7-7A1 1 0 0010 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                </div>
             </div>
             <div id="resultsContainer" class="mx-auto">
                 <table class="min-w-full divide-y divide-gray-200">
+                    <!-- Table headers -->
                     <thead>
                         <tr class="bg-green-700 text-white">
-                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">Date</th>
-                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Task</th>
-                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Time</th>
-                            <th class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Status</th>
+                            <th
+                                class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">
+                                Date</th>
+                            <th
+                                class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                Task</th>
+                            <th
+                                class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                Time</th>
+                            <th
+                                class="px-4 py-2 md:w-1/4 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                Status</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="text-gray-700 font-light">
-                        <!-- Table rows will be dynamically added here -->
+                        <!-- Table data will be dynamically added here -->
                     </tbody>
                 </table>
             </div>
+            <!-- Pagination container -->
+            <div id="paginationContainer" class="mt-4 flex justify-end items-center">
+                <span id="pageIndicator" class="mr-2 font-poppins text-sm"></span>
+                <img id="prevButton" src="../icons/prev.svg" alt="Previous" class="h-4 w-auto" style="cursor: pointer;">
+                <img id="nextButton" src="../icons/next.svg" alt="Next" class="h-4 w-auto ml-2" style="cursor: pointer;">
+            </div>
+            <div id="page"></div>
+        </div>
+        <div class="max-w-6xl mx-auto rounded-md">
+        <div class="mx-auto md:max-w-7xl p-6 mt-8 rounded-md xl:bg-white xl:shadow-md">
+            <div class="flex flex-col text-center xl:text-left mb-5">
+                <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Monthly Reports Files</h2>
+            </div>
+            <div id="files" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <!-- File cards will be dynamically added here -->
+            </div>
         </div>
     </div>
+    <!-- Modal for PDF content -->
+    <div id="pdfModal"
+        class="fixed top-0 left-0 z-50 w-full h-full bg-gray-900 bg-opacity-50 hidden flex items-center justify-center">
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-lg p-4">
+            <canvas id="pdfCanvas" class="w-full "></canvas>
+            <button id="closePdfModal" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-md">Close</button>
+            <span id="pdfPageNumber" class="block text-center mt-2"></span>
+        </div>
+    </div>
+
+    <script src="../css/dist/jquery.min.js"></script>
+    <!-- Include pdf.js library JavaScript -->
+    <script src="../node_modules/pdfjs-dist/build/pdf.min.js"></script>
+    <script src="../node_modules/pdfjs-dist/web/pdf_viewer.js"></script>
     <script>
         $(document).ready(function () {
+            // Load header
             $('#headerContainer').load('../header/admin_navs.html');
+
+            // Initialize variables
             const params = new URLSearchParams(window.location.search);
             const username = params.get('username');
+            let currentPage = params.get('page') || 1;
+            let totalPages = 1; // Initialize totalPages here
+            const recordsPerPage = 10;
 
+            // Set worker source for pdf.js
+            pdfjsLib.GlobalWorkerOptions.workerSrc = '../node_modules/pdfjs-dist/build/pdf.worker.min.js';
 
-            // Fetch data using AJAX
-            $.ajax({
-                url: 'fetch-act.php',
-                type: 'GET',
-                dataType: 'json',
-                data: { username}, 
-                success: function (data) {
-                    console.log('Data received from server:', data);
-                    displayResults(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error fetching data:', error);
-                    console.log('Status:', status);
-                    console.log('XHR:', xhr);
+            // Event listeners for pagination buttons
+            $('#prevButton').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchData(currentPage);
                 }
             });
-            function displayResults(data) {
-            var tableBody = $('#tableBody');
-            tableBody.empty();
 
-    if (data.length > 0) {
-        for (var i = 0; i < data.length; i++) {
-            var row = $('<tr></tr>');
-            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].date + '</td>');
-            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].type + '</td>');
-            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].time + '</td>');
-            row.append('<td class="px-4 py-2 md:w-1/4">' + data[i].status + '</td>');
+            $('#nextButton').click(function () {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    fetchData(currentPage);
+                }
+            });
 
-            if (i % 2 === 0) {
-                row.addClass('bg-gray-100'); // Change to your preferred background color
+            // Function to fetch data via AJAX
+            function fetchData(page) {
+                $.ajax({
+                    url: 'fetch-act.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { username, page },
+                    success: function (response) {
+                        console.log('Data received from server:', response);
+                        totalPages = parseInt(response.pagination.totalPages);
+                        displayResults(response.data);
+                        displayPagination(response.pagination);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                        console.log('Status:', status);
+                        console.log('XHR:', xhr);
+                    }
+                });
             }
 
-            tableBody.append(row);
-        }
-    } else {
-        console.log('No results found.');
-        var noResultsRow = $('<tr><td class="text-center" colspan="4">No results found.</td></tr>');
-        tableBody.append(noResultsRow);
-    }
-}
+            // Function to fetch files via AJAX
+            function fetchFiles(username) {
+                $.ajax({
+                    url: 'fetch-files.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { username },
+                    success: function (response) {
+                        console.log('Files received from server:', response);
+                        displayFiles(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching files:', error);
+                        console.log('Status:', status);
+                        console.log('XHR:', xhr);
+                    }
+                });
+            }
+
+            // Display pagination information
+            function displayPagination(pagination) {
+                var currentPage = parseInt(pagination.currentPage);
+                totalPages = parseInt(pagination.totalPages);
+                var pageIndicator = $('#pageIndicator');
+
+                pageIndicator.text('Page ' + currentPage + ' of ' + totalPages);
+            }
+
+            // Display fetched results in the table
+            function displayResults(data) {
+                var tableBody = $('#tableBody');
+                tableBody.empty();
+
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var row = $('<tr></tr>');
+                        row.append('<td class="px-4 py-2 md:w-1/4 font-poppins">' + data[i].date + '</td>');
+                        row.append('<td class="px-4 py-2 md:w-1/4 font-poppins">' + data[i].type + '</td>');
+                        row.append('<td class="px-4 py-2 md:w-1/4 font-poppins">' + data[i].time + '</td>');
+                        row.append('<td class="px-4 py-2 md:w-1/4 font-poppins">' + data[i].status + '</td>');
+
+                        if (i % 2 === 0) {
+                            row.addClass('bg-gray-100');
+                        }
+
+                        tableBody.append(row);
+                    }
+                } else {
+                    console.log('No results found.');
+                    var noResultsRow = $('<tr><td class="text-center" colspan="4">No results found.</td></tr>');
+                    tableBody.append(noResultsRow);
+                }
+            }
+
+            // Display fetched files in the files container
+            function displayFiles(files) {
+                var filesContainer = $('#files');
+                filesContainer.empty();
+
+                if (files.length > 0) {
+                    files.forEach(function (file) {
+                        var card = $('<div class="bg-white shadow-md rounded-md overflow-hidden">' +
+                            '<div class="px-4 py-5 sm:p-6">' +
+                            '<h3 class="text-lg font-bold">' + file.file_name + '</h3>' +
+                            '<span class="text-sm text-gray-500">Upload Date: ' + file.upload_date + '</span>' +
+                            '<div class="mt-5">' +
+                            '<button class="viewPdfButton inline-block bg-blue-500 text-white rounded-lg px-4 py-2 mr-2 hover:bg-blue-600" data-url="' + file.file_path + '">View</button>' +
+                            '<a href="' + file.file_path + '" download="Monthly reports" ' +
+                            'class="inline-block bg-green-500 text-white rounded-lg px-4 py-2 hover:bg-green-600">Download</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>');
+
+                        filesContainer.append(card);
+                    });
+                } else {
+                    filesContainer.text('No files available.');
+                }
+
+                // Attach click event to view buttons
+                $('.viewPdfButton').click(function() {
+                    var pdfUrl = $(this).data('url');
+                    loadPdfInModal(pdfUrl);
+                });
+            }
+
+            // Function to load PDF in modal
+            function loadPdfInModal(pdfUrl) {
+                // Show modal
+                $('#pdfModal').show();
+
+                // Clear previous content
+                $('#pdfCanvas').empty();
+
+                // Load PDF
+                pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc) {
+                    // Fetch the first page
+                    displayPdfPage(pdfDoc, 1);
+                }).catch(function(error) {
+                    console.error('Error loading PDF:', error);
+                });
+
+                // Attach close modal event
+                $('#closePdfModal').click(function() {
+                    $('#pdfModal').hide();
+                });
+            }
+
+            // Function to display a specific page of the PDF
+            function displayPdfPage(pdfDoc, pageNumber) {
+                pdfDoc.getPage(pageNumber).then(function(page) {
+                    var canvas = document.getElementById('pdfCanvas');
+                    var context = canvas.getContext('2d');
+                    var maxHeight = window.innerHeight - 100;
+                    var maxWidth = window.innerWidth - 25;
+                    
+                    // Set viewport with a scale that fits within maxWidth and maxHeight
+                    var viewport = page.getViewport({ scale: 1 });
+                    var scale = Math.min(maxWidth / viewport.width, maxHeight / viewport.height);
+                    viewport = page.getViewport({ scale: scale });
+                    
+                    // Set canvas size
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+                    // Render PDF page into canvas context
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+
+                    // Display current page number
+                    $('#pdfPageNumber').text('Page ' + pageNumber + ' of ' + pdfDoc.numPages);
+                });
+            }
+
+            // Fetch data and files
+            fetchData(currentPage);
+            fetchFiles(username);
         });
     </script>
-    
 </body>
 
 </html>

@@ -1,72 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Table</title>
-    <link href="../css/dist/output.css" rel="stylesheet">
-    <script src="../css/dist/jquery.min.js"></script>
-  </head>
-  <body class="font-sans bg-gray-100">
-    <section class="py-8 bg-blueGray-50">
-      <div class="container mx-auto">
-        <div class="flex sm:flex-col items-center justify-between mb-6">
-          <div class="flex items-center mt-4 md:mt-0">
-            <form id="generateForm" action="generate_attendance.php" method="post">
 
-              <!-- Hidden input field to store the username -->
-              <input type="hidden" name="username" id="username">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Table</title>
+  <link href="../css/dist/output.css" rel="stylesheet">
+  <script src="../css/dist/jquery.min.js"></script>
+</head>
 
-              <!-- Hidden input field to store the selected month -->
-              <input type="hidden" name="selectedMonth" id="selectedMonth">
-              <button type="submit" name="generate_pdf" class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik">Generate PDF</button>
-            </form>
-            <button class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik" onclick="openModal()">Request</button>
-            <button class=" ml-4 px-6 py-3 bg-green-800 text-white  font-bold uppercase rounded-md" onclick="openSubmission()">Upload</button>
-          </div>
+<body class="font-sans bg-gray-100">
+  <section class="py-8 bg-blueGray-50">
+    <div class="container mx-auto">
+      <div class="flex sm:flex-col items-center justify-between mb-6">
+        <div class="flex flex-wrap justify-center items-center mt-4 md:mt-0">
+          <form id="generateForm" action="generate_attendance.php" method="post">
+            <input type="hidden" name="username" id="username">
+            <input type="hidden" name="selectedMonth" id="selectedMonth">
+            <button type="submit" name="generate_pdf" class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik mt-2">Generate PDF</button>
+          </form>
+          <button class="ml-4 px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik" onclick="openModal()">Request</button>
+          <button class=" ml-4 px-6 py-3 bg-green-800 text-white  font-bold uppercase rounded-md" onclick="openSubmission()">Upload</button>
         </div>
-        <div class="flex justify-center mt-4 mb-8">
-          <select id="monthSelect" onchange="fetchData()" class="border rounded px-3 py-2 bg-white text-gray-800">
-
-            <!-- Options will be dynamically added here -->
+      </div>
+      <div class="flex justify-center mt-4 mb-8">
+        <select id="monthSelect" onchange="fetchData(this.value)" class="border rounded px-3 py-2 bg-white text-gray-800">
           </select>
+      </div>
+      <div class="overflow-x-auto">
+        <table id="attendanceTable" class="w-full table-auto divide-y divide-gray-200">
+          <thead>
+            <tr class="bg-green-700 text-white">
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Morning Time In</th>
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Lunch Time out</th>
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">After lunch Time In</th>
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">End of the day Time Out</th>
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Attendance date</th>
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Rendered Hours</th>
+              <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Overtime</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <div class="mt-4 mr-44">
+          <span class="text-xl font-semibold text-blueGray-700 flex justify-end font-kanit">Total Rendered Hours: <span id="totalRenderedHours">0</span></span>
         </div>
-        <div class="overflow-x-auto">
-          <table id="attendanceTable" class="w-full table-auto divide-y divide-gray-200">
-
-            <!-- Table headers -->
-            <thead>
-              <tr class="bg-green-700 text-white">
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Morning Time In</th>
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Lunch Time out</th>
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">After lunch Time In</th>
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">End of the day Time Out</th>
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Attendance date</th>
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Rendered Hours</th>
-                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Overtime</th>
-              </tr>
-            </thead>
-
-            <!-- Table body -->
-            <tbody>
-            </tbody>
-          </table>
-          <div class="mt-4 mr-44">
-            <span class="text-xl font-semibold text-blueGray-700 flex justify-end font-kanit">Total Rendered Hours: <span id="totalRenderedHours">0</span></span>
-          </div>
+        <div class="flex justify-center mt-4">
+          <button onclick="printFile()" class="px-6 py-3 bg-green-800 text-white rounded-md font-bold font-rubik flex items-center">
+                <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+                Print
+            </button>
         </div>
 
-        <!-- Pagination -->
         <div class="flex justify-end mt-4">
-          <div id="pagination" class="pagination">
-          </div>
-          <div id="currentPageInfo" class="ml-4 text-gray-700 text-md font-poppins"></div>
+          <div id="pagination" class="pagination"></div>
         </div>
       </div>
       <div id="modal-form"></div>
       <div id="submission-form"></div>
-      </div>
-    </section>
-    <script src="attendance.js"></script>
-  </body>
+    </div>
+  </section>
+  <script src="attendance.js"></script>
+</body>
+
 </html>
