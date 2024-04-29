@@ -36,7 +36,10 @@ $offset = ($page - 1) * $rowsPerPage;
 $sql = "SELECT ip.name, ip.mname, ip.lname, ip.department, ia.username
         FROM interns_profile ip
         JOIN interns_account ia ON ia.profile_id = ip.id
-        LIMIT ?, ?"; 
+        JOIN server_status ss ON ia.username = ss.username
+        WHERE ss.interns_status = 'active'
+        LIMIT ?, ?";
+
         
 $stmt = $conn->prepare($sql);
 if (!$stmt) {

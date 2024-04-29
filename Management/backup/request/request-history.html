@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../css/dist/tailwind.min.css" rel="stylesheet">
+    <script src="../css/dist/jquery.min.js"></script>
+    <script src="../node_modules/pdfjs-dist/build/pdf.min.js"></script>
+    <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
+    <script src="../node_modules/toastr/build/toastr.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <title>Request History</title>
+  </head>
+  <body>
+    <div id="admin-navs"></div>
+    <div class="xl:ml-48 md:ml-48 lg:ml-48">
+        <div class="max-w-6xl mx-auto rounded-md">
+      <div class="mx-auto md:max-w-7xl md:max-h-min  xl:shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
+        <div class="container mx-auto px-4 py-8">
+          <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit xl:text-left text-center">Request History</h2>
+          <div id="requestHistory" class="space-y-4">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="pdfModal" class="modal hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50">
+        <div class="modal-content relative w-full sm:max-w-3xl mx-auto my-12">
+            <div class="bg-white p-4 rounded shadow-md h-min">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                    <h3 class="text-lg font-kanit font-semibold">PDF Viewer</h3>
+                    <button id="closeModalBtn" class="text-gray-700 hover:text-gray-900 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="overflow-y-auto">
+                    <canvas id="pdfCanvas" class="mx-auto h-auto"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="attendanceModal" class="modal hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50">
+        <div class="modal-content relative w-auto max-w-3xl mx-auto my-12">
+            <div class="bg-white p-4 rounded shadow-md h-auto">
+                <button id="closeAttendanceModalBtn" class="absolute top-2 right-2 text-gray-700 hover:text-gray-900 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <h2 class="text-xl font-bold mb-4">Attendance Table</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <input type="text" id="datepicker" class="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500" placeholder="Select date">
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="attendanceTable" class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-green-700 text-white">
+                                <th class="px-4 py-1 text-xs uppercase font-semibold text-left font-rubik">Morning Time In</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Lunch Time out</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">After lunch Time In</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">End of the day Time Out</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Attendance date</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Rendered Hours</th>
+                                <th class="px-6 py-3 text-xs uppercase font-semibold text-left font-rubik">Overtime</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <form id="attendanceForm">
+                    <div class="flex justify-center mt-6 w-">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded uppercase">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>    
+    <script src = "../header/session_timeout.js"></script>
+    <script src="request.js"> </script>
+  </body>
+</html>

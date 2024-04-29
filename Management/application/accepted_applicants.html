@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="../css/dist/output.css">
     <script src="../css/dist/jquery.min.js"></script>
 </head>
+
 <body class="overflow-hidden">
     <div id="adminNav"></div>
     <div class="md:ml-48 xl:ml-48 lg:48">
@@ -19,8 +21,10 @@
                     <div class="relative">
                         <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md" id="searchID" placeholder="Search...." oninput="filterTable()">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
                     </div>
@@ -30,11 +34,21 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr class="bg-customGreen text-white absolute sticky top-0">
-                                <th class="px-4 w-52 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Control Number</th>
-                                <th class="px-4 w-52 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Name</th>
-                                <th class="px-4 w-52 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Email</th>
-                                <th class="px-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Application Date</th>
-                                <th class="px-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Status</th>
+                                <th
+                                    class="px-4 w-52 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                    Control Number</th>
+                                <th
+                                    class="px-4 w-52 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                    Name</th>
+                                <th
+                                    class="px-4 w-52 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                    Email</th>
+                                <th
+                                    class="px-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                    Application Date</th>
+                                <th
+                                    class="px-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                    Status</th>
                             </tr>
                         </thead>
                         <tbody id="table-body" class="text-gray-700"></tbody>
@@ -49,42 +63,70 @@
     </div>
     <script>
         $(document).ready(function() {
-         $('#adminNav').load('../header/admin_navs.html');
-            fetchData();
-
-            function fetchData() {
-                $.ajax({
-                    url: 'accepted_applicants.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response && response.data && response.data.length > 0) {
-                            updateTable(response);
-                        } else {
-                            $('#table-body').html('<tr><td colspan="5" class="text-center">No data found</td></tr>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+        $('#adminNav').load('../header/admin_navs.html');
+        fetchData(1);
+        function fetchData(pageNumber) {
+          $.ajax({
+            url: 'accepted_applicants.php',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+              page: pageNumber
+            },
+            success: function(response) {
+              if (response && response.data && response.data.length > 0) {
+                updateTable(response);
+                updatePagination(response.totalPages, response.currentPage);
+              } else {
+                $('#table-body').html('<tr><td colspan="5" class="text-center">No data found</td></tr>');
+                $('#paginationButtons').empty();
+              }
+            },
+            error: function(xhr, status, error) {
+              console.error(xhr.responseText);
             }
-
-            function updateTable(data) {
-                $('#table-body').empty();
-                $.each(data.data, function(index, row) {
-                    var fullName = row.given_name + ' ' + row.middle_name + ' ' + row.family_name;
-                    var rowHtml = '<tr>';
-                    rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left text-md font-poppins font-medium">' + row.control_number + '</td>';
-                    rowHtml += '<td class="p-3 px-4 py-4 md:w-1/6 text-left text-md underline text-blue-500 font-poppins"><a href="display.html?control_number=' + row.control_number + '">' + fullName + '</a></td>';
-                    rowHtml += '<td class="px-4 py-8 md:w-1/6 text-left tex-md font-poppins">' + row.primary_email + '</td>';
-                    rowHtml += '<td class="xl:px-10 px-2 py-2 md:w-1/6 text-right text-md font-poppins">' + row.application_date + '</td>';
-                    rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left tex-md font-poppins">' + row.status_name + '</td>';
-                    rowHtml += '</tr>';
-                    $('#table-body').append(rowHtml);
-                });
-            }
-        });
+          });
+        }
+        function updateTable(data) {
+          $('#table-body').empty();
+          $.each(data.data, function(index, row) {
+            var fullName = row.given_name + ' ' + row.middle_name + ' ' + row.family_name;
+            var rowHtml = '<tr>';
+            rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left text-md font-poppins font-medium">' + row.control_number + '</td>';
+            rowHtml += '<td class="p-3 px-4 py-4 md:w-1/6 text-left text-md underline text-blue-500 font-poppins"><a href="display.html?control_number=' + row.control_number + '">' + fullName + '</a></td>';
+            rowHtml += '<td class="px-4 py-8 md:w-1/6 text-left tex-md font-poppins">' + row.primary_email + '</td>';
+            rowHtml += '<td class="xl:px-10 px-2 py-2 md:w-1/6 text-right text-md font-poppins">' + row.application_date + '</td>';
+            rowHtml += '<td class="px-4 py-2 md:w-1/6 text-left tex-md font-poppins">' + row.status_name + '</td>';
+            rowHtml += '</tr>';
+            $('#table-body').append(rowHtml);
+          });
+        }
+        function updatePagination(totalPages, currentPage) {
+          $('#paginationButtons').empty();
+          let prevButton = $('<img>').attr('src', '../icons/prev.svg').addClass('pagination-button h-4');
+          prevButton.css('width', 'auto');
+          if (currentPage === 1) {
+            prevButton.addClass('disabled');
+          } else {
+            prevButton.click(function() {
+              fetchData(currentPage - 1);
+            });
+          }
+          $('#paginationButtons').append(prevButton);
+          let nextButton = $('<img>').attr('src', '../icons/next.svg').addClass('pagination-button h-4');
+          nextButton.css('width', 'auto');
+          if (currentPage === totalPages) {
+            nextButton.addClass('disabled');
+          } else {
+            nextButton.click(function() {
+              fetchData(currentPage + 1);
+            });
+          }
+          $('#paginationButtons').append(nextButton);
+          $('#yourPageInfo').text('Page ' + currentPage + ' of ' + totalPages);
+        }
+      });
     </script>
 </body>
+
 </html>

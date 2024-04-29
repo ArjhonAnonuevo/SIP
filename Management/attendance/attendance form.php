@@ -10,7 +10,6 @@
     <script src="../node_modules/html5-qrcode/html5-qrcode.min.js"></script>
     <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
     <script src="../node_modules/toastr/build/toastr.min.js"></script>
-    <!-- Include scanner sound -->
     <audio id="scannerSound" src="scan.mp3"></audio>
     <style>
         #reader video {

@@ -5,7 +5,7 @@ $.ajax({
     url: '../application/fetch-applicant.php',
     method: 'GET',
     dataType: 'json',
-    data: { id: id }, // Corrected line
+    data: { id: id },
     success: function (data) {
         // Map the data fields to labels
         const fieldLabels = {
@@ -18,8 +18,11 @@ $.ajax({
             'age': 'Age',
             'gender': 'Gender',
             'contact': 'Contact',
-            'landline': 'Landline',
-            'secondary_email': 'Secondary Email'
+            'secondary_email': 'Secondary Email',
+            'emergency_contact': 'Emergency Contact',
+            'school': 'School',
+            'course': 'Course',
+            'required_hours': 'Hours Required',
         };
 
         Object.entries(data).forEach(([key, value]) => {

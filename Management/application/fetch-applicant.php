@@ -18,10 +18,10 @@ if (isset($_GET["id"]) && !empty($_GET["id"])) {
         die(json_encode(array("error" => "Connection failed: " . $mysqli->connect_error), JSON_UNESCAPED_UNICODE));
     }
     
-    $query = "SELECT a.given_name, a.middle_name, a.family_name, a.address, a.place_birth, a.birthday, a.age, a.gender, a.contact, a.landline, a.secondary_email, a.primary_email
-    FROM application AS a
-    WHERE a.control_number = ?";
-
+    $query = "SELECT given_name, middle_name, family_name, address, place_birth, birthday, age, gender, contact, secondary_email, primary_email,
+              emergency_contact, school, course, required_hours
+              FROM application
+              WHERE control_number = ?";
     $stmt = $mysqli->prepare($query);
 
     if ($stmt) {

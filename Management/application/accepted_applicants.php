@@ -13,8 +13,8 @@ mysqli_set_charset($con, 'utf8');
 
 // Pagination parameters
 $rowsPerPage = 10; // Number of rows per page
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1; // Current page number
-$offset = ($page - 1) * $rowsPerPage; // Offset for pagination
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1; 
+$offset = ($page - 1) * $rowsPerPage; 
 
 // Execute SQL query to fetch data with pagination
 $sql = "SELECT A.control_number, A.given_name, A.middle_name, A.family_name, A.primary_email, A.application_date, S.status_name

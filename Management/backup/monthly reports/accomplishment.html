@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monthly Reports</title>
+  <link rel="stylesheet" href="../css/dist/output.css">
+  <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
+  <script src="../css/dist/jquery.min.js"></script>
+  <script src="../node_modules/toastr/build/toastr.min.js"></script>
+  <style>
+   .toast {
+    position: fixed;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    transform: none;
+   }
+   .toast-top-center {
+    top: 50%;
+    transform: translateY(-50%);
+   }
+
+  </style>
+ </head>
+ <body class="bg-gray-100">
+  <div id="adminNav"></div>
+  <div class="container mx-auto py-6">
+   <div class="xl:ml-40 md:ml-40">
+    <div class="max-w-6xl mx-auto rounded-md">
+     <div class="shadow-md p-6 mt-8 rounded-md">
+      <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+       <div class="flex flex-col md:flex-row md:justify-between items-center mb-6">
+        <h1 class="text-3xl font-semibold font-kanit md:text-center">Monthly Reports</h1>
+        <div class="mt-4 md:mt-0 md:flex md:justify-center">
+         <button type="button" onclick="openModalSubmission()" class="font-rubik inline-flex items-center px-4 py-2 bg-customGreen text-white font-medium rounded-xl mr-2 hover:bg-green-700 focus:outline-none focus:bg-green-700">Upload Compiled Monthly Task</button>
+         <button type="button" id="redirect" class="font-rubik inline-flex items-center px-4 py-2 bg-gray-300 text-gray-800 font-medium rounded-xl hover:bg-gray-400 focus:outline-none focus:bg-gray-400 mt-2 md:mt-0">View Submitted Task</button>
+        </div>
+       </div>
+       <form id="submit-report" action="submit.php" method="POST">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+         <div>
+          <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
+          <input id="date" name="date" type="date" class="mt-1 block w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+         </div>
+         <div>
+          <label for="time" class="block text-sm font-medium text-gray-700">Time</label>
+          <input id="time" name="time" type="time" class="mt-1 block w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+         </div>
+         <div>
+          <label for="status" class="block text-sm font-medium text-gray-700 font-rubik">Status</label>
+          <select id="status" name="status" class="mt-1 block w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
+           <option value="complete">Complete</option>
+           <option value="not_complete">Not Complete</option>
+          </select>
+         </div>
+        </div>
+        <div class="mb-4">
+         <label for="type" class="block text-sm font-medium text-gray-700 font-rubik">Description</label>
+         <textarea id="type" name="type" rows="3" placeholder="Description" class="mt-1 block w-full h-60 rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"></textarea>
+        </div>
+        <div class="flex justify-end">
+         <button id="submit-btn" type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit</button>
+        </div>
+       </form>
+      </div>
+     </div>
+    </div>
+    <div id="submitReports" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 transition-opacity duration-300">
+     <div class="flex items-center justify-center h-full">
+      <div class="bg-white p-8 rounded-md shadow-md transform transition-transform duration-300 relative">
+       <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onclick="closeSubmission()">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+       </button>
+       <div>
+        <form id="reports-form" enctype="multipart/form-data">
+         <div class="mt-4">
+          <label for="fileUpload" class="block text-sm font-medium text-gray-700 mb-2">Upload Monthly File</label>
+          <label for="dropzone-file" class="mx-auto cursor-pointer flex w-full max-w-lg flex-col items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+           </svg>
+           <h2 id="fileUploadLabel" class="mt-4 text-xl font-medium text-gray-700 tracking-wide">Montly Reports File</h2>
+           <p id="fileUploadText" class="mt-2 text-gray-500 tracking-wide">Upload or drag & drop your PDF file</p>
+           <input id="dropzone-file" name="reportsFile" type="file" class="hidden" accept=".pdf">
+          </label>
+          <div class="flex justify-center  mt-5">
+           <button id="submit" class="middle none center mr-4 rounded-lg bg-blue-500 py-3 px-6 text-xs font-bold uppercase text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-rubik"
+           data-ripple-light="true"
+           >Submit</button>
+          </div>
+         </div>
+        </form>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <script>
+    function openModalSubmission() {
+     var modal = document.getElementById('submitReports');
+     modal.style.display = 'block';
+   }
+
+   function closeSubmission() {
+     var modal = document.getElementById('submitReports');
+     modal.style.display = 'none';
+   }
+
+   $(document).ready(function() {
+     $('#adminNav').load('../header/interns_nav.html');
+     $("#redirect").click(function() {
+       window.location.href = "interns-task.html";
+     });
+     $('#dropzone-file').change(function() {
+       var fileName = $(this).val().split('\\').pop();
+       $('#fileUploadLabel').text(fileName);
+       $('#fileUploadText').text("File selected: " + fileName);
+     });
+     $(document).ready(function() {
+    $('#submit-report').submit(function(event) {
+        event.preventDefault();
+
+        var formData = new FormData($('#submit-report')[0]);
+
+        $.ajax({
+            url: 'submit.php',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+              toastr.options = {
+              "positionClass": "toast-bottom-right", 
+              "preventDuplicates": true,
+              "timeOut": "5000"
+               };
+                toastr.success('Form submitted successfully.');
+                setTimeout(function() {
+                    window.location.reload();
+                }, 3000); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                toastr.error('Error submitting form.');
+            }
+        });
+    });
+    $('#reports-form').submit(function(event) {
+        event.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            url: 'send-report.php', 
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+              toastr.options = {
+              "positionClass": "toast-bottom-right", 
+              "preventDuplicates": true,
+              "timeOut": "5000"
+               };
+                toastr.success('File uploaded successfully.');
+                closeSubmission();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                toastr.error('Error uploading file.');
+            }
+        });
+    });
+     });
+
+     function isPastDate(dateString) {
+       const today = new Date();
+       const givenDate = new Date(dateString);
+       today.setHours(0, 0, 0, 0);
+       givenDate.setHours(0, 0, 0, 0);
+       const pastYearDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+       return givenDate.getTime() < pastYearDate.getTime();
+     }
+
+     function isValidWeekday(dateString) {
+       const selectedDate = new Date(dateString);
+       const dayOfWeek = selectedDate.getDay();
+       return dayOfWeek >= 1 && dayOfWeek <= 5;
+     }
+     document.getElementById('time').addEventListener('blur', function() {
+    const selectedTime = this.value;
+    if (selectedTime !== "") {
+        const [hours, minutes] = selectedTime.split(":").map(Number);
+        const validStartTime = 7;
+        const validEndTime = 17;
+        if (hours < validStartTime || hours > validEndTime) {
+            if (typeof toastr !== 'undefined') {
+                toastr.options = {
+                    "positionClass": "toast-top-center",
+                    "preventDuplicates": true,
+                    "timeOut": "5000",
+                };
+                toastr.error('Please select a time between 7 AM and 5 PM.');
+            } else {
+                console.log('Toastr library not loaded');
+            }
+            this.value = "";
+        }
+    }
+});
+     document.getElementById('date').addEventListener('blur', function() {
+       const selectedDate = this.value;
+       if (selectedDate !== "") {
+         if (isPastDate(selectedDate)) {
+           if (typeof toastr !== 'undefined') {
+             toastr.options = {
+               "positionClass": "toast-top-center",
+               "preventDuplicates": true,
+               "timeOut": "5000",
+             };
+             toastr.error('Please select a date in the future for this field.');
+           } else {
+             console.log('Toastr library not loaded');
+           }
+           this.value = "";
+         } else if (!isValidWeekday(selectedDate)) {
+           if (typeof toastr !== 'undefined') {
+             toastr.options = {
+               "positionClass": "toast-top-center",
+               "preventDuplicates": true,
+               "timeOut": "5000",
+             };
+             toastr.error('Please select a weekday (Monday to Friday) for this field.');
+           } else {
+             console.log('Toastr library not loaded');
+           }
+           this.value = "";
+         }
+       }
+     });
+   });
+   </script>
+ </body>
+</html>

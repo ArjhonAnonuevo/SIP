@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 // Set the character set to UTF-8
 $conn->query("SET NAMES 'utf8'");
 
-$rowsPerPage = 10;
+$rowsPerPage = 20; // Changed to display 20 rows per page
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
 
 $offset = ($page - 1) * $rowsPerPage;
@@ -33,10 +33,13 @@ if (!$totalRowsResult) {
 $totalRows = $totalRowsResult->fetch_assoc()["total"];
 $totalPages = ceil($totalRows / $rowsPerPage);
 
-$sql = "SELECT ip.name, ip.mname, ip.lname, ip.department, ia.username
+    $sql = "SELECT ip.name, ip.mname, ip.lname, ip.department, ia.username
         FROM interns_profile ip
         JOIN interns_account ia ON ia.profile_id = ip.id
+        JOIN server_status ss ON ia.username = ss.username
+        WHERE ss.interns_status = 'active'
         LIMIT ?, ?";
+
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {

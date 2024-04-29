@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flickity Carousel Example</title>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
-    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/phucbm/flickity-responsive@2.0.6/flickity-responsive.min.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="node_modules/flickity/dist/flickity.min.css">
+    <script src="node_modules/flickity/dist/flickity.pkgd.min.js"></script>
+    <script src="node_modules/flickity-responsive/flickity-responsive.min.js"></script>
     <style>
         .carousel-cell {
             width: 100%;
@@ -90,7 +90,7 @@
     
                         const carousel = new Flickity('.carousel', {
                             pageDots: false,
-                            autoPlay: 3000 // Ensure autoplay is enabled for all screen sizes
+                            autoPlay: 3000 
                         });
                     },
                     error: function(xhr, status, error) {

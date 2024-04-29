@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dist/tailwind.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="myModal"
+        class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 transition-opacity duration-300">
+        <div class="flex items-center justify-center h-full">
+            <div class="bg-white p-8 rounded-md shadow-md transform transition-transform duration-300 relative">
+                <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <h2 class="text-2xl font-semibold text-blueGray-700 font-kanit">Request Form</h2>
+
+                <form id="requestForm" action="../request/submit_request.php" method="POST"
+                    enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="message" class="block text-sm font-medium text-gray-700">Message:</label>
+                        <textarea id="message" name="message" rows="3" class="mt-1 p-2 border border-gray-300 rounded-md w-full" placeholder="Enter your message here"></textarea>
+                        <input type="hidden" id="user_id" name="username" value="">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="fileAttachment" class="block text-sm font-medium text-gray-700">File Attachment:</label>
+                        <input type="file" id="fileAttachment" name="fileAttachment" class="mt-1 p-2 border border-gray-300 rounded-md w-full" accept=".pdf">
+                    </div>
+
+                    <button type="submit" class="mt-4 px-4 py-2 bg-green-800 text-white rounded-md font-bold font-rubik">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            console.log("Document ready"); // Debugging statement
+            console.log("Before AJAX request");
+            $.ajax({
+                url: '../header/header.php',
+                type: 'GET',
+                success: function(response) {
+                    console.log("AJAX request successful"); // Debugging statement
+                    console.log("This is the user_id: " + response); // Log the response to the console
+                    // Set the retrieved user_id as the value of the hidden input field
+                    $('#user_id').val(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX request error: " + error); // Debugging statement
+                }
+            });
+    
+            // Configure Toastr options
+            toastr.options = {
+                "positionClass": "toast-bottom-right", 
+            };
+    
+            // Handle form submission
+            $('#requestForm').submit(function(event) {
+                console.log("Form submission triggered"); // Debugging statement
+                // Prevent default form submission
+                event.preventDefault();
+    
+                // Create FormData object to gather form data
+                var formData = new FormData(this);
+    
+                // Log the form data to verify the user_id value
+                console.log("Form data before submission: ", formData);
+    
+                // Submit form data via AJAX
+                $.ajax({
+                    type: "POST",
+                    url: "../request/submit_request.php",
+                    data: formData,
+                    dataType: "json",
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        console.log("Form submission AJAX success");
+                        if (response.status === 'success') {
+                            toastr.success(response.message);
+                            closeModal();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    },
+                 error: function(xhr, status, error) {
+    console.error("Form submission AJAX error: ", xhr, status, error); // Log detailed error information
+}
+
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

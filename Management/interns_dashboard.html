@@ -1,13 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="node_modules/moment/min/moment.min.js"></script>
-    <script src = "node_modules/fullcalendar/index.global.min.js"></script>
+    <script src="node_modules/fullcalendar/index.global.min.js"></script>
     <link rel="stylesheet" href="node_modules/toastify-js/src/toastify.css">
-    <script src = "node_modules/toastify-js/src/toastify.js"></script>
+    <script src="node_modules/toastify-js/src/toastify.js"></script>
     <script src="script.js"></script>
     <script src="css/dist/jquery.min.js"></script>
     <link rel="icon" href="securities and exchange.png" type="image/x-icon">
@@ -15,8 +14,8 @@
     <title>Dashboard</title>
   </head>
   <body>
-  <div class="relative z-10">
-  <div id="dashboard-panel-container"></div>
+    <div class="relative z-10">
+      <div id="dashboard-panel-container"></div>
       <div class=" text-gray-800">
         <main class="p-6 sm:p-10 space-y-6">
           <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
@@ -27,7 +26,7 @@
             <div class="flex flex-wrap items-start justify-end -mb-3">
             </div>
           </div>
-              <div id="carousel-container"></div>
+          <div id="carousel-container"></div>
           <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
             <div class="flex items-center p-8 bg-white shadow rounded-lg">
               <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
@@ -41,7 +40,7 @@
             </div>
             <div class="flex items-center p-8 bg-white shadow rounded-lg">
               <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
-                <a href="monthly reports/acomplishment_tab.html">
+                <a href="monthly reports/accomplishment.html">
                   <img src="icons/monthly reports.png" class="h-16 w-16 rounded-full" alt="Image 1">
                 </a>
               </div>
@@ -77,64 +76,150 @@
                 </div>
               </div>
             </div>
-                </div>
-              </div>
-            </div>
-            <div id="eventModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition duration-300 ease-in-out transform scale-100 origin-center z-50">
-              <div class="modal-content bg-white p-6 rounded shadow-lg w-full max-w-md transition-transform duration-300 ease-in-out transform scale-100 relative">
-                <div class="flex items-center justify-between mb-4">
-                  <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 hover:text-blue-600 text-center">Events</h2>
-                  <button id="closeModalBtn" class="absolute top-0 right-0 p-2 text-blue-500 hover:text-blue-600 cursor-pointer" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0   0   24   24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6   18L18   6M6   6l12   12" />
-                    </svg>
-                  </button>
-                </div>
-                <hr class="border-t border-gray-200 my-4">
-                <dl class="space-y-4">
-                  <dt class="text-md font-semibold text-gray-900 h-m">Event Title:</dt>
-                  <dd id="eventTitle" class="text-base text-gray-700 hover:text-blue-500 py-1">Your Event Title Here</dd>
-                  <dt class="text-md font-semibold text-gray-900">Event Start:</dt>
-                  <dd id="eventStart" class="text-base font-semibold text-blue-500 hover:text-blue-600 py-1">Date and Time Here</dd>
-                </dl>
-              </div>
-            </div>
-          </section>
-        </main>
       </div>
-      <script>
-         $(document).ready(function() {
-        $("#dashboard-panel-container").load("header/interns_panel.html");
-    });
-       $(document).ready(function() {
-        $("#carousel-container").load("carousel/carousel.html");
-    });
-
-        document.addEventListener('DOMContentLoaded', function() {
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            events: 'calendar/fetch_events.php',
-            eventTimeFormat: {
-              hour: '2-digit',
-              minute: '2-digit',
-              meridiem: 'short'
-            },
-            eventClick: function(info) {
-              openModal(info.event.title, info.event.start);
+    </div>
+    </div>
+    <div id="eventModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center transition duration-300 ease-in-out transform scale-100 origin-center z-50">
+      <div class="modal-content bg-white p-6 rounded shadow-lg w-full max-w-md transition-transform duration-300 ease-in-out transform scale-100 relative">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 hover:text-blue-600 text-center">Events</h2>
+          <button id="closeModalBtn" class="absolute top-0 right-0 p-2 text-blue-500 hover:text-blue-600 cursor-pointer" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0   0   24   24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6   18L18   6M6   6l12   12" />
+            </svg>
+          </button>
+        </div>
+        <hr class="border-t border-gray-200 my-4">
+        <dl class="space-y-4">
+          <dt class="text-md font-semibold text-gray-900 h-m">Event Title:</dt>
+          <dd id="eventTitle" class="text-base text-gray-700 hover:text-blue-500 py-1">Your Event Title Here</dd>
+          <dt class="text-md font-semibold text-gray-900">Event Start:</dt>
+          <dd id="eventStart" class="text-base font-semibold text-blue-500 hover:text-blue-600 py-1">Date and Time Here</dd>
+        </dl>
+      </div>
+    </div>
+    </section>
+    </main>
+    <div id="changePasswordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+      <div class="modal-overlay fixed inset-0 bg-black bg-opacity-50"></div>
+      <div class="modal-content bg-white p-6 rounded shadow-lg w-full max-w-md transition-transform duration-300 ease-in-out transform scale-100 relative">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Change Password</h2>
+        <form id="changePasswordForm" class="space-y-4">
+          <div>
+            <label for="newPassword" class="block text-sm font-medium text-gray-700 font-rubik">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" class="font-poppins mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <span id="passwordStrengthError" class="text-sm text-red-500"></span>
+          </div>
+          <div>
+            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 font-rubik">Confirm New Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="font-poppins mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+          </div>
+          <div class="flex justify-end">
+            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Change Password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+    <script>
+     document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              events: 'calendar/fetch_events.php',
+              eventTimeFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                meridiem: 'short'
+              },
+              eventClick: function(info) {
+                openModal(info.event.title, info.event.start);
+              }
+            });
+            calendar.render();
+            function openModal(title, start) {
+              var modal = document.getElementById('eventModal');
+              modal.classList.remove('hidden');
+              document.getElementById('eventTitle').textContent = title;
+              document.getElementById('eventStart').textContent = `Start: ${moment(start).format('YYYY-MM-DD HH:mm')}`;
+              document.getElementById('closeModalBtn').addEventListener('click', function() {
+                modal.classList.add('hidden');
+              });
             }
           });
-          calendar.render();
-          function openModal(title, start) {
-            var modal = document.getElementById('eventModal');
-            modal.classList.remove('hidden');
-            document.getElementById('eventTitle').textContent = title;
-            document.getElementById('eventStart').textContent = `Start: ${moment(start).format('YYYY-MM-DD HH:mm')}`;
-            document.getElementById('closeModalBtn').addEventListener('click', function() {
-              modal.classList.add('hidden');
+      $(document).ready(function() {
+            $("#dashboard-panel-container").load("header/interns_panel.html");
+            $("#carousel-container").load("carousel/carousel.html");
+    
+            function openPassModal() {
+                var modal = $('#changePasswordModal');
+                modal.removeClass('hidden');
+            }
+    
+            function closePassModal() {
+                var modal = $('#changePasswordModal');
+                modal.addClass('hidden');
+            }
+    
+            function checkPasswordStatus() {
+                $.ajax({
+                    url: "php_scripts/get_password.php",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(response) {
+                        if (response && response.success) {
+                            openPassModal();
+                        } else {
+                            closePassModal();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching session variable:", error);
+                    }
+                });
+            }
+    
+            checkPasswordStatus();
+    
+            $('#changePasswordForm').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+    
+                // Check password strength before submitting the form
+                var newPassword = $('#newPassword').val();
+                if (!isPasswordStrong(newPassword)) {
+                    $('#passwordStrengthError').text('Password must contain at least one capital letter and one special character.');
+                    return;
+                }
+    
+                $.ajax({
+                    url: "php_scripts/update_password.php",
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function(response) {
+                        if (response && response.success) {
+                            console.log("Password updated successfully");
+                            closePassModal();
+                            toastr.success('Password updated successfully');
+                        } else {
+                            console.error("Error updating password:", response);
+                            toastr.error('Error updating password');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error updating password:", error);
+                    }
+                });
             });
-          }
+    
+            // Function to check password strength
+            function isPasswordStrong(password) {
+                var capitalRegex = /[A-Z]/;
+                var specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+                return capitalRegex.test(password) && specialCharRegex.test(password);
+            }
         });
-      </script>
-    </body>
+    </script>
+  </body>
 </html>

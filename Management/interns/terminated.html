@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>terminated Interns</title>
+    <link rel="stylesheet" href="../css/dist/output.css">
+    <script src="../css/dist/jquery.min.js"></script>
+</head>
+<body class="overflow-hidden">
+    <div id="adminNav"></div>
+    <div class="md:ml-48 xl:ml-48 lg:48">
+        <div class="max-w-6xl mx-auto rounded-md">
+            <div class="mx-auto md:max-w-7xl md:max-h-min shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
+                <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+                    <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit ml-4">Terminated Interns</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                    <div class="relative">
+                        <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md" id="searchID" placeholder="Search...." oninput="filterTable()">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div id="email-status"></div>
+                <div class="bg-white shadow-lg overflow-x-auto xl:overflow-y-auto max-h-96">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr class="bg-customGreen text-white absolute sticky top-0">
+                                <th class="x-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-center text-xs font-semibold uppercase tracking-wider font-rubik">Full Name</th>
+                                <th class="x-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-center text-xs font-semibold uppercase tracking-wider font-rubik">Department</th>
+                                <th class="x-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-center text-xs font-semibold uppercase tracking-wider font-rubik">Username</th>
+                                <th class="x-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-center text-xs font-semibold uppercase tracking-wider font-rubik">Status</th>
+                                <th class="x-4 py-4 md:w-1/6 border-b-2 border-gray-200 text-center text-xs font-semibold uppercase tracking-wider font-rubik">Account Expiration</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="text-gray-700"></tbody>
+                    </table>
+                </div>
+                <div class="flex items-center justify-between space-x-2 text-sm mt-4">
+                    <div id="paginationButtons" class="flex items-center"></div>
+                    <span id="yourPageInfo" class="text-gray-800 font-poppins text-md">Page 1 of 1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#adminNav').load('../header/admin_navs.html');
+            fetchData(1); 
+            function fetchData(page) {
+                $.ajax({
+                    url: 'terminated.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { page: page },
+                    success: function(response) {
+                        if (response && response.data && response.data.length > 0) {
+                            updateTable(response);
+                            renderPagination(response.pagination);
+                        } else {
+                            $('#table-body').html('<tr><td colspan="5" class="text-center py-4 font-poppins prose">No data found</td></tr>');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+            function updateTable(data) {
+                var tableBody = $('#table-body');
+                tableBody.empty(); 
+
+                $.each(data.data, function(index, row) {
+                    var fullName = row.name + ' ' + row.mname + ' ' + row.lname;
+                    var html = '<tr>';
+                    html += '<td class="px-4 py-4 md:w-1/6 text-left text-md font-poppins font-medium">' + fullName + '</td>';
+                    html += '<td class="px-4 py-4 md:w-1/6 text-left text-md font-poppins font-medium">' + row.department + '</td>';
+                    html += '<td class="px-4 py-4 md:w-1/6 text-left text-md font-poppins font-medium">' + row.username + '</td>';
+                    html += '<td class="px-4 py-4 md:w-1/6 text-left text-md font-poppins font-medium"><span class="bg-green-500 text-white py-1 px-2 rounded-lg">' + row.interns_status + '</span></td>';
+                     html += '<td class="px-4 py-4 md:w-1/6 text-left text-md font-poppins font-medium">' + row.account_expired + '</td>';
+                    html += '</tr>';
+                    tableBody.append(html);
+                });
+                $('#yourPageInfo').text('Page ' + data.pagination.page + ' of ' + data.pagination.totalPages);
+            }
+
+            function renderPagination(pagination) {
+                var paginationButtons = $('#paginationButtons');
+                paginationButtons.empty(); 
+
+                if (pagination.totalPages > 1) {
+                    var currentPage = pagination.page;
+                    var totalPages = pagination.totalPages;
+
+                    // Add previous button
+                    if (currentPage > 1) {
+                        paginationButtons.append('<button class="btn" onclick="fetchData(' + (currentPage - 1) + ')">Previous</button>');
+                    }
+
+                    // Add page number buttons
+                    for (var i = 1; i <= totalPages; i++) {
+                        paginationButtons.append('<button class="btn ' + (currentPage === i ? 'btn-primary' : '') + '" onclick="fetchData(' + i + ')">' + i + '</button>');
+                    }
+
+                    // Add next button
+                    if (currentPage < totalPages) {
+                        paginationButtons.append('<button class="btn" onclick="fetchData(' + (currentPage + 1) + ')">Next</button>');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

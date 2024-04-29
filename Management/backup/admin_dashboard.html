@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/dist/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="node_modules/toastr/build/toastr.min.css">
+    <link rel="stylesheet" href="node_modules/flickity/css/flickity.css" media="screen">
+    <title>Dashboard</title>
+  </head>
+  <body class="bg-gray-100 h-auto">
+    <div class="flex-grow text-gray-800 over">
+      <div id="dashboard-panel-container"></div>
+      <div id="image-container"></div>
+      <main class="p-10 sm:p-10 space-y-6">
+        <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+          <div class="mr-6">
+            <h1 class="text-4xl font-semibold mb-2 font-kanit">Admin Dashboard</h1>
+            <h2 class="text-gray-600 ml-0.5 font-rubik">SEC Internship Program</h2>
+          </div>
+          <div class="flex flex-wrap items-start justify-end -mb-3">
+          </div>
+        </div>
+        <div id="carousel-container" class="z-20"></div>
+        <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-6 sm:grid-cols-1 sm:overflow-x-auto sm:scrollbar-hide">
+          <a href="attendance/display attendance.html" class="flex items-center p-8 bg-white shadow-lg rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-purple-600 bg-purple-100 rounded-full mr-6">
+              <img loading="lazy" src="icons/attendance.png" class="h-16 w-16 rounded-full" alt="Image 1">
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Attendance</span>
+            </div>
+          </a>
+          <a href="monthly reports/reports_table.html" class="flex items-center p-8 bg-white shadow-lg rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-green-600 bg-green-100 rounded-full mr-6">
+              <img loading="lazy" src="icons/monthly reports.png" class="h-16 w-16 rounded-full" alt="Image 1">
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Monthly reports</span>
+            </div>
+          </a>
+          <a href="certificate/certifications.php" class="flex items-center p-8 bg-white shadow-lg rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <img loading="lazy" src="icons/certification.png" class="h-16 w-16 rounded-full" alt="Image 1">
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Certifications</span>
+            </div>
+          </a>
+          <a href="application/applicants_table.html" class="flex items-center p-8 bg-white shadow-lg rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <img loading="lazy" src="icons/application.png" class="h-16 w-16 rounded-full" alt="Image 1">
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Application</span>
+            </div>
+          </a>
+          <a href="request/request-history.html" class="flex items-center p-8 bg-white shadow-lg rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <img loading="lazy" src="icons/request.png" class="h-16 w-16 rounded-full" alt="Image 1">
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">Request History</span>
+            </div>
+          </a>
+          <a href="attendance/qr_display.html" class="flex items-center p-8 bg-white shadow-lg rounded-lg">
+            <div class="inline-flex flex-shrink-0 items-center justify-center h-16 w-16 text-red-600 bg-red-100 rounded-full mr-6">
+              <img loading="lazy" src="icons/qr.png" class="h-16 w-16 rounded-full" alt="Image 1">
+            </div>
+            <div>
+              <span class="block text-gray-900 text-xl font-bold font-rubik">QR</span>
+            </div>
+          </a>
+        </section>
+        <section class="container mx-auto py-8">
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-4">
+              <h2 class="text-xl font-bold mb-4">Accepted Interns</h2>
+              <div id="chart" class="chart-container"></div>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-4">
+              <h2 class="text-xl font-bold mb-4">Interns Status</h2>
+              <div id="status-chart" class="chart-container"></div>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-4">
+              <h2 class="text-xl font-bold mb-4 w-5/">Application Status</h2>
+              <div id="line-chart" class="chart-container"></div>
+            </div>
+          </div>
+        </section>
+        <section class="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-flow-col-2 gap-6">
+          <div class="md:col-span-2 bg-white xl:shadow rounded-lg">
+            <section class="grid grid-cols-2 gap-4 items-center">
+              <div class="px-6 py-5 font-semibold border-b text-left border-gray-100 text-3xl font-kanit">Calendar</div>
+              <div class="flex justify-end mr-6 mt-4">
+                <button onclick="modalOpen('')" type="button" class="w-auto text-white uppercase focus:ring-4 font-bold focus:outline-none btn btn-success focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 [dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring]-blue-800 md:mb-12 relative">
+                  <span class="mr-2">Add Event</span>
+                </button>
+              </div>
+            </section>
+            <div class="p-4 flex-grow">
+              <div class="container xl:mx-auto">
+                <div class="flex justify-center">
+                  <div class="w-full">
+                    <div class="bg-white rounded-lgshadow-lg">
+                      <div class="p-4">
+                        <div id="calendar"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="calendar-container"></div>
+          </div>
+          <div class="flex flex-col md:col-span-2 md:h-auto w-auto lg:h-50 bg-white shadow-md rounded-lg justify-start">
+            <div class="px-6 py-5 font-semibold border-b border-gray-100 text-2xl text-center font-kanit">Interns Account
+            </div>
+            <div id="accounts"></div>
+          </div>
+    </div>
+    </div>
+    <div id="eventModal" class="hidden fixed inset-0 overflow-y-auto bg-black bg-opacity-50 z-50 flex items-center justify-center transition duration-300 ease-in-out transform scale-100 origin-center">
+      <div class="modal-content bg-white p-6 rounded shadow-lg w-full max-w-md transition-transform duration-300 ease-in-out transform scale-100 relative">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-500 hover:text-blue-600 text-center">Events</h2>
+          <button id="closeModalBtn" class="absolute top-0 right-0 p-2 text-blue-500 hover:text-blue-600 cursor-pointer" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <hr class="border-t border-gray-200 my-4">
+        <dl class="space-y-4">
+          <dt class="text-md font-semibold text-gray-900 font-poppins">Event Title:</dt>
+          <dd id="eventTitle" class="text-base text-gray-700 hover:text-blue-500 py-1 font-poppins">Your Event Title Here</dd>
+          <dt class="text-md font-semibold text-gray-900 font-poppins">Event Start:</dt>
+          <dd id="eventStart" class="text-base font-semibold text-blue-500 hover:text-blue-600 py-1">Date and Time Here
+          </dd>
+        </dl>
+      </div>
+      <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden"></div>
+    </div>
+    </div>
+    </section>
+    </main>
+    </div>
+    <script src="css/dist/jquery.min.js" defer></script>
+    <script src="node_modules/moment/min/moment.min.js" defer></script>
+    <script src="node_modules/fullcalendar/index.global.min.js" defer></script>
+    <script src="node_modules/toastr/build/toastr.min.js" defer></script>
+    <script src="node_modules/apexcharts/dist/apexcharts.min.js" defer></script>
+    <script src="node_modules/flickity/dist/flickity.pkgd.min.js" defer></script>
+    <script src="node_modules/flickity-responsive/flickity-responsive.min.js" defer></script>
+    <script src="admin_script.js" defer></script>
+    <script src="session/session_timeout.js" defer></script>
+  </body>
+</html>

@@ -1,48 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Reports</title>
-    <link href="../css/dist/output.css" rel="stylesheet"> 
+    <link href="../css/dist/output.css" rel="stylesheet">
     <script src="../css/dist/jquery.min.js"></script>
     <style>
-        /* Define zebra stripe effect for even rows */
         tbody tr:nth-child(even) {
             background-color: #f3f3f3;
         }
     </style>
 </head>
+
 <body class="">
     <div id="headerContainer"></div>
     <div class="md:ml-48 xl:ml-48 lg:ml-48">
         <div class="mx-auto md:max-w-7xl p-6 mt-8 rounded-md ">
             <div class="max-w-6xl mx-auto rounded-md">
-            <div class="flex flex-col md:flex-row md:justify-between  items-center mb-5">
-                <h2 class="text-2xl font-bold mb-6  md:mb-0 md:text-3xl font-roboto-slab">Attendance Table</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                <div class="relative">
-                    <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md" id="searchID" placeholder="Search...." oninput="filterTable()">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
+                <div class="flex flex-col md:flex-row md:justify-between  items-center mb-5">
+                    <h2 class="text-2xl font-bold mb-6  md:mb-0 md:text-3xl font-kanit">Attendance Table</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                    <div class="relative">
+                        <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md" id="searchID" placeholder="Search...." oninput="filterTable()">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="resultsContainer" class="bg-white shadow-lg overflow-x-auto xl:overflow-y-auto max-h-96">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead></thead>
-                    <tbody class="text-gray-700 font-light"></tbody>
-                </table>
-                <div class="flex items-center justify-end space-x-2 text-sm mt-4 font-"></div>
+                <div id="resultsContainer" class="bg-white shadow-lg overflow-x-auto ">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead></thead>
+                        <tbody class="text-gray-700 font-light"></tbody>
+                    </table>
+                    <div class="flex items-center justify-end space-x-2 text-sm mt-4 font-"></div>
+                </div>
+                <!-- Image buttons for pagination -->
+                <div class="flex items-center justify-end space-x-2 text-sm mt-4">
+                    <span class="text-gray-600" id="currentPage"></span>
+                    <img src="../icons/prev.svg" alt="Previous" title="Previous" class="pagination-image w-auto h-4 rounded-md shadow cursor-pointer" onclick="prevPage()">
+                    <img src="../icons/next.svg" alt="Next" title="Next" class="pagination-image w-auto h-4 rounded-md shadow cursor-pointer" onclick="nextPage()">
+                </div>
             </div>
         </div>
-    </div>
-    <script src="../header/session_timeout.js"></script>
-    <script>
-        $(document).ready(function () {
+        <script src="../header/session_timeout.js"></script>
+        <script>
+            $(document).ready(function () {
             $('#headerContainer').load('../header/admin_navs.html');
 
             var page = 1; 
@@ -77,8 +86,7 @@
                     var thead = $('<thead></thead>');
                     var tbody = $('<tbody class="text-gray-700 font-light"></tbody>'); 
 
-                    // Add table headers
-                    var headersRow = $('<tr class="bg-customGreen text-white"></tr>');
+                    var headersRow = $('<tr class="bg-customGreen text-white absolute sticky top-0"></tr>');
                     headersRow.append('<th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">Name</th>');
                     headersRow.append('<th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Department</th>');
                     headersRow.append('<th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Sip number</th>');
@@ -104,32 +112,6 @@
                 }
             }
 
-            // Function to display pagination
-            function displayPagination(currentPage, totalPages) {
-                var paginationContainer = $('#resultsContainer');
-                var pagination = $('<div class="flex items-center justify-end space-x-2 text-sm mt-4"></div>');
-
-                if (currentPage > 1) {
-                    pagination.append('<a href="#" data-page="' + (currentPage - 1) + '" title="previous" class="pagination-link inline-flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-600 rounded-md shadow"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="w-4"><polyline points="15 18 9 12 15 6"></polyline></svg></a>');
-                }
-
-                pagination.append('<span class="text-gray-600">Page ' + currentPage + ' of ' + totalPages + '</span>');
-
-                if (currentPage < totalPages) {
-                    pagination.append('<a href="#" data-page="' + (currentPage + 1) + '" title="next" class="pagination-link inline-flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-600 rounded-md shadow"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>');
-                }
-
-                paginationContainer.append(pagination);
-
-                // Add click event for pagination links
-                $('.pagination-link').on('click', function (e) {
-                    e.preventDefault();
-                    page = parseInt($(this).data('page'));
-                    console.log('Pagination link clicked. Fetching data for page:', page);
-                    fetchData();
-                });
-            }
-
             // Function to display error message
             function displayErrorMessage(message) {
                 console.log('Displaying error message:', message);
@@ -147,6 +129,20 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
             });
         }
-    </script>
+
+        // Pagination functions
+        function prevPage() {
+            if (page > 1) {
+                page--;
+                fetchData();
+            }
+        }
+
+        function nextPage() {
+            page++;
+            fetchData();
+        }
+        </script>
 </body>
+
 </html>

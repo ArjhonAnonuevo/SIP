@@ -11,7 +11,7 @@ class PDF extends TCPDF
     public function Header()
     {
         // Logo
-        $image_file = '../tailwind/securities and exchange.png'; // Update with the actual path to your logo image
+        $image_file = '../images/sec_logo.png'; // Update with the actual path to your logo image
         $this->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font for the header
         $this->SetFont('helvetica', 'B', 10);
@@ -73,7 +73,7 @@ function generatePDF($name, $department, $selectedMonth, $conn, $username)
     $pdf->SetFont('helvetica', '', 10);
 
     // Add logo
-    $image_file = '../tailwind/securities and exchange.png'; // Update with the actual path to your logo image
+    $image_file = '../images/sec_logo.png';
     $pdf->Image($image_file, 10, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
     $pdf->Ln(18);
     $pdf->SetFont('helvetica', 'B', 10);

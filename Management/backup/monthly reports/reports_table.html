@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Reports</title>
+    <link href="../css/dist/output.css" rel="stylesheet">
+    <style>
+        /* CSS for zebra striping */
+        tbody tr:nth-child(even) {
+            background-color: #f3f3f3;
+        }
+    </style>
+    <script src="../css/dist/jquery.min.js"></script>
+</head>
+
+<body class="">
+    <div id="headerContainer"></div>
+    <div class="md:ml-48 xl:ml-48 lg:ml-48">
+        <div
+            class="mx-auto md:max-w-7xl md:max-h-min xl:bg-white md:bg-white shadow-md p-6 mt-8 rounded-md max-w-screen-sm">
+            <div class="max-w-6xl mx-auto rounded-md">
+            <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+                <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Monthly Reports Table</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                <div class="relative">
+                    <input type="text" class="border border-solid border-gray-300 rounded-md p-2 pl-8 w-full md:w-md" id="searchID" placeholder="Search...." oninput="filterTable()">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-5-5m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div id="resultsContainer" class="max-h-96 overflow-y-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="text-white">
+                            <th
+                                class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">
+                                Name</th>
+                            <th
+                                class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                Department</th>
+                            <th
+                                class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">
+                                Sip number</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 font-light"></tbody>
+                </table>
+                <div class="flex items-center justify-end space-x-2 text-sm mt-4"></div>
+            </div>
+        </div>
+    </div>
+    <script src="../header/session_timeout.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#headerContainer').load('../header/admin_navs.html');
+
+            var page = 1;
+            var recordsPerPage = 10;
+
+            function fetchData() {
+                $.ajax({
+                    url: 'interns_script.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { page: page },
+                    success: function (response) {
+                        if (response.success) {
+                            var totalPages = response.totalPages || 0;
+                            displayResults(response.data, totalPages);
+                        } else {
+                            displayErrorMessage(response.message);
+                        }
+                    },
+                });
+            }
+
+            function displayResults(data, totalPages) {
+                var resultsContainer = $('#resultsContainer');
+                resultsContainer.empty();
+
+                if (data.length > 0) {
+                    var tbody = $('<tbody class="text-customGreen font-light"></tbody>');
+
+                    for (var i = 0; i < data.length; i++) {
+                        var row = $('<tr class="bg-gray-50 rounded-md shadow-sm"></tr>');
+                        row.append('<td class="px-4 py-2 md:w-1/6 text-left font-poppins font-medium"><a href="view.html?username=' + encodeURIComponent(data[i].username) + '" class="text-blue-700">' + data[i].name + ' ' + data[i].mname + ' ' + data[i].lname + '</a></td>');
+                        row.append('<td class="py-4 p-2 uppercase font-medium font-poppins text-gray-800">' + data[i].department + '</td>');
+                        row.append('<td class="px-4 py-2 md:w-1/6 text-left font-medium font-poppins text-gray-800">' + data[i].username + '</td>');
+
+                        tbody.append(row);
+                    }
+
+                    var table = $('<table class="min-w-full divide-y divide-gray-200"></table>');
+                    table.append('<thead><tr class="bg-customGreen text-white"><th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wide font-rubik">Name</th><th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Department</th><th class="px-4 py-2 md:w-1/6 border-b-2 border-gray-200 text-left text-xs font-semibold uppercase tracking-wider font-rubik">Sip number</th></tr></thead>');
+                    table.append(tbody);
+
+                    resultsContainer.append(table);
+
+                    displayPagination(page, totalPages);
+                } else {
+                    console.log('No results found.');
+                    resultsContainer.text('No results found.');
+                }
+            }
+
+            function displayPagination(currentPage, totalPages) {
+                var paginationContainer = $('#resultsContainer');
+                var pagination = $('<div class="flex items-center justify-end space-x-2 text-sm mt-4"></div>');
+
+                if (currentPage > 1) {
+                    pagination.append('<a href="#" data-page="' + (currentPage - 1) + '" title="previous" class="font-rubik pagination-link inline-flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-600 rounded-md shadow"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="w-4"><polyline points="15 18 9 12 15 6"></polyline></svg></a>');
+                }
+
+                pagination.append('<span class="text-gray-600">Page ' + currentPage + ' of ' + totalPages + '</span>');
+
+                if (currentPage < totalPages) {
+                    pagination.append('<a href="#" data-page="' + (currentPage + 1) + '" title="next" class="font-rubik pagination-link inline-flex items-center justify-center w-8 h-8 bg-gray-200 text-gray-600 rounded-md shadow"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="w-4"><polyline points="9 18 15 12 9 6"></polyline></svg></a>');
+                }
+
+                paginationContainer.append(pagination);
+
+                $('.pagination-link').on('click', function (e) {
+                    e.preventDefault();
+                    page = parseInt($(this).data('page'));
+                    console.log('Pagination link clicked. Fetching data for page:', page);
+                    fetchData();
+                });
+            }
+
+            function displayErrorMessage(message) {
+                console.log('Displaying error message:', message);
+
+                var resultsContainer = $('#resultsContainer');
+                resultsContainer.text('Error: ' + message);
+            }
+
+            fetchData();
+        });
+
+        function filterTable() {
+            var searchText = $('#searchID').val().toLowerCase();
+            $('#resultsContainer tbody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+            });
+        }
+    </script>
+</body>
+
+</html>

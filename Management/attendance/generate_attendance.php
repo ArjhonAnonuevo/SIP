@@ -2,7 +2,7 @@
 // Include the Composer autoloader
 require_once '../vendor/autoload.php';
 
-// Extend TCPDF with your own class
+// Extend TCPDF
 class PDF extends \TCPDF
 {
     public function Header()
@@ -15,13 +15,11 @@ class PDF extends \TCPDF
     }
 }
 
-// Your existing code for database connection and query
 if (isset($_POST['username'], $_POST['selectedMonth']) && !empty($_POST['selectedMonth'])) {
     $username = trim($_POST['username']);
     $selectedMonth = intval($_POST['selectedMonth']); // Convert to integer
     $month = date('F', mktime(0, 0, 0, $selectedMonth, 1));
 } else {
-    // Redirect to login or handle the case where 'username' or 'selectedMonth' is not in the POST parameters
     header('Location: login.php');
     exit();
 }

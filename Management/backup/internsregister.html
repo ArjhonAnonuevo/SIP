@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/dist/tailwind.min.css">
+  <script src="css/dist/jquery.min.js"></script>
+  <title>Document</title>
+    <style>
+      #video {
+        transform: rotateY(180deg);
+  }
+    </style>
+</head>
+<body>
+  <div class="bg-white dark:bg-gray-900">
+    <div class="flex justify-center h-screen">
+      <div class="hidden bg-cover lg:block lg:w-2/3" style="background-image: url(images/sec.png)">
+        <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+          <div>
+            <h2 class="text-4xl font-bold text-white">Securities and Exchange Commission</h2>
+
+            <p class="max-w-xl mt-3 text-gray-300">Effortlessly manage internship programs within the Securities and Exchange Commission (SEC) with our intuitive web-based platform. From application to evaluation, 
+                     empowering interns, engaging supervisors, and facilitating seamless administration.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+        <div class="flex-1">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold text-center dark:text-white">SIP</h2>
+
+            <p class="mt-3 text-gray-500 dark:text-gray-300">Register an account</p>
+          </div>
+          <!-- Form -->
+          <div class="mt-8">
+            <form id="registrationForm" method="post" accept-charset="UTF-8"
+              class="mt-4 flex flex-col">
+              <div class="form-page" id="page-1">
+                <div class="mb-3 flex">
+                  <div class="mr-3">
+                    <label for="fname" class=" relative mb-2 block text-xs font-semibold">First Name <span class="text-red-600">*</span></label>
+                    <input type="text"  id="fname" name="fname" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                  </div>
+                  <div class="mr-3">
+                    <label class="mb-2 block text-xs font-semibold">Middle Name <span class="required text-red-600">*</span></label>
+                    <input type="text" id="mname" name="mname" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                  </div>
+                  <div>
+                    <label class="mb-2 block text-xs font-semibold">Last Name <span class="required text-red-600">*</span></label>
+                    <input type="text" id="lname" name="lname" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                  </div>
+                </div>
+                <div class="mb-3 flex">
+                  <div class="mr-2">
+                    <label class="mb-2 block text-xs font-semibold">Age<span class="text-red-600">*</span></label>
+                    <input type="number" id="age" name="age" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" readonly />
+                  </div>
+                  <div>
+                    <label class="mb-2 block text-xs font-semibold">Birthday<span class="text-red-600">*</span></label>
+                    <input type="date" id="birthday" name="birthday" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" onchange="calculateAge()" />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 block text-xs font-semibold">Contact Number<span class="text-red-600">*</span></label>
+                  <input type="tel"  id="contact-number" name="contact-number" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                </div>
+                <div class="mb-3 flex">
+                  <div class="mr-2">
+                    <label class="mb-2 block text-xs font-semibold">School<span class="text-red-600">*</span></label>
+                    <input type="text" id="school" name="school" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                    <span id="schoolValidationMessage" class="text-red-600 hidden">Please enter a valid school name (e.g., Full Name of School)</span>
+                    <span id="validSchoolMessage" class="text-green-600 hidden">Valid school name</span>
+                  </div>
+                  <div>
+                    <label class="mb-2 block text-xs font-semibold">Course<span class="text-red-600">*</span></label>
+                    <input type="text" id="course" name="course" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="gender" class="text-xs font-semibold">Sex<span class="text-red-600">*</span></label>
+                  <div class="flex gap-5">
+                    <label class="flex items-center">
+                          <input type="radio" name="gender" value="male" checked class="form-radio text-indigo-600">
+                          <span class="ml-2">Male</span>
+                        </label>
+                    <label class="flex items-center">
+                          <input type="radio" name="gender" value="female" class="form-radio text-indigo-600">
+                          <span class="ml-2">Female</span>
+                        </label>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <button class="mb-1.5 block w-40 text-center text-white bg-green-800 rounded-md md:w-20 mt-5 hover:bg-green-700 -px-2 py-1.5" data-current="page-1" data-next="page-2">Next</button>
+                </div>
+              </div>
+              <div class="form-page hidden" id="page-2">
+                <div class="mb-3">
+                  <label class="mb-2 block text-xs font-semibold" for="department">Department<span class="text-red-600">*</span></label>
+                  <select id="department" name="department" class="block w-full rounded-md border  border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500">
+                        <option value="ictd">ICTD</option>
+                        <option value="crmd">CRMD</option>
+                        <option value="fmd">FMD</option>
+                        <option value="hrad">HRAD</option>
+                        <option value="cgfd">CGFD</option>
+                        <option value="eipd">EIPD</option>
+                        <option value="ertd">ERTD</option>
+                        <option value="ocs">OCS</option>
+                        <option value="commisioners">COMMISSIONERS</option>
+                        <option value="ogc">OGC</option>
+                        <option value="oga">OGA</option>
+                        <option value="msrd">MSRD</option>
+                      </select>
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 block text-xs font-semibold">Hours Required<span class="text-red-600">*</span></label>
+                  <input type="number" id="hours-required" name="hours-required" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 block text-xs font-semibold">Emergency contact<span class="text-red-600">*</span></label>
+                  <input type="tel" id="emergency-contact" name="emergency-contact" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                </div>
+                <div class="mb-3 flex justify-between">
+                  <button class="mb-1.5 block w-20 rounded text-center text-white bg-green-800 hover-bg-green-700 -px-2 py-1.5" data-current="page-2" data-prev="page-1">Previous</button>
+                  <button class="mb-1.5 block w-20 rounded text-center text-white bg-green-800 hover-bg-green-700 -px-2 py-1.5" data-current="page-2" data-next="page-3">Next</button>
+                </div>
+              </div>
+              <div class="form-page hidden" id="page-3">
+                <div class="mb-3 ">
+                  <label class="mb-2 block text-xs font-semibold">Username<span class="text-red-600">*</span></label>
+                  <input type="text" id="username" name="username" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 block text-xs font-semibold">Password<span class="text-red-600">*</span></label>
+                  <input type="password" placeholder="*********" id="password" name="password" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                </div>
+                <div class="mb-3">
+                  <label class="mb-2 block text-xs font-semibold">Confirm Password<span class="text-red-600">*</span></label>
+                  <input type="password" placeholder="*********" id="confirm-password" name="confirm-password" class="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
+                </div>
+                <div class="mb-3 flex justify-between">
+                <button type="button" id="openModal" class="bg-blue-500 h hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Open Camera
+                 </button>
+                 </div>
+                 
+                <div class="mb-3 flex justify-between">
+                  <button class="mb-1.5 block md:w-20 rounded text-center text-white bg-green-800 hover-bg-green-700 -px-2 py-1.5" data-current="page-3" data-prev="page-2">Previous</button>
+                  <button type="submit" class="mb-1.5 block rounded md:w-20 text-center text-white bg-green-800 hover-bg-green-700 -px-2 py-1.5" data-current="page-3">Submit</button>
+                </div>
+            
+                 <div id="backdrop" class="fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity hidden"></div>
+                <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center hidden" role="dialog" aria-modal="true">
+                    <div class="max-w-5xl mx-auto h-full flex items-center">
+                        <div class="w-full max-h-full rounded-3xl shadow-2xl aspect-video bg-white overflow-hidden">
+                            <video id="video" class="w-full h-full object-cover" autoplay></video>
+                            <div class="flex justify-center">
+                                <button type="button" id="captureBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Capture</button>  
+                            </div>
+                            <p id="captureCount" class="mt-4 text-center text-gray-500">Captures left: 3</p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p class="mt-6 bg-red text-sm text-center text-gray-400">Already have an account ? <a href="index.html"
+                class="text-blue-500 focus:outline-none focus:underline hover:underline">Sign In</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="register.js"></script>
+</body>
+
+</html>

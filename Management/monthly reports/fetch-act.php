@@ -16,16 +16,25 @@ if ($conn->connect_error) {
     exit();
 }
 
-// Assuming 'username' is passed as a parameter in the URL
 $username = $_GET['username'];
 
 // Pagination parameters
-$currentPage = $_GET['page'] ?? 1; 
-$perPage = 10; 
-$start = ($currentPage - 1) * $perPage; 
+$currentPage = $_GET['page'] ?? 1;
+$perPage = 10;
+$start = ($currentPage - 1) * $perPage;
 
 // Fetch limited number of records for the current page
-$sql = "SELECT DATE_FORMAT(date, '%M %e, %Y') AS formatted_date, type, TIME_FORMAT(time, '%h:%i %p') AS formatted_time, status FROM acomplisment_report WHERE user_id = ? LIMIT ?, ?";
+$sortByMonth = $_GET['sortByMonth'] ?? '';
+$sortByAction = $_GET['sortByAction'] ?? ''; 
+$sql = "SELECT DATE_FORMAT(date, '%M %e, %Y') AS formatted_date, type, TIME_FORMAT(time, '%h:%i %p') AS formatted_time, status FROM acomplisment_report WHERE user_id = ?";
+if (!empty($sortByMonth)) {
+    $sql .= " AND MONTH(date) = ?";
+}
+if (!empty($sortByAction)) {
+    $sql .= " AND status = ?";
+}
+
+$sql .= " LIMIT ?, ?";
 $stmt = $conn->prepare($sql);
 
 if ($stmt === false) {
@@ -36,7 +45,17 @@ if ($stmt === false) {
     exit();
 }
 
-$stmt->bind_param('sii', $username, $start, $perPage);
+if (!empty($sortByMonth) && !empty($sortByAction)) {
+    $stmt->bind_param('sssii', $username, $sortByMonth, $sortByAction, $start, $perPage);
+} elseif (!empty($sortByMonth)) {
+    $stmt->bind_param('ssii', $username, $sortByMonth, $start, $perPage);
+} elseif (!empty($sortByAction)) {
+    $stmt->bind_param('ssii', $username, $sortByAction, $start, $perPage);
+} else {
+    $stmt->bind_param('sii', $username, $start, $perPage);
+}
+
+
 $stmt->execute();
 
 $result = $stmt->get_result();
@@ -44,14 +63,13 @@ $data = array();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $row['date'] = $row['formatted_date']; // Assign formatted date to 'date' field
-        $row['time'] = $row['formatted_time']; // Assign formatted time to 'time' field
-        unset($row['formatted_date']); // Remove the 'formatted_date' field from the row
-        unset($row['formatted_time']); // Remove the 'formatted_time' field from the row
+        $row['date'] = $row['formatted_date'];
+        $row['time'] = $row['formatted_time']; 
+        unset($row['formatted_date']);
+        unset($row['formatted_time']); 
         $data[] = $row;
     }
 } else {
-    // Provide a custom response for "No records found"
     $noRecordsResponse = array('message' => 'No records found for username: ' . $username);
     echo json_encode($noRecordsResponse);
     exit();

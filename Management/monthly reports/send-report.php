@@ -1,16 +1,13 @@
 <?php
 require '../configuration/interns_config.php';
 
-// Call the getDatabaseConfig function
 $config = getDatabaseConfig();
 
-// Extract database connection parameters
 $dbhost = $config['dbhost'];
 $dbuser = $config['dbuser'];
 $dbpass = $config['dbpass'];
 $dbname = $config['dbname'];
 
-// Create connection
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
 // Check connection
@@ -27,30 +24,40 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-if (isset($_FILES['regi']) && $_FILES['regi']['error'] === UPLOAD_ERR_OK) {
+if (isset($_FILES['reportsFile']) && $_FILES['reportsFile']['error'] === UPLOAD_ERR_OK) {
     // File upload path
     $uploadDirectory = "../monthly-uploads/";
-    $filename = $_FILES['regi']['name'];
-    $tempPath = $_FILES['regi']['tmp_name'];
+    $filename = $_FILES['reportsFile']['name'];
+    $tempPath = $_FILES['reportsFile']['tmp_name'];
     $filePath = $uploadDirectory . $filename;
 
     // Move uploaded file to designated directory
     if (move_uploaded_file($tempPath, $filePath)) {
         $sql = "INSERT INTO reports_uploaded (file_path, username) VALUES (?, ?)";
-
-        // Prepare and bind parameters
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param("ss", $filePath, $_SESSION['username']);
 
-        // Execute the statement
         if ($stmt->execute()) {
-            echo "File uploaded successfully!";
+            // Insert into audits table
+            $action = "Upload File";
+            $log = "The Intern with " . $_SESSION['username'] . " user ID uploads Monthly reports Files";
+            $role = "Intern";
+
+            $query_audits = "INSERT INTO audits (actions, logs, audit_timestamp, role) VALUES (?, ?, NOW(), ?)";
+            $stmt_audits = $mysqli->prepare($query_audits);
+            $stmt_audits->bind_param("sss", $action, $log, $role);
+
+            if ($stmt_audits->execute()) {
+                echo "File uploaded successfully!";
+            } else {
+                echo "Error inserting into audits table: " . $mysqli->error;
+            }
         } else {
             echo "Error uploading file: " . $mysqli->error;
         }
 
-        // Close statement
         $stmt->close();
+        $stmt_audits->close();
     } else {
         echo "Error moving file to destination directory";
     }
@@ -58,6 +65,5 @@ if (isset($_FILES['regi']) && $_FILES['regi']['error'] === UPLOAD_ERR_OK) {
     echo "No file uploaded or upload error occurred";
 }
 
-// Close connection
 $mysqli->close();
 ?>

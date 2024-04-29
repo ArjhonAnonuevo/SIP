@@ -32,8 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($_POST["password"], $hashedPassword)) {
             $_SESSION["user_id"] = $user_id;
             $_SESSION["username"] = $input_username;
+            $_SESSION["hashed_password"] = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-            // Update server status to "online" for the logged-in user
+
             $update_sql = "UPDATE server_status SET status = 'online' WHERE username = ?";
             $update_stmt = $conn->prepare($update_sql);
             if ($update_stmt === false) {
@@ -47,6 +48,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $update_stmt->close();
 
+            // Set timezone to Philippine timezone
+            date_default_timezone_set('Asia/Manila');
+            
+            $action = 'Login';
+            $log = "User " . $input_username . " logged in.";
+            $role = "Intern"; 
+
+            // Get current date and time in Philippine timezone
+            $audit_timestamp = date('Y-m-d H:i:s');
+
+            $insertAuditQuery = "INSERT INTO audits (actions, logs, audit_timestamp, role) VALUES (?, ?, ?, ?)";
+            $insert_stmt = $conn->prepare($insertAuditQuery);
+            if ($insert_stmt === false) {
+                die("Error preparing insert statement: " . $conn->error);
+            }
+            $insert_stmt->bind_param('ssss', $action, $log, $audit_timestamp, $role);
+            if ($insert_stmt->execute() === FALSE) {
+                echo "Error inserting audit record: " . $insert_stmt->error;
+            } else {
+                echo "Audit record inserted successfully";
+            }
+            $insert_stmt->close();
+
             header("Location: ../interns_dashboard.html");
             exit();
         } else {
@@ -54,7 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     } else {
-        // Check if the input username is in the admin configuration
         $admin_accounts = $admin_config['admin_accounts'];
         if (array_key_exists($input_username, $admin_accounts)) {
             $dashboard_type = $admin_accounts[$input_username]['dashboard_type'];

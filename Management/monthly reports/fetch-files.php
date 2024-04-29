@@ -15,7 +15,6 @@ if ($mysqli->connect_error) {
 }
 
 $username = $_GET['username'];
-$fileDirectory = "../monthly-uploads/";
 
 // Get files from the database
 $query = "SELECT file_path, upload_date FROM reports_uploaded WHERE username = ?";
@@ -37,27 +36,35 @@ $stmt->bind_result($filePath, $uploadDate);
 $files = array();
 
 while ($stmt->fetch()) {
+    // Convert upload date to DateTime object for formatting
+    $uploadDateTime = new DateTime($uploadDate);
+    $formattedDate = $uploadDateTime->format('F j, Y');
+
     $files[] = array(
-        'file_name' => basename($filePath), // Get only the file name
-        'upload_date' => $uploadDate,
+        'file_name' => basename($filePath),
+        'upload_date' => $formattedDate,
         'file_path' => $filePath
     );
 }
 
 $stmt->close();
 
-// Get files from the directory
-$directoryFiles = scandir($_SERVER['DOCUMENT_ROOT'] . $fileDirectory);
+$fileDirectory = "../monthly-uploads/";
+$directoryFiles = glob($fileDirectory . '*');
 
 foreach ($directoryFiles as $file) {
-    if ($file !== '.' && $file !== '..') {
-        // Add file to the response
-        $files[] = array(
-            'file_name' => $file,
-            'upload_date' => null, // For files from the directory, upload date is not available
-            'file_path' => $fileDirectory . $file
-        );
-    }
+    $uploadDate = filemtime($file); 
+
+    // Convert upload date to DateTime object for formatting
+    $uploadDateTime = new DateTime('@' . $uploadDate);
+    $formattedDate = $uploadDateTime->format('F j, Y');
+
+    // Add file to the response
+    $files[] = array(
+        'file_name' => basename($file),
+        'upload_date' => $formattedDate, 
+        'file_path' => $file
+    );
 }
 
 $mysqli->close();

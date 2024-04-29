@@ -1,9 +1,6 @@
 $(document).ready(function () {
     $("#admin-navs").load("../header/admin_navs.html");
 
-    // Set path to PDF.js worker script
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '../node_modules/pdfjs-dist/build/pdf.worker.min.js';
-
     // Retrieve control_number from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const controlNumber = urlParams.get('control_number');

@@ -34,25 +34,30 @@ if ($mysqli->connect_error) {
                 $response['success'] = false;
                 $response['message'] = "Invalid file type. Only PDF files are allowed.";
             } else if ($fileError === 0) {
-                // Upload directory
                 $uploadDir = "../attendance-uploads/";
                 
-                // Generate unique filename to prevent overwriting
                 $uniqueFilename = uniqid('', true) . '_' . $fileName;
                 $fileDestination = $uploadDir . $uniqueFilename;
                 
-                // Move uploaded file to destination
                 if (move_uploaded_file($fileTmpName, $fileDestination)) {
-                    // Insert data into attendance_submissions table with current date
                     $sql = "INSERT INTO attendance_submissions (filename, username, file_path, created_at) VALUES (?, ?, ?, CURDATE())";
                     $stmt = $mysqli->prepare($sql);
                     $stmt->bind_param("sss", $fileName, $username, $fileDestination);
+
+                        $action = "Upload";
+                        $log = "The Intern with $username user ID uploads Attendance Files";
+                        $role = "Intern";
+
+                        $query_audits = "INSERT INTO audits (actions, logs, audit_timestamp, role) VALUES (?, ?, NOW(), ?)";
+                            $stmt_audits = $mysqli->prepare($query_audits);
+                            $stmt_audits->bind_param("sss", $action, $log, $role);
+                            $stmt_audits->execute();                        
+
                     if ($stmt->execute()) {
                         $response['success'] = true;
                         $response['message'] = "File uploaded successfully.";
                     } else {
-                        // Rollback file upload if database insertion fails
-                        unlink($fileDestination); // Delete uploaded file
+                        unlink($fileDestination); 
                         $response['success'] = false;
                         $response['message'] = "Error inserting data into database.";
                     }

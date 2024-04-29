@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interns Task</title>
+  <link rel="icon" href="../images/sec_logo.png" type="image/png">
+  <link rel="stylesheet" href="../css/dist/output.css">
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div id="headerContainer"></div>
+  <div class="md:ml-48 xl:ml-48 lg:ml-48">
+    <div class="max-w-6xl mx-auto rounded-md">
+      <div class="mx-auto md:max-w-7xl p-6 mt-8 rounded-md xl:bg-white xl:shadow-md">
+        <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+          <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit ml-4">Monthly Reports</h2>
+          <div class="flex">
+            <button id="print" type="button" class="middle none center mr-4 rounded-lg bg-customGreen py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">Print</button>
+            <form id="downloadForm" action="generate.php" method="post">
+              <input type="hidden" id="selectedMonth" name="selectedMonth">
+              <button id="downloadButton"  name="download" class="middle none center mr-4 rounded-lg bg-customGreen py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">Generate PDF</button>
+            </form>
+          </div>              
+        </div>
+        <div class="flex items-center mb-5 gap-4">
+          <label for="monthFilter" class="mr-4">Filter by Month:</label>
+          <select id="monthFilter" class="px-4 py-2 border border-gray-300 rounded-md">
+            <option value="">All</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <label for="actionFilter" class="mr-4">Filter by Action:</label>
+          <select id="actionFilter" class="px-4 py-2 border border-gray-300 rounded-md">
+            <option value="">All</option>
+            <option value="Completed">Complete</option>
+            <option value="Not Complete">Not Complete</option>
+          </select>
+        </div>
+        <div id="resultsContainer" class="mx-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+              <tr class="bg-customGreen text-white">
+                <th>Date</th>
+                <th>Type</th>
+                <th>Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="text-gray-700 font-light">
+              <!-- Table data will be dynamically added here -->
+            </tbody>
+          </table>
+        </div>
+        <div id="paginationContainer" class="mt-4 flex justify-end items-center">
+          <span id="pageIndicator" class="mr-2 font-poppins text-sm"></span>
+          <img id="prevButton" src="../icons/prev.svg" alt="Previous" class="h-4 w-auto" style="cursor: pointer;">
+          <img id="nextButton" src="../icons/next.svg" alt="Next" class="h-4 w-auto ml-2" style="cursor: pointer;">
+        </div>
+        <div id="page"></div>
+      </div>
+    </div>
+    
+  </div>
+  <script>
+    $(document).ready(function() {
+      $('#headerContainer').load('../header/interns_nav.html');
+      var currentPage = 1;
+      var totalPages = 0;
+
+      $('#monthFilter').change(function() {
+        const selectedMonth = $(this).val();
+        const selectedAction = $('#actionFilter').val();
+
+        $('#selectedMonth').val(selectedMonth);
+        loadData(currentPage, selectedMonth, selectedAction);
+      });
+
+      $('#actionFilter').change(function() {
+        const selectedAction = $(this).val();
+        const selectedMonth = $('#monthFilter').val();
+        loadData(currentPage, selectedMonth, selectedAction);
+      });
+
+      $('#print').click(function() {
+        const selectedMonth = $('#monthFilter').val();
+        printData(selectedMonth);
+      });
+
+      function loadData(page, sortByMonth, sortByAction) {
+        $.ajax({
+          url: 'fetch_task.php',
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            page: page,
+            sortByMonth: sortByMonth,
+            sortByAction: sortByAction
+          },
+          success: function(data) {
+            if (data && data.length > 0) {
+              var tableBody = $('#tableBody');
+              tableBody.empty();
+              data.forEach((item, index) => {
+                const rowClass = index % 2 === 0 ? 'bg-gray-100' : '';
+                var row = `<tr class="${rowClass}">
+                  <td class="px-5 py-4 md:w-1/4 font-poppins text-gray-800">${item.date}</td>
+                  <td class="px-5 py-4 md:w-1/4 font-poppins text-gray-800">${item.type}</td>
+                  <td class="px-5 py-4 md:w-1/4 font-poppins text-gray-800">${item.time}</td>
+                  <td class="px-5 py-4 md:w-1/4 font-poppins text-gray-800">${item.status}</td>
+                </tr>`;
+                tableBody.append(row);
+              });
+            } else {
+              $('#tableBody').html('<tr><td colspan="4">No data available</td></tr>');
+            }
+          },
+          error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+            $('#tableBody').html('<tr><td colspan="4">Error fetching data</td></tr>');
+          }
+        });
+      }
+
+      // Load initial data
+      loadData(currentPage);
+
+      function updatePaginationButtons() {
+        $('#prevButton').prop('disabled', currentPage === 1);
+        $('#nextButton').prop('disabled', currentPage >= totalPages);
+      }
+
+      $('#prevButton').click(function() {
+        if (currentPage > 1) {
+          currentPage--;
+          loadData(currentPage);
+          $('#pageIndicator').text(`Page ${currentPage}`);
+          updatePaginationButtons();
+        }
+      });
+
+      $('#nextButton').click(function() {
+        if (currentPage < totalPages) {
+          currentPage++;
+          loadData(currentPage);
+          $('#pageIndicator').text(`Page ${currentPage}`);
+          updatePaginationButtons();
+        }
+      });
+
+      // AJAX request to fetch total pages for pagination
+      $.ajax({
+        url: 'fetch_pages.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          if (data && data.totalPages) {
+            totalPages = data.totalPages;
+            $('#pageIndicator').text(`Page ${currentPage}`);
+            updatePaginationButtons();
+          }
+        },
+        error: function(xhr, status, error) {
+          console.log(xhr.responseText);
+          $('#pageIndicator').text('Error loading pagination');
+        }
+      });
+
+      function printData(selectedMonth) {
+              $.ajax({
+                url: 'print_reports.php',
+                type: 'POST',
+                data: {
+                  selectedMonth: selectedMonth,
+                },
+                success: function(response) {
+                  console.log('Data received from server:', response);
+                  if (response && typeof response === 'string' && response.trim().startsWith('<!DOCTYPE html>')) {
+                    const printWindow = window.open('', '_Accomplishment Report');
+                    printWindow.document.write(response);
+                    printWindow.document.close();
+                    printWindow.print();
+                  } else {
+                    console.error('No printable content received from server.');
+                  }
+                },
+                error: function(xhr, status, error) {
+                  console.error('Error fetching data from server:', error);
+                  console.log('Status:', status);
+                  console.log('XHR:', xhr);
+                }
+              });
+            }
+    });
+  </script>
+</body>
+</html>

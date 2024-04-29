@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
        elseif($selectedInterviewValue === "accepted"){
-        $action = 'Accepted Applicant';
+        $action = 'Accepted';
         $log = "The applicant with $controlNumber was Accepted";
         $role = "Admin";
 
@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
     else{
-    $action = 'Reject Applicant';
+    $action = 'Rejected';
             $log = "The applicant with $controlNumber was Rejected";
             $role = "Admin";
 

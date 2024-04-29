@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flickity Carousel Example</title>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="node_modules/flickity/dist/flickity.min.css">
+    <script src="node_modules/flickity/dist/flickity.pkgd.min.js"></script>
+    <script src="node_modules/flickity-responsive/flickity-responsive.min.js"></script>
+    <style>
+        .carousel-cell {
+            width: 100%;
+            height: auto;
+            max-height: 350px;
+            margin-right: auto;
+            margin-left: auto;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+        }
+        .carousel{
+            position: relative;
+            z-index: 0;
+        }
+
+        .carousel-cell img {
+            width: auto;
+            max-height: auto;
+            display: block;
+            border-radius: 5px;
+            object-fit: cover;
+             z-index: 0;
+        }
+
+        @media (max-width: 480px) {
+            .carousel-cell {
+                height: 200px;
+            }
+
+            .carousel-cell img {
+                width: auto;
+                height: auto;
+                max-height: 100%;
+                max-width: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .flickity-page-dots {
+            display: none;
+        }
+
+        .carousel:after {
+            content: 'flickity';
+            display: none;
+        }
+
+        @media screen and (max-width: 480px) {
+            .carousel:after {
+                content: '';
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mx-auto">
+        <div class="carousel" id="carousel"></div>
+    </div>
+    <script>
+        $(document).ready(function(){
+                $.ajax({
+                    url: 'carousel/fetch_image.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var carouselHtml = '';
+                        if (Array.isArray(data)) {
+                            data.forEach(function(imageUrl) {
+                                carouselHtml += '<div class="carousel-cell"><img src="' + imageUrl + '" alt="Image"></div>';
+                            });
+                        } else {
+                            carouselHtml += '<div class="carousel-cell"><img src="' + data + '" alt="Image"></div>';
+                        }
+                        $('#carousel').html(carouselHtml);
+    
+                        const carousel = new Flickity('.carousel', {
+                            pageDots: false,
+                            autoPlay: 3000 // Ensure autoplay is enabled for all screen sizes
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching images:', error);
+                    }
+                });
+            });
+    </script>
+</body>
+
+</html>

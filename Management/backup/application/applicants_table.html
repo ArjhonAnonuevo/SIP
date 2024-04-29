@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audits</title>
+    <link href="../css/dist/output.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <div id="adminNav"></div>
+    <div class="container mx-auto px-4 py-8">
+        <div class="md:ml-48 xl:ml-48 lg:48">
+            <div class="max-w-6xl mx-auto rounded-md">
+                <div class="mx-auto md:max-w-7xl md:max-h-min  p-6 mt-8 rounded-md max-w-screen-sm">
+                    <div class="bg-white rounded-xl shadow-xl p-8 mb-8">
+                        <h2 class="text-3xl font-bold mb-8 font-kanit">Audit Trails</h2>
+                        <div class="flex justify-between mb-4">
+                            <div class="flex items-center">
+                                <label for="dateFilter" class="mr-4">Filter by Date:</label>
+                                <input type="date" id="dateFilter" class="px-4 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            <div class="flex items-center">
+                                <label for="actionFilter" class="mr-4">Filter by Action:</label>
+                                <select id="actionFilter" class="px-4 py-2 border border-gray-300 rounded-md">
+                                    <option value="">All</option>
+                                    <option value="interviews">Interview</option>
+                                     <option value="accepted">Accepted</option>
+                                    <option value="login">Login</option>
+                                    <option value="upload">Upload</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table id="auditTable" class="custom-table w-full">
+                                <thead>
+                                    <tr class="font-rubik">
+                                        <th class="text-left px-6 py-3">Actions</th>
+                                        <th class="text-left px-6 py-3">Logs</th>
+                                        <th class="text-left px-6 py-3">Timestamp</th>
+                                        <th class="text-left px-6 py-3">Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex justify-end mt-8">
+                            <span id="currentPage" class="font-poppins ml-4"> Page 1 of 1 </span>
+                            <img id="prevPage" src="../icons/prev.svg" alt="Previous Page" class="h-4 w-auto">
+                            <img id="nextPage" src="../icons/next.svg" alt="Next Page" class="h-4 w-auto">
+                        </div>
+                        <div class="flex justify-center">
+                         <button id="printButton" class="middle none center mr-4 rounded-lg bg-green-600 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-poppins" data-ripple-light="true">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#adminNav').load('../header/admin_navs.html');
+
+            let currentPage = 1;
+
+            function fetchData(page) {
+                let dateFilter = $('#dateFilter').val();
+                let actionFilter = $('#actionFilter').val();
+
+                $.ajax({
+                    url: 'fetch_audits.php',
+                    method: 'GET',
+                    data: { page: page, dateFilter: dateFilter, actionFilter: actionFilter },
+                    dataType: 'json',
+                    success: function (response) {
+                        $('tbody').empty();
+                        if (response && response.data && Array.isArray(response.data)) {
+                            response.data.forEach(function (log) {
+                                let actionsHtml = '';
+
+                                if (log.actions.toLowerCase() === 'interviews') {
+                                    actionsHtml = '<span class="bg-yellow-500 rounded-md text-white py-1 px-3">' + log.actions + '</span>';
+                                } else if (log.actions.toLowerCase() === 'accepted') {
+                                    actionsHtml = '<span class="bg-green-500 rounded-md text-white py-1 px-3">' + log.actions + '</span>';
+                                } else if (log.actions.toLowerCase() === 'rejected') {
+                                    actionsHtml = '<span class="bg-red-500 rounded-md text-white py-1 px-3">' + log.actions + '</span>';
+                                } else if (log.actions.toLowerCase() === 'login') {
+                                    actionsHtml = '<span class="bg-blue-500 rounded-md text-white py-1 px-3 text-center">' + log.actions + '</span>';
+                                }
+                                else if (log.actions.toLowerCase() === 'upload'){
+                                    actionsHtml = '<span class="bg-indigo-600 rounded-md text-white py-1 px-3 text-center">' + log.actions + '</span>';
+                                }
+                                 else {
+                                    actionsHtml = '<span class="bg-gray-500 rounded-md text-white py-1 px-3">' + log.actions + '</span>';
+                                }
+
+                                $('tbody').append(
+                                    '<tr class="font-poppins text-gray-800 hover:bg-gray-200">' +
+                                    '<td class="text-left px-6 py-4">' + actionsHtml + '</td>' +
+                                    '<td class="text-left px-6 py-4">' + log.logs + '</td>' +
+                                    '<td class="text-left px-6 py-4">' + log.audit_timestamp + '</td>' +
+                                    '<td class="text-left px-6 py-4">' + log.role + '</td>' +
+                                    '</tr>'
+                                );
+                            });
+                        }
+                        $('#currentPage').text("Page " + page + " of " + response.pagination.total_pages);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+            fetchData(currentPage);
+
+            $('#nextPage').click(function () {
+                currentPage++;
+                fetchData(currentPage);
+            });
+
+            $('#prevPage').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchData(currentPage);
+                }
+            });
+
+            $('#dateFilter, #actionFilter').change(function () {
+                currentPage = 1;
+                fetchData(currentPage);
+            });
+             $('#printButton').click(function () {
+                window.print();
+            });
+        });
+
+    </script>
+</body>
+
+</html>

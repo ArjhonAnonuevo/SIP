@@ -15,18 +15,8 @@
             <h2 class="text-2xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit">Certificates</h2>
         </div>
         <div id="display-certificate" class="overflow-x-auto">
-            <table class="table-auto w-full bg-white border border-gray-200 rounded-md">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2 bg-gray-100">Certificate Name</th>
-                        <th class="px-4 py-2 bg-gray-100">File Size</th>
-                        <th class="px-4 py-2 bg-gray-100">Download</th>
-                    </tr>
-                </thead>
-                <tbody id="certificates-table-body">
-                    <!-- Certificate rows will be loaded here dynamically -->
-                </tbody>
-            </table>
+            <ul class="divide-y divide-gray-200">
+            </ul>
         </div>
     </div>
 </div>
@@ -40,7 +30,7 @@
             type: "GET",
             dataType: "json",
             success: function(response) {
-                // Iterate through file paths and create table rows for certificates
+                // Iterate through file paths and create list items for certificates
                 response.forEach(function(filePath) {
                     var fileName = filePath.split('/').pop();
                     // Fetch file size asynchronously
@@ -51,20 +41,25 @@
                             var fileSize = xhr.getResponseHeader('Content-Length');
                             // Convert bytes to kilobytes (optional)
                             var fileSizeKB = fileSize / 1024;
-                            // Create table row with certificate data
-                            var row = `
-                                <tr class="border-b border-gray-200">
-                                    <td class="px-4 py-5 font-poppins">${fileName}</td>
-                                    <td class="px-4 py-5 font-poppins">${fileSizeKB.toFixed(2)} KB</td>
-                                <td class="px-4 py-6 flex justify-center">
-                                <a href="${filePath}" download="${fileName}" class="inline-block bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                    Download
-                                </a>
-                            </td>
-                                </tr>
+                            // Create list item with certificate data
+                            var listItem = `
+                                <li class="py-4 flex justify-between items-center border-b border-gray-200 shadow-lg rounded-lg">
+                                    <div>
+                                        <h3 class="text-xl font-poppins">${fileName}</h3>
+                                        <p class="text-gray-600">${fileSizeKB.toFixed(2)} KB</p>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <a href="${filePath}" download="${fileName}" class="inline-block text-customGreen underline font-bold py-2 px-4 rounded">
+                                            Download
+                                        </a>
+                                        <a href="${filePath}" target="_blank" class="inline-block text-blue-500 underline font-bold py-2 px-4 rounded">
+                                            View
+                                        </a>
+                                    </div>
+                                </li>
                             `;
-                            // Append row to table body
-                            $('#certificates-table-body').append(row);
+                            // Append list item to the list
+                            $('#display-certificate ul').append(listItem);
                         },
                         error: function(xhr, status, error) {
                             console.error("Error fetching file size:", error);

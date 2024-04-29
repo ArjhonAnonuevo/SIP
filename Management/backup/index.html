@@ -1,0 +1,201 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <title>Login</title>
+        <style>
+            /* Animation styles */
+            .modal-enter {
+            opacity: 0;
+            transform: scale(0.9);
+            }
+            .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            }
+            .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+            }
+            .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.9);
+            }
+        </style>
+        </head>
+        <body>
+        <div class="bg-white dark:bg-gray-900">
+            <div class="flex justify-center h-screen">
+            <div class="hidden bg-cover lg:block lg:w-2/3" style="background-image: url(images/sec.png)">
+                <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+                <div>
+                    <h2 class="text-4xl font-bold text-white">SEC Internship Monitoring System</h2>
+                    <p class="max-w-xl mt-3 text-gray-300">Effortlessly manage internship programs within the Securities and Exchange Commission (SEC) with our intuitive web-based platform. From application to evaluation, empowering interns, engaging supervisors, and facilitating seamless administration.</p>
+                </div>
+                </div>
+            </div>
+            <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+                <div class="flex-1">
+                <div id="logoutMessage" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" style="margin-bottom: 10px;">
+                    <span class="block sm:inline">You have been logged out. Please login again.</span>
+                </div>
+                <div class="text-center">
+                    <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">SIP</h2>
+                    <p class="mt-3 text-gray-500 dark:text-gray-300">Sign in to access your account</p>
+                </div>
+                <div class="mt-8">
+                    <form action="php_scripts/login_process.php" method="post">
+                    <div>
+                        <label for="email" class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Username</label>
+                        <input type="text" name="username" id="username" placeholder="Enter Username" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                    </div>
+                    <div class="mt-6">
+                        <div class="flex justify-between mb-2">
+                        <label for="password" class="text-sm text-gray-600 dark:text-gray-200">Password</label>
+                        <a href="#" id="forgotPasswordLink" class="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">Forgot password?</a>
+                        </div>
+                        <input type="password" name="password" id="password" placeholder="Your Password" class="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <div class="mb-3 flex items-center">
+                        <input type="checkbox" class="mt-3" onclick="togglePasswordVisibility()">
+                        <label for="togglePassword" class="ml-2 mt-3 text-xs text-purple-700 font-semibold">Show Password</label>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <button class="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                        Sign in
+                        </button>
+                    </div>
+                    </form>
+                    <p class="mt-6 text-sm text-center text-gray-400">Don&#x27;t have an account yet? <a href="internsregister.html" class="text-blue-500 focus:outline-none focus:underline hover:underline">Sign up</a>.</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        <div id="forgotPasswordModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+            <div class="modal-overlay fixed inset-0 bg-black opacity-50"></div>
+            <div class="modal-container bg-white md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto p-8 w-11/12">
+            <div class="modal-content py-4 text-left px-6">
+                <div class="flex justify-between items-center pb-3">
+                <p class="text-2xl font-bold">Forgot Password</p>
+                <button id="closeModal" class="modal-close cursor-pointer z-50">
+                    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                    <path d="M6.01 6L6 6.01 9.01 9 6 11.99 6.01 12 12 6.01 11.99 6 9 9.01 6.01 6z"></path>
+                    </svg>
+                </button>
+                </div>
+                <form id="change" method="post">
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                    <input type="text" id="user" name="user" class="block w-full px-3 py-2 p-7 border rounded-md placeholder-gray-400 focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <button class="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                    </svg>
+                    <span>Reset password</span>
+                    </button>
+                </div>
+                </form>
+            </div>
+            </div>
+            <div id="inputTokenModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+                <div class="modal-overlay fixed inset-0 bg-black opacity-50"></div>
+                <div class="modal-container bg-white md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto p-8 w-11/12">
+                <div class="modal-content py-4 text-left px-6">
+                    <div class="flex justify-between items-center pb-3">
+                    <p class="text-2xl font-bold">Input Token</p>
+                    <button id="closeInputTokenModal" class="modal-close cursor-pointer z-50">
+                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path d="M6.01 6L6 6.01 9.01 9 6 11.99 6.01 12 12 6.01 11.99 6 9 9.01 6.01 6z"></path>
+                        </svg>
+                    </button>
+                    </div>
+                    <!-- Content for Input Token Modal -->
+                    <p>This is the input token modal content. You can add your form elements or any other content here.</p>
+                </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const logout = urlParams.get('logout');
+            if (logout === 'true') {
+            document.getElementById('logoutMessage').style.display = 'block';
+            } else {
+            document.getElementById('logoutMessage').style.display = 'none';
+            }
+            // Remove the logout query parameter from the URL
+            window.history.replaceState({}, document.title, ".");
+            function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+            }
+            document.addEventListener('DOMContentLoaded', () => {
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+            const closeModalButton = document.getElementById('closeModal');
+            // Check if elements exist before manipulating them
+            if (forgotPasswordLink && forgotPasswordModal && closeModalButton) {
+                // Function to open the modal
+                function openModal() {
+                forgotPasswordModal.classList.remove('hidden');
+                setTimeout(() => {
+                    forgotPasswordModal.classList.add('modal-enter', 'modal-enter-active');
+                }, 10);
+                }
+                // Function to close the modal
+                function closeModal() {
+                forgotPasswordModal.classList.remove('modal-enter-active');
+                forgotPasswordModal.classList.add('modal-exit');
+                setTimeout(() => {
+                    forgotPasswordModal.classList.add('hidden');
+                    forgotPasswordModal.classList.remove('modal-exit');
+                }, 300);
+                }
+                forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal();
+                });
+                closeModalButton.addEventListener('click', () => {
+                closeModal();
+                });
+            } else {
+                console.error('One or more modal elements not found.');
+            }
+            });
+            function openInputTokenModal() {
+            const inputTokenModal = document.getElementById('inputTokenModal');
+            if (inputTokenModal) {
+            inputTokenModal.classList.remove('hidden');
+            setTimeout(() => {
+                inputTokenModal.classList.add('modal-enter', 'modal-enter-active');
+            }, 10);
+            }
+        }
+            $(document).ready(function() {
+            $('#change').submit(function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                type: 'POST',
+                url: 'forgot_password_process.php',
+                data: formData,
+                success: function(response) {
+                    $('#message').html(response);
+                    openInputTokenModal(); // Function not defined here, you'll need to define it separately
+                }
+                });
+            });
+            });
+        </script>
+        </body>
+        </html>

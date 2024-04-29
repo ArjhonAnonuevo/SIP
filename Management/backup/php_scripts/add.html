@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link href="../css/dist/output.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../node_modules/toastr/build/toastr.min.css">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.3s ease-in-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div id="adminNav"></div>
+    <div id="modal" class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white rounded-lg w-96">
+            <div class="p-4">
+                <h3 class="text-lg font-medium text-gray-900 mb-4 font-kanit">Add User</h3>
+                <form id="submit" action="submit.php" method="POST" class="mb-8">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="username">Username</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="username" name="username" type="text" placeholder="Enter username">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="firstname">First Name</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="firstname" type="text" name="fname" placeholder="Enter first name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="middlename">Middle Name</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="middlename" type="text" name="mname" placeholder="Enter middle name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2 font-rubik" for="lastname">Last Name</label>
+                        <input class="shadow appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline font-poppins placeholder-gray-400 bg-gray-100" id="lastname" type="text" name="lname" placeholder="Enter last name">
+                    </div>
+                    <div class="flex justify-between">
+                        <button id="cancel-btn" class="middle none center mr-4 rounded-lg bg-red-500 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true" type="button">
+                            Close
+                        </button>
+                        <button id="ok-btn" type="submit" class="middle none center mr-4 rounded-lg bg-blue-600 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-poppins" data-ripple-light="true" >
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="md:ml-48 xl:ml-48 lg:48">
+        <div class="max-w-7xl mx-auto rounded-md">
+            <div class="mx-auto md:max-w-7xl md:max-h-min p-6 mt-28 rounded-md max-w-screen-sm">
+                <div class="md:max-w-7xl bg-white md:max-h-min p-6 mt-8 max-w-screen-sm shadow-lg rounded-lg">
+                    <div class="flex flex-col md:flex-row md:justify-between items-center mb-5">
+                        <h2 class="text-xl font-bold mb-6 md:mb-0 md:text-3xl font-kanit ml-4">Users</h2>
+                        <button id="open-btn" class="middle none center mr-4 rounded-lg bg-blue-600 py-3 px-6 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" data-ripple-light="true">
+                        Add User
+                    </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table id="usersTable" class="table-auto min-w-full border border-gray-300 rounded-md">
+                            <thead class="bg-customGreen text-white font-rubik">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">
+                                        USERNAME</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">FIRST
+                                        NAME</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">
+                                        MIDDLE NAME</th>
+                                    <th class="px-6 py-3 text-left text-sm font-semibold uppercase tracking-wider">LAST
+                                        NAME</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-300 font-poppins" id="userTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="../node_modules/toastr/build/toastr.min.js"></script>
+        <script>
+            $(document).ready(function() {
+            $('#adminNav').load('../header/admin_navs.html');
+            let modal = $('#modal');
+            let btn = $('#open-btn');
+            let cancelBtn = $('#cancel-btn');
+
+            btn.click(function() {
+                modal.css('display', 'flex');
+                modal.removeClass('fadeOut').addClass('fadeIn');
+            });
+
+            cancelBtn.click(function() {
+                modal.removeClass('fadeIn').addClass('fadeOut');
+                setTimeout(function() {
+                    modal.css('display', 'none');
+                }, 300); 
+            });
+
+            $(window).click(function(event) {
+                if (event.target == modal[0]) {
+                    modal.removeClass('fadeIn').addClass('fadeOut');
+                    setTimeout(function() {
+                        modal.css('display', 'none');
+                    }, 300); 
+                }
+            });
+            toastr.options = {
+            positionClass: 'toast-bottom-right'
+        };
+
+            $('#submit').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: 'submit.php',
+                    method: 'POST',
+                    data: formData,
+                    dataType: 'json', 
+                    success: function(response) {
+                    if (response.success) {
+                        toastr.success(response.success);
+                        modal.removeClass('fadeIn').addClass('fadeOut');
+                        setTimeout(function() {
+                            modal.css('display', 'none');
+                        }, 300); 
+                    } else if (response.error) {
+                        alert(response.error);
+                    }
+                },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        toastr.error(response.error);
+                    }
+                });
+            });
+
+            $.ajax({
+                url: 'fetch.php',
+                method: 'GET',
+                success: function(response) {
+                    let users = response.users;
+                    let tableBody = $('#userTableBody');
+
+                    tableBody.empty();
+
+                    users.forEach(function(user) {
+                        let row = '<tr>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.username + '</td>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.firstName + '</td>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.middleName + '</td>' +
+                            '<td class="px-6 py-4 whitespace-nowrap">' + user.lastName + '</td>' +
+                            '</tr>';
+                        tableBody.append(row);
+                    });
+
+                    $('#usersTable').DataTable({
+                        dom: 'lBfrtip',
+                        buttons: [
+                            'copy', 'excel', 'pdf'
+                        ],
+                        "initComplete": function(settings, json) {
+                            $('#usersTable_wrapper').addClass('overflow-hidden shadow-md rounded-lg');
+                            $('#usersTable').addClass('w-full');
+                            $('#usersTable_info').addClass('font-poppins');
+                            $('.dataTables_filter').addClass('mt-4 font-poppins');
+                            $('.dataTables_filter input').addClass('border rounded-md px-3 py-2 placeholder-gray-400 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4');
+                            $('.dataTables_paginate').addClass('mt-4 font-poppins');
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+        </script>
+</body>
+
+</html>
